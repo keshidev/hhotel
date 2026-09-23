@@ -1,0 +1,216 @@
+.rebooking-workflow-page {
+  padding-bottom: 2rem;
+}
+
+.rebooking-workflow-guide {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.rebooking-workflow-guide > div {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid #dbe3f0;
+  border-radius: 12px;
+  color: #475569;
+  background: #fff;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.rebooking-workflow-guide svg { flex: 0 0 auto; color: #1d4ed8; }
+.rebooking-workflow-guide strong { display: block; color: #172554; }
+.rebooking-toolbar .search-wrap { flex: 1 1 320px; }
+.rebooking-table-card { overflow: hidden; }
+.rebooking-table .money-up { color: #15803d; font-weight: 700; }
+.rebooking-table .money-down { color: #b91c1c; font-weight: 700; }
+
+.rebooking-modal {
+  width: min(780px, calc(100vw - 32px));
+  max-height: min(880px, calc(100dvh - 32px));
+  overflow: hidden;
+}
+
+.rebooking-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+.rebooking-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.rebooking-section {
+  padding: 16px;
+  border: 1px solid #dbe3f0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.rebooking-section h4,
+.refund-form-heading h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 12px;
+  color: #172554;
+  font-size: 14px;
+}
+
+.rebooking-section .detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.rebooking-section .detail-row strong { color: #172554; text-align: right; overflow-wrap: anywhere; }
+
+.room-change-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid #edf1f7;
+}
+
+.room-change-row:first-of-type { border-top: 0; padding-top: 0; }
+.room-change-row div { min-width: 0; }
+.room-change-row span { display: block; margin-bottom: 3px; color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+.room-change-row strong { display: block; color: #172554; font-size: 13px; overflow-wrap: anywhere; }
+.room-change-row > svg { color: #2563eb; }
+.room-change-row > b { color: #15803d; font-size: 13px; }
+
+.rebooking-financial {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  flex: 0 0 auto;
+  min-height: 70px;
+  overflow: hidden;
+  border: 1px solid #dbe3f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.rebooking-financial > div { min-width: 0; padding: 14px; border-left: 1px solid #dbe3f0; }
+.rebooking-financial > div:first-child { border-left: 0; }
+.rebooking-financial span { display: block; margin-bottom: 5px; color: #64748b; font-size: 11px; line-height: 1.3; }
+.rebooking-financial strong { display: block; color: #172554; font-size: 14px; overflow-wrap: anywhere; }
+
+.rebooking-next-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid #93c5fd;
+  border-radius: 12px;
+  color: #1e3a8a;
+  background: #eff6ff;
+}
+
+.rebooking-next-step.additional_payment_required,
+.rebooking-next-step.awaiting_payment,
+.rebooking-next-step.refund_review { border-color: #fdba74; color: #9a3412; background: #fff7ed; }
+.rebooking-next-step.payment_under_review { border-color: #c4b5fd; color: #5b21b6; background: #f5f3ff; }
+.rebooking-next-step.ready { border-color: #86efac; color: #166534; background: #f0fdf4; }
+.rebooking-next-step svg { flex: 0 0 auto; margin-top: 2px; }
+.rebooking-next-step span { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.rebooking-next-step strong { display: block; margin: 2px 0 3px; font-size: 14px; }
+.rebooking-next-step p { margin: 0; font-size: 13px; line-height: 1.45; }
+.rebooking-reason { margin: 0; color: #475569; font-size: 13px; line-height: 1.55; }
+.rebooking-label { display: block; margin-bottom: 7px; color: #334155; font-size: 13px; font-weight: 700; }
+.rebooking-section textarea,
+.rebooking-refund-form input,
+.rebooking-refund-form textarea { width: 100%; border: 1px solid #cbd5e1; border-radius: 9px; padding: 10px 12px; color: #172554; background: #fff; font: inherit; }
+
+.rebooking-refund-form { padding: 16px; border: 1px solid #fdba74; border-radius: 12px; background: #fffaf3; }
+.refund-form-heading { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; color: #9a3412; }
+.refund-form-heading h4 { margin-bottom: 2px; color: #7c2d12; }
+.refund-form-heading p { margin: 0; font-size: 12px; line-height: 1.4; }
+.refund-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.refund-grid label,
+.refund-reason { display: block; }
+.refund-grid label > span,
+.refund-reason > span { display: block; margin-bottom: 6px; color: #7c2d12; font-size: 12px; font-weight: 700; }
+.refund-reason { margin-top: 12px; }
+.refund-upload { position: relative; display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; margin-top: 12px; padding: 13px; border: 1px dashed #fb923c; border-radius: 10px; color: #9a3412; cursor: pointer; }
+.refund-upload svg { grid-row: span 2; align-self: center; }
+.refund-upload span { font-size: 13px; font-weight: 700; overflow-wrap: anywhere; }
+.refund-upload small { font-size: 11px; }
+.refund-upload input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.refund-confirm { display: flex; align-items: flex-start; gap: 9px; margin-top: 12px; color: #7c2d12; font-size: 12px; line-height: 1.45; }
+.refund-confirm input { width: auto; margin-top: 2px; }
+
+.rebooking-modal .rebooking-modal-footer { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 24px; }
+.rebooking-modal-footer .modal-btn { min-height: 42px; }
+.rebooking-modal-footer .btn-payment { color: #fff; background: #1d4ed8; }
+.rebooking-modal-footer .btn-refund { color: #fff; background: #c2410c; }
+.rebooking-modal-footer .btn-approve { color: #fff; background: #15803d; }
+.rebooking-modal .rebooking-modal-footer .btn-danger { color: #b91c1c; background: #fee2e2; }
+.rebooking-modal .rebooking-modal-footer .btn-danger:hover { color: #991b1b; background: #fecaca; }
+.rebooking-page-state { padding: 32px; }
+
+@media (max-width: 900px) {
+  .rebooking-workflow-guide { grid-template-columns: 1fr; }
+  .rebooking-financial { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rebooking-financial > div:nth-child(n+3) { border-top: 1px solid #dbe3f0; }
+  .rebooking-financial > div:nth-child(odd) { border-left: 0; }
+}
+
+@media (max-width: 720px) {
+  .rebooking-workflow-page { padding-inline: 16px; }
+  .rebooking-workflow-guide { gap: 10px; margin-bottom: 18px; }
+  .rebooking-toolbar { gap: 10px; margin-bottom: 16px; }
+  .rebooking-toolbar .search-wrap,
+  .rebooking-toolbar .filter-wrap { flex: 1 1 100%; width: 100%; }
+  .rebooking-table-card { border: 0; background: transparent; box-shadow: none; }
+  .rebooking-table-card .table-container { overflow: visible; }
+  .rebooking-table { display: block; }
+  .rebooking-table thead { display: none; }
+  .rebooking-table tbody { display: grid; gap: 12px; }
+  .rebooking-table tr { display: grid; grid-template-columns: 1fr auto; gap: 9px 14px; padding: 16px; border: 1px solid #dbe3f0; border-radius: 12px; background: #fff; box-shadow: 0 4px 16px rgba(15, 23, 42, .05); }
+  .rebooking-table td { display: flex; min-width: 0; justify-content: space-between; gap: 12px; padding: 0 !important; border: 0 !important; text-align: right; overflow-wrap: anywhere; }
+  .rebooking-table td::before { content: attr(data-label); flex: 0 0 auto; color: #64748b; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .rebooking-table td:nth-child(1),
+  .rebooking-table td:nth-child(2),
+  .rebooking-table td:nth-child(3),
+  .rebooking-table td:nth-child(4),
+  .rebooking-table td:nth-child(5),
+  .rebooking-table td:nth-child(6) { grid-column: 1 / -1; }
+  .rebooking-table td:last-child { grid-column: 2; justify-content: flex-end; }
+  .rebooking-table td:last-child::before { display: none; }
+  .rebooking-modal { width: 100%; max-height: 100dvh; height: 100dvh; border-radius: 0; }
+  .rebooking-modal-body { padding: 16px; gap: 12px; }
+  .rebooking-detail-grid,
+  .refund-grid { grid-template-columns: 1fr; gap: 12px; }
+  .room-change-row { grid-template-columns: 1fr auto; }
+  .room-change-row > svg { display: none; }
+  .room-change-row > b { grid-column: 1 / -1; }
+  .rebooking-modal .rebooking-modal-footer { position: sticky; bottom: 0; padding: 12px 16px; background: #fff; }
+  .rebooking-modal-footer .modal-btn { flex: 1 1 calc(50% - 5px); justify-content: center; margin: 0; }
+}
+
+@media (max-width: 420px) {
+  .rebooking-workflow-page { padding-inline: 12px; }
+  .rebooking-workflow-guide > div,
+  .rebooking-section,
+  .rebooking-refund-form { padding: 13px; }
+  .rebooking-financial { grid-template-columns: 1fr; }
+  .rebooking-financial > div { border-left: 0; border-top: 1px solid #dbe3f0; }
+  .rebooking-financial > div:first-child { border-top: 0; }
+  .rebooking-modal .rebooking-modal-footer { display: flex; flex-direction: column; align-items: stretch; overflow-x: hidden; }
+  .rebooking-modal-footer .modal-btn { flex: 0 0 auto; width: 100%; max-width: 100%; min-width: 0; white-space: normal; }
+}

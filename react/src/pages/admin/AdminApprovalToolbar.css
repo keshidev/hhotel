@@ -1,0 +1,74 @@
+/* Keep toolbar styling available on direct navigation to each approval page. */
+.admin-approval-page .search-wrap,
+.admin-approval-page .filter-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  box-sizing: border-box;
+  min-height: 44px;
+  min-width: 0;
+  padding: 0.625rem 1rem;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #dde3f0);
+  border-radius: var(--radius-md, 8px);
+}
+
+.admin-approval-page .search-wrap {
+  flex: 1;
+}
+
+.admin-approval-page .filter-wrap {
+  position: relative;
+  flex: 0 0 220px;
+  padding-right: 2rem;
+}
+
+.admin-approval-page .search-wrap:focus-within,
+.admin-approval-page .filter-wrap:focus-within {
+  border-color: #1a4bcc;
+  box-shadow: 0 0 0 3px rgba(26, 75, 204, 0.1);
+}
+
+.admin-approval-page .search-wrap svg,
+.admin-approval-page .filter-wrap svg {
+  flex-shrink: 0;
+  color: var(--color-text-secondary, #64748b);
+}
+
+.admin-approval-page .search-wrap input,
+.admin-approval-page .filter-wrap select {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary, #0f172a);
+}
+
+.admin-approval-page .search-wrap input::placeholder {
+  color: var(--color-text-secondary, #64748b);
+}
+
+.admin-approval-page .filter-wrap select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.admin-approval-page .select-chevron {
+  position: absolute;
+  right: 0.75rem;
+  pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+  .admin-approval-page .search-wrap,
+  .admin-approval-page .filter-wrap {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}

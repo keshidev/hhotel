@@ -1,0 +1,115 @@
+.confirm-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(3px);
+  z-index: 12000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.confirm-dialog-box {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.25);
+  padding: 1.25rem;
+}
+
+.confirm-dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.confirm-dialog-header h3 {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.confirm-dialog-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.confirm-dialog-icon.danger {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.confirm-dialog-message {
+  margin: 0.85rem 0 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.confirm-dialog-body {
+  margin-top: 0.85rem;
+}
+
+.confirm-dialog-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+}
+
+.confirm-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.625rem 1.25rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.confirm-btn.cancel {
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.confirm-btn.cancel:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.confirm-btn.primary {
+  border: 1px solid #2e7d32;
+  background: #2e7d32;
+  color: #fff;
+}
+
+.confirm-btn.primary:hover:not(:disabled) {
+  background: #276d2c;
+  border-color: #276d2c;
+}
+
+.confirm-btn.danger {
+  border: 1px solid transparent;
+  background: rgba(198, 40, 40, 0.12);
+  color: #c62828;
+}
+
+.confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

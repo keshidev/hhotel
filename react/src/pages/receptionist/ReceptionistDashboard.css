@@ -1,0 +1,262 @@
+/* Shared page styles */
+.r-dashboard-page,
+.r-reservation-page,
+.r-payment-page,
+.r-cancellation-page,
+.r-rebooking-page,
+.r-settings-page {
+  font-family: 'Inter', sans-serif;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.025em;
+  margin: 0 0 0.25rem 0;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.current-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.875rem;
+  white-space: nowrap;
+}
+
+/* Admin dashboard stat-card parity */
+.r-dashboard-page .report-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.r-dashboard-page .report-stat-card {
+  background: #fff;
+  border: 1px solid #dde3f0;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+}
+
+.r-dashboard-page .report-stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6b7280;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.r-dashboard-page .report-stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a4bcc;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+}
+
+.r-dashboard-page .report-stat-sub {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+/* ── Dashboard Grid ── */
+.r-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.25rem;
+  align-items: start; 
+}
+
+.dashboard-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+
+.card-header h2 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.view-all-btn {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.view-all-btn:hover {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+
+.badge-count {
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.125rem 0.5rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ── Table ── */
+.table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-table td {
+  padding: 0.875rem 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: rgba(0,0,0,0.02); }
+
+.booking-id {
+  font-family: 'SF Mono', 'Monaco', 'Roboto Mono', monospace;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.status-confirmed, .status-checkedin {
+  background: rgba(46,125,50,0.1);
+  color: #2e7d32;
+}
+.status-pending, .status-expected {
+  background: rgba(26,75,204,0.1);
+  color: #1a4bcc;
+}
+.status-cancelled {
+  background: rgba(198,40,40,0.1);
+  color: #c62828;
+}
+.status-checkedout {
+  background: rgba(21,101,192,0.1);
+  color: #1565c0;
+}
+
+/* ── Pending Payments list ── */
+.pending-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pending-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.pending-item:last-child { border-bottom: none; }
+.pending-item:hover { background: rgba(0,0,0,0.02); }
+
+.pending-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pending-guest {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.pending-meta {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+}
+
+.pending-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pending-amount {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0d1b3e;
+}
+
+@media (max-width: 1280px) {
+  .r-dashboard-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .r-dashboard-page .report-stats-grid { grid-template-columns: 1fr; }
+  .r-dashboard-page .report-stat-card  { padding: 1.25rem; }
+  .r-dashboard-page .report-stat-value { font-size: 1.75rem; }
+}
+

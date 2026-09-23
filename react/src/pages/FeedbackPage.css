@@ -1,0 +1,427 @@
+/* ============================================================
+   FEEDBACK PAGE — H+ Hotel Design System
+   Consistent with Home.css
+   No border-radius, blue #1a4bcc, navy #0d1b3e
+   ============================================================ */
+
+.fb-page {
+  min-height: 100vh;
+  background: #eef0f7;
+  padding-bottom: 4rem;
+  padding-top: 80px;
+}
+
+/* ── Container ── */
+.fb-container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* ── Hero ── */
+.fb-hero {
+  text-align: center;
+  padding: 2.5rem 0 1.5rem;
+}
+
+.fb-hero-title {
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #0d1b3e;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.fb-hero-sub {
+  font-size: 0.95rem;
+  color: #4a5568;
+}
+
+/* ── Booking Strip ── */
+.fb-booking-strip {
+  display: flex;
+  background: #fff;
+  border: 1px solid #dde3f0;
+  margin-bottom: 1.5rem;
+}
+
+.fb-strip-item {
+  flex: 1;
+  padding: 16px 18px;
+  border-right: 1px solid #dde3f0;
+}
+
+.fb-strip-item:last-child { border-right: none; }
+
+.fb-strip-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.fb-strip-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0d1b3e;
+}
+
+/* ── Card ── */
+.fb-card {
+  background: #fff;
+  border: 1px solid #dde3f0;
+  padding: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.fb-card--center {
+  max-width: 480px;
+  margin: 3rem auto;
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+/* ── Section title ── */
+.fb-section-title {
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #0d1b3e;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #dde3f0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Star rating row ── */
+.fb-rating-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #eef0f7;
+}
+
+.fb-rating-row:last-child { border-bottom: none; }
+
+.fb-rating-label {
+  font-size: 0.92rem;
+  color: #0d1b3e;
+}
+
+/* ── Stars ── */
+.fb-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.fb-star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: #1a4bcc;
+  transition: transform 0.1s ease;
+  line-height: 1;
+}
+
+.fb-star:hover { transform: scale(1.15); }
+.fb-star:disabled { cursor: default; }
+.fb-star--active svg { color: #1a4bcc; }
+
+/* ── Divider ── */
+.fb-divider {
+  height: 1px;
+  background: #dde3f0;
+  margin: 1rem 0;
+}
+
+/* ── Textarea ── */
+.fb-textarea {
+  width: 100%;
+  border: 1px solid #dde3f0;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #0d1b3e;
+  resize: vertical;
+  background: #f7f9ff;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.fb-textarea:focus { border-color: #1a4bcc; background: #fff; }
+
+.fb-char-count {
+  font-size: 11px;
+  color: #6b7280;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* ── Checkbox ── */
+.fb-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  color: #0d1b3e;
+}
+
+.fb-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #1a4bcc;
+}
+
+/* ── Text Input ── */
+.fb-input {
+  width: 100%;
+  border: 1px solid #dde3f0;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #0d1b3e;
+  background: #f7f9ff;
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.fb-input:focus { border-color: #1a4bcc; background: #fff; }
+.fb-input::placeholder { color: #6b7280; }
+
+/* ── Select ── */
+.fb-select-wrap {
+  position: relative;
+}
+
+.fb-select {
+  width: 100%;
+  padding: 12px 40px 12px 14px;
+  border: 1px solid #dde3f0;
+  background: #f7f9ff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #0d1b3e;
+  appearance: none;
+  border-radius: 0;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.fb-select:focus { border-color: #1a4bcc; }
+
+.fb-select-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  pointer-events: none;
+}
+
+/* ── Recommend ── */
+.fb-recommend-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.fb-recommend-label {
+  font-size: 0.92rem;
+  color: #0d1b3e;
+  font-weight: 500;
+}
+
+.fb-recommend-btns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.fb-recommend-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border: 2px solid #dde3f0;
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #4a5568;
+  border-radius: 0;
+  transition: all 0.2s;
+}
+
+.fb-recommend-btn--yes {
+  background: #1a4bcc;
+  border-color: #1a4bcc;
+  color: #fff;
+}
+
+.fb-recommend-btn--no {
+  background: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+/* ── Buttons ── */
+.fb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+  border-radius: 0;
+  transition: opacity 0.2s;
+}
+
+.fb-btn--primary {
+  background: rgba(26, 75, 204, 0.08);
+  color: #0d1b3e;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  border: 1px solid rgba(26, 75, 204, 0.25);
+}
+
+.fb-btn--primary:hover { background: rgba(26, 75, 204, 0.15); }
+
+.fb-btn--submit {
+  width: 100%;
+  background: #1a4bcc;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 18px;
+  margin-bottom: 1.5rem;
+  border: 2px solid #1a4bcc;
+}
+
+.fb-btn--submit:hover { background: #1340b8; border-color: #1340b8; }
+.fb-btn--submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Error / validation ── */
+.fb-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  padding: 12px 16px;
+  font-size: 0.88rem;
+  color: #991b1b;
+  margin-bottom: 1rem;
+}
+
+.fb-field-error {
+  font-size: 0.78rem;
+  color: #ef4444;
+  margin-top: 4px;
+  padding-left: 2px;
+}
+
+/* ── Misc ── */
+.fb-heading {
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #0d1b3e;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.fb-muted {
+  font-size: 0.92rem;
+  color: #4a5568;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+
+.fb-spinner {
+  color: #1a4bcc;
+  animation: fb-spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.fb-spinner-sm {
+  animation: fb-spin 1s linear infinite;
+}
+
+@keyframes fb-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.fb-success-icon {
+  width: 72px;
+  height: 72px;
+  background: #1a4bcc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+  color: #fff;
+}
+
+.fb-submitted-summary {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.fb-submitted-stars {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.fb-submitted-review {
+  font-style: italic;
+  color: #4a5568;
+  font-size: 0.9rem;
+  max-width: 360px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.fb-footer-note {
+  text-align: center;
+  font-size: 11px;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+  padding-bottom: 1rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 540px) {
+  .fb-booking-strip { flex-direction: column; }
+  .fb-strip-item { border-right: none; border-bottom: 1px solid #dde3f0; }
+  .fb-strip-item:last-child { border-bottom: none; }
+  .fb-hero-title { font-size: 1.6rem; }
+  .fb-card { padding: 1.25rem; }
+  .fb-rating-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .fb-recommend-row { flex-direction: column; }
+}

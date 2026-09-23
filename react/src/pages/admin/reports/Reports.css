@@ -1,0 +1,559 @@
+/* ============================================
+   SHARED REPORTS CSS — H+ Hotel Design System
+   ============================================ */
+
+.report-page {
+  animation: fadeInUp 0.3s ease-out;
+  padding: 0 0 3rem;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── PAGE HEADER ── */
+.report-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #dde3f0;
+}
+
+.report-page-title h1 {
+  margin: 0 0 0.25rem 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0d1b3e;
+  letter-spacing: -0.025em;
+}
+
+.report-page-subtitle {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.report-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* ── FILTER BAR ── */
+.report-filter-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: #ffffff;
+  border: 1px solid #dde3f0;
+  border-radius: 10px;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.filter-field label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.filter-field input[type="date"],
+.filter-field select {
+  padding: 0.6rem 0.875rem;
+  border: 1px solid #dde3f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #0d1b3e;
+  background: #f7f9ff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  font-family: inherit;
+  outline: none;
+}
+
+.filter-field input[type="date"]:focus,
+.filter-field select:focus {
+  border-color: #1a4bcc;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(26, 75, 204, 0.1);
+}
+
+.btn-apply-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: #1a4bcc;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.btn-apply-filter:hover {
+  background: #1340b8;
+}
+
+/* ── STAT CARDS GRID ── */
+.report-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.report-stat-card {
+  background: #fff;
+  border: 1px solid #dde3f0;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+}
+
+.report-stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6b7280;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.report-stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a4bcc;
+  font-family: 'Inter', sans-serif;
+  line-height: 1;
+}
+
+.report-stat-sub {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* ── LEGACY METRIC CARDS ── */
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.report-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.report-card {
+  background: #ffffff;
+  border: 1px solid #dde3f0;
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+/* ── ICON BOX ── */
+.report-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.report-icon.green  { background: rgba(16, 185, 129, 0.12);  color: #10b981; }
+.report-icon.blue   { background: rgba(26, 75, 204, 0.12);   color: #1a4bcc; }
+.report-icon.amber  { background: rgba(26, 75, 204, 0.12);   color: #1a4bcc; }
+.report-icon.purple { background: rgba(139, 92, 246, 0.12);  color: #8b5cf6; }
+.report-icon.orange { background: rgba(249, 115, 22, 0.12);  color: #f97316; }
+.report-icon.red    { background: rgba(239, 68, 68, 0.12);   color: #ef4444; }
+
+/* ── CARD BODY ── */
+.report-body { flex: 1; min-width: 0; }
+
+.report-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.375rem;
+}
+
+.report-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0d1b3e;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── BADGES ── */
+.report-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+}
+
+.report-badge.positive { background: rgba(16, 185, 129, 0.1);   color: #10b981; }
+.report-badge.negative { background: rgba(239, 68, 68, 0.1);    color: #dc2626; }
+.report-badge.neutral  { background: rgba(107, 114, 128, 0.1);  color: #6b7280; }
+.report-badge.warning  { background: rgba(26, 75, 204, 0.1);    color: #1a4bcc; }
+
+/* ── TABLE CARD ── */
+.table-card {
+  background: #ffffff;
+  border: 1px solid #dde3f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #dde3f0;
+}
+
+.table-card-header h3 {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0d1b3e;
+}
+
+.table-card-count {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  background: #f7f9ff;
+  padding: 0.25rem 0.625rem;
+  border-radius: 20px;
+  border: 1px solid #dde3f0;
+}
+
+/* ── DATA TABLE ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead tr {
+  background: #f7f9ff;
+}
+
+.data-table th {
+  padding: 0.875rem 1.25rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid #dde3f0;
+  white-space: nowrap;
+}
+
+.reservation-report-page .report-stat-value,
+.feedback-report-page .report-stat-value {
+  color: #0d1b3e;
+}
+
+.filter-field .staff-date-picker-trigger {
+  min-width: 175px;
+  background: #f7f9ff;
+}
+
+.data-table th.sortable-th {
+  cursor: pointer;
+  user-select: none;
+}
+
+.data-table th.sortable-th:hover {
+  color: #1a4bcc;
+}
+
+.sort-indicator {
+  margin-left: 0.35rem;
+  opacity: 0.35;
+  font-size: 0.68rem;
+}
+
+.sort-indicator.active {
+  opacity: 1;
+  color: #1a4bcc;
+}
+
+.data-table td {
+  padding: 0.9rem 1.25rem;
+  font-size: 0.875rem;
+  color: #4a5568;
+  border-bottom: 1px solid #eef0f7;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover td {
+  background: #f7f9ff;
+}
+
+.cell-bold {
+  font-weight: 600;
+  color: #0d1b3e;
+}
+
+.price-cell {
+  font-weight: 600;
+  color: #10b981;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: #dde3f0;
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 80px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1a4bcc, #1340b8);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.progress-label {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: #4a5568;
+  white-space: nowrap;
+  min-width: 36px;
+}
+
+/* ── STATUS BADGES ── */
+.rev-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+
+.rev-status-confirmed   { background: rgba(16, 185, 129, 0.1);  color: #065f46; }
+.rev-status-pending     { background: rgba(26, 75, 204, 0.1);   color: #1a4bcc; }
+.rev-status-cancelled   { background: rgba(239, 68, 68, 0.1);   color: #991b1b; }
+.rev-status-no_show     { background: #374151;                  color: #ffffff; }
+.rev-status-checked_in  { background: rgba(59, 130, 246, 0.12); color: #1e40af; }
+.rev-status-checked_out { background: rgba(107, 114, 128, 0.1); color: #6b7280; }
+.rev-status-default     { background: rgba(107, 114, 128, 0.1); color: #6b7280; }
+
+/* ── EXPORT BUTTON ── */
+.btn-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: #fff;
+  color: #0d1b3e;
+  border: 1px solid #dde3f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn-export:hover {
+  border-color: #1a4bcc;
+  color: #1a4bcc;
+  background: #f7f9ff;
+}
+
+/* ── TOOLBAR ── */
+.report-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.report-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #dde3f0;
+  background: #fff;
+  padding: 0 12px;
+  flex: 1;
+  min-width: 200px;
+  border-radius: 8px;
+}
+
+.report-search-box input {
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.88rem;
+  padding: 9px 0;
+  width: 100%;
+  background: transparent;
+  color: #0d1b3e;
+}
+
+.report-select {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.report-select select {
+  border: 1px solid #dde3f0;
+  padding: 9px 32px 9px 12px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  appearance: none;
+  background: #fff;
+  cursor: pointer;
+  color: #0d1b3e;
+  outline: none;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+.report-select select:focus {
+  border-color: #1a4bcc;
+}
+
+.report-select-icon {
+  position: absolute;
+  right: 10px;
+  color: #6b7280;
+  pointer-events: none;
+}
+
+/* ── ACTION BUTTON ── */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1a4bcc;
+  color: #fff;
+  border: none;
+  padding: 9px 16px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.btn-action:hover {
+  background: #1340b8;
+}
+
+.btn-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f7f9ff;
+  color: #1a4bcc;
+  border: 1px solid #dde3f0;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.btn-view:hover {
+  background: #1a4bcc;
+  color: #fff;
+  border-color: #1a4bcc;
+}
+
+/* ── LOADING STATE ── */
+.report-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: #6b7280;
+  gap: 1rem;
+}
+
+.report-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #dde3f0;
+  border-top-color: #1a4bcc;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .report-grid   { grid-template-columns: repeat(2, 1fr); }
+  .report-grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .report-grid,
+  .report-grid-4      { grid-template-columns: 1fr; }
+  .report-filter-bar  { flex-direction: column; align-items: stretch; }
+  .report-page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  .data-table th,
+  .data-table td      { padding: 0.75rem 1rem; }
+  .report-stats-grid  { grid-template-columns: repeat(2, 1fr); }
+}

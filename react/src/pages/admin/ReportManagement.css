@@ -1,0 +1,232 @@
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-header h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.025em;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.report-overview-page {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── HEADER ── */
+.overview-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.overview-header-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(26, 75, 204, 0.12);
+  color: #1A4BCC;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.overview-header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.overview-subtitle {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9375rem;
+}
+
+/* ── QUICK STATS STRIP ── */
+.overview-strip {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 1.25rem 2rem;
+  margin-bottom: 2rem;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.strip-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 120px;
+  padding: 0 1.5rem;
+}
+
+.strip-item:first-child { padding-left: 0; }
+.strip-item:last-child  { padding-right: 0; }
+
+.strip-divider {
+  width: 1px;
+  height: 40px;
+  background: #e5e7eb;
+  flex-shrink: 0;
+}
+
+.strip-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.strip-value {
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.strip-value.green  { color: #10b981; }
+.strip-value.blue   { color: #3b82f6; }
+.strip-value.purple { color: #8b5cf6; }
+.strip-value.amber  { color: #f59e0b; }
+
+/* ── REPORT CARDS ── */
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.overview-card {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 1.75rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.overview-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Colour accent on hover per type */
+.overview-card.card-revenue:hover   { border-color: #10b981; }
+.overview-card.card-occupancy:hover { border-color: #3b82f6; }
+.overview-card.card-reservation:hover { border-color: #8b5cf6; }
+.overview-card.card-modified:hover { border-color: #f97316; }
+
+/* Top row: icon + stat */
+.overview-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.overview-card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-revenue   .overview-card-icon { background: rgba(16,185,129,0.12); color: #10b981; }
+.card-occupancy .overview-card-icon { background: rgba(59,130,246,0.12);  color: #3b82f6; }
+.card-reservation .overview-card-icon { background: rgba(139,92,246,0.12); color: #8b5cf6; }
+.card-modified .overview-card-icon { background: rgba(249,115,22,0.12); color: #f97316; }
+
+.overview-card-stat {
+  text-align: right;
+}
+
+.card-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.card-stat-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* Body text */
+.overview-card-body h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.overview-card-body p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* Footer CTA */
+.overview-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #9ca3af;
+  transition: color 0.2s;
+}
+
+.card-revenue:hover   .overview-card-footer { color: #10b981; }
+.card-occupancy:hover .overview-card-footer { color: #3b82f6; }
+.card-reservation:hover .overview-card-footer { color: #8b5cf6; }
+.card-modified:hover .overview-card-footer { color: #f97316; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .overview-cards { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  .overview-cards { grid-template-columns: 1fr; }
+  .overview-strip { flex-direction: column; gap: 1rem; align-items: flex-start; }
+  .strip-divider  { width: 100%; height: 1px; }
+  .strip-item     { padding: 0 !important; }
+}

@@ -1,0 +1,73 @@
+.staff-shell {
+  --background: #eef0f7;
+  --foreground: #0d1b3e;
+  --card: #ffffff;
+  --card-foreground: #0d1b3e;
+  --popover: #ffffff;
+  --popover-foreground: #0d1b3e;
+  --primary: #1a4bcc;
+  --primary-foreground: #ffffff;
+  --secondary: #1340b8;
+  --secondary-foreground: #ffffff;
+  --muted: #f3f5fb;
+  --muted-foreground: #64748b;
+  --accent: rgba(26, 75, 204, 0.08);
+  --accent-foreground: #1a4bcc;
+  --destructive: #d32f2f;
+  --border: rgba(26, 75, 204, 0.15);
+  --input: rgba(26, 75, 204, 0.15);
+  --ring: #1a4bcc;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0d1b3e;
+  --sidebar-primary: #1a4bcc;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(26, 75, 204, 0.08);
+  --sidebar-accent-foreground: #1a4bcc;
+  --sidebar-border: rgba(26, 75, 204, 0.15);
+  --sidebar-ring: #1a4bcc;
+  min-height: 100vh;
+  background: #eef0f7;
+  color: #0d1b3e;
+  font-family: Inter, sans-serif;
+}
+
+.staff-main {
+  min-width: 0;
+  min-height: 100vh;
+  background: #eef0f7;
+}
+
+.staff-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.staff-sidebar-trigger {
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(26, 75, 204, 0.14);
+  border-radius: 9px;
+  background: #f7f8fc;
+  color: #0d1b3e;
+}
+
+.staff-sidebar-trigger:hover {
+  background: rgba(26, 75, 204, 0.09);
+  color: #1a4bcc;
+}
+
+@media (max-width: 1024px) {
+  .staff-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .staff-content {
+    padding: 1rem;
+  }
+}

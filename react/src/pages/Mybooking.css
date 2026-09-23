@@ -1,0 +1,240 @@
+/* My Booking Page */
+.my-booking-page {
+  min-height: 100vh;
+  background: var(--color-background);
+  font-family: var(--font-body);
+  padding-top: 90px;
+}
+
+/* Header Section */
+.my-booking-header {
+  background: #fff;
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.my-booking-header .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: #0d1b3e;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+
+}
+
+/* Main Content */
+.my-booking-content {
+  padding: 4rem 0;
+}
+
+.my-booking-content .container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Booking Card */
+.booking-card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  box-shadow: var(--shadow-md);
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: -0.3px;
+}
+
+/* Booking Form */
+.booking-form {
+  margin-bottom: 2rem;
+}
+
+.booking-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.booking-form .form-label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.booking-form .form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background: #fff;
+  color: var(--color-text-primary);
+}
+
+.booking-form .form-input::placeholder {
+  color: #999;
+}
+
+.booking-form .form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(26, 75, 204, 0.12);
+}
+
+.booking-form button {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Help Section */
+.help-section {
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.help-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.help-text {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .my-booking-page {
+    padding-top: 70px;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .my-booking-header {
+    padding: 2rem 0;
+  }
+
+  .my-booking-content {
+    padding: 2rem 0;
+  }
+
+  .booking-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .my-booking-content .container {
+    padding: 0 1rem;
+  }
+
+  .booking-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+  }
+}
+/* ============================================================
+   MY BOOKING — EXTRA MOBILE PATCH
+   ============================================================ */
+@media (max-width: 480px) {
+  .my-booking-page {
+    padding-top: 60px;
+  }
+
+  .my-booking-header {
+    padding: 1.5rem 0;
+  }
+
+  .my-booking-header .container {
+    padding: 0 0.85rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .my-booking-content {
+    padding: 1.5rem 0;
+  }
+
+  .my-booking-content .container {
+    padding: 0 0.85rem;
+  }
+
+  .booking-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .booking-form .form-label {
+    font-size: 0.82rem;
+  }
+
+  /* Prevent iOS zoom (font-size >= 16px on inputs) */
+  .booking-form .form-input {
+    font-size: 16px;
+    padding: 0.75rem 0.875rem;
+  }
+
+  .booking-form button {
+    width: 100%;
+    margin-top: 0.75rem;
+  }
+
+  .help-text {
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .page-title {
+    font-size: 1.35rem;
+  }
+
+  .booking-card {
+    padding: 1rem 0.875rem;
+  }
+}

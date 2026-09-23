@@ -1,0 +1,83 @@
+/* Shared: Cancellation & Rebooking */
+
+.can-note {
+  margin-top: 1.25rem;
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+  padding: 0.875rem 1rem;
+}
+
+.can-note-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  margin-bottom: 0.375rem;
+}
+
+.can-note p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Rebooking Compare */
+.rebook-compare {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  padding: 1.25rem;
+  margin-top: 0;
+}
+
+.rebook-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rebook-side-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+
+.rebook-side.original .rebook-side-label { color: #c62828; }
+.rebook-side.updated  .rebook-side-label { color: #2e7d32; }
+
+.rebook-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.modal-wide {
+  max-width: 640px !important;
+}
+
+.date-cell {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .rebook-compare {
+    grid-template-columns: 1fr;
+  }
+  .rebook-arrow {
+    transform: rotate(90deg);
+  }
+}

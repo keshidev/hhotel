@@ -1,0 +1,501 @@
+/* ================================================================
+   CheckOut.css  –  matches Comfy Homfy receptionist layout palette
+   ================================================================ */
+
+.checkout-page {
+  width: 100%;
+  padding: 0 0 3rem;
+  font-family: var(--font-body);
+}
+
+/* ── Back button ─────────────────────────────────────────────── */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+
+.back-btn:hover { color: var(--color-primary); }
+
+/* ── Guest Header ─────────────────────────────────────────────── */
+.checkout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.5rem 1.6rem;
+  border-bottom: 1px solid var(--color-border-light);
+  flex-wrap: wrap;
+}
+
+.checkout-guest-info {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.checkout-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(26, 75, 204, 0.1);
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.checkout-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.departure-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.checkout-title {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 0.3rem;
+}
+
+.checkout-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.87rem;
+  color: var(--color-text-secondary);
+}
+
+.guest-full-name { font-weight: 600; color: var(--color-text-primary); }
+.meta-sep { color: var(--color-text-muted); }
+
+.stay-period { text-align: right; }
+
+.stay-period-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.stay-period-dates {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ── Charges Section ─────────────────────────────────────────── */
+/* KEY FIX: Remove overflow:hidden which was creating the ghost height.
+   The section should hug its content tightly — table + totals only. */
+.charges-section {
+  border-top: 1px solid var(--color-border-light);
+  margin-bottom: 0;
+}
+
+.charges-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.6rem;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.charges-section-title h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.add-adj-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--color-primary);
+  background: rgba(26, 75, 204, 0.08);
+  border: 1px solid rgba(26, 75, 204, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-adj-btn:hover { background: rgba(26, 75, 204, 0.15); }
+
+/* Adj form */
+.adj-form {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.6rem;
+  background: rgba(26, 75, 204, 0.04);
+  border-bottom: 1px solid var(--color-border-light);
+  flex-wrap: wrap;
+}
+
+.adj-input {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  outline: none;
+  flex: 1;
+  min-width: 140px;
+  transition: border-color 0.2s;
+}
+
+.adj-input:focus { border-color: var(--color-primary); }
+.adj-input-amount { max-width: 120px; flex: none; }
+
+/* ── Charges table ───────────────────────────────────────────── */
+.charges-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+  /* KEY FIX: table must not stretch beyond its rows.
+     table-layout fixed prevents phantom height expansion. */
+  table-layout: auto;
+}
+
+.charges-table thead tr {
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.charges-table th {
+  padding: 0.65rem 1.6rem;
+  text-align: left;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.charges-table td {
+  padding: 1rem 1.6rem;
+  border-bottom: 1px solid var(--color-border-light);
+  vertical-align: middle;
+}
+
+/* Last row: solid heavier border, visually closes the table */
+.charges-table tbody tr:last-child td {
+  border-bottom: 2px solid var(--color-border);
+}
+
+.charges-table tbody tr:hover {
+  background: rgba(26, 75, 204, 0.03);
+}
+
+.charge-label {
+  display: block;
+  font-weight: 500;
+  font-size: 0.93rem;
+  color: var(--color-text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.charge-sub {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.charge-date, .charge-qty {
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.amount-col, .charge-amount {
+  text-align: right;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ── Totals Block ────────────────────────────────────────────────
+   Sits immediately after the last table row (no gap).
+   Right-aligned rows match the AMOUNT column position.
+   ──────────────────────────────────────────────────────────────── */
+.checkout-page .totals-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+  /* Tight padding — no excess vertical space */
+  padding: 1rem 1.6rem 1.15rem;
+  background: var(--color-background);
+  width: 100%;
+}
+
+.checkout-page .total-row {
+  display: flex;
+  justify-content: space-between;
+  width: 340px;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.checkout-page .total-row span:last-child {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-align: right;
+  min-width: 90px;
+}
+
+.checkout-page .total-row--grand {
+  display: flex;
+  justify-content: space-between;
+  width: 340px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  border-top: 2px solid var(--color-border);
+  padding-top: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+.checkout-page .total-row--grand span:first-child {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.checkout-page .grand-total {
+  color: var(--color-primary) !important;
+  font-size: 1.15rem;
+  min-width: 90px;
+  text-align: right;
+}
+
+/* ── Bottom: payment + actions ───────────────────────────────────
+   Grid keeps payment left, actions right.
+   Actions column width (340px) matches totals width so the
+   Finalize button's right edge lines up with grand-total above.
+   ──────────────────────────────────────────────────────────────── */
+.checkout-bottom {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  align-items: start;
+  gap: 1.5rem;
+  padding: 1.4rem 1.6rem;
+  border-top: 1px solid var(--color-border-light);
+  background: var(--color-background);
+}
+
+/* Payment */
+.payment-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-bottom: 0.85rem;
+}
+
+.payment-card {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.card-icon { color: var(--color-primary); flex-shrink: 0; }
+
+.card-name {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.card-expiry {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.edit-card-btn {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.edit-card-btn:hover { opacity: 0.7; }
+
+.preauth-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: rgba(33, 150, 243, 0.07);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.8rem;
+  color: #1565c0;
+  line-height: 1.5;
+  max-width: 520px;
+}
+
+.preauth-info svg { flex-shrink: 0; margin-top: 2px; }
+
+/* ── Actions ─────────────────────────────────────────────────────
+   Width matches totals (340px) so button edges align vertically
+   with the grand-total amount above.
+   ──────────────────────────────────────────────────────────────── */
+.checkout-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%; /* fills the 340px grid column */
+}
+
+.btn-finalize {
+  white-space: nowrap;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+/* ── Shared Buttons ───────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 0.65rem 1.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  font-family: var(--font-body);
+}
+
+.btn-primary:hover {
+  background: var(--color-secondary);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+  width: 100%;
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-sm { padding: 0.4rem 0.85rem; font-size: 0.82rem; }
+
+.mt-btn { margin-top: 1rem; }
+
+/* ── Success Screen ──────────────────────────────────────────── */
+.checkout-success {
+  text-align: center;
+  padding: 5rem 1rem;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.checkout-success svg {
+  color: #4caf50;
+  margin-bottom: 1.25rem;
+}
+
+.checkout-success h2 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary);
+}
+
+.checkout-success p {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+}
+
+.success-total { font-size: 1rem; color: var(--color-text-primary) !important; }
+.success-total strong { color: var(--color-primary); }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .checkout-header { flex-direction: column; }
+  .stay-period { text-align: left; }
+
+  .checkout-bottom { grid-template-columns: 1fr; }
+
+  .checkout-actions {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .checkout-page .total-row,
+  .checkout-page .total-row--grand {
+    width: 100%;
+  }
+
+  .charges-table th:nth-child(2),
+  .charges-table td:nth-child(2),
+  .charges-table th:nth-child(3),
+  .charges-table td:nth-child(3) { display: none; }
+}

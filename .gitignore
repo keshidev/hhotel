@@ -1,0 +1,41 @@
+# Local configuration and credentials (keep sanitized templates)
+.env
+.env.*
+!.env.example
+!.env.*.example
+auth.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Installed dependencies and generated builds
+node_modules/
+vendor/
+/react/dist*/
+/thesis-react/public/build/
+/thesis-react/public/hot
+/thesis-react/public/storage
+
+# Local deployment records, packages, and assistant settings
+/deployments/
+/.claude/
+/.codex/
+/.agents/
+
+# Runtime data and database backups
+*.log
+*.sql
+*.sql.gz
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.bak
+/thesis-react/storage/**/*.key
+/thesis-react/public/uploads/
+
+# Editors and operating system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

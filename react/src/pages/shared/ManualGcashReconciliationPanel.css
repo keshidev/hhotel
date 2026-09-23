@@ -1,0 +1,86 @@
+.gcash-reconciliation { display: grid; gap: 1.25rem; }
+.gcash-reconciliation-queue-tabs { display: flex; align-items: center; gap: 1.15rem; border-bottom: 1px solid var(--color-border); }
+.gcash-reconciliation-queue-tabs button { min-height: 40px; padding: 0.5rem 0.2rem; display: inline-flex; align-items: center; gap: 0.4rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--color-text-secondary); font: inherit; font-size: 0.72rem; font-weight: 700; cursor: pointer; }
+.gcash-reconciliation-queue-tabs button.active { border-bottom-color: var(--color-primary); color: var(--color-primary); }
+.gcash-reconciliation-queue-tabs button.active.attention { border-bottom-color: #dc2626; color: #b91c1c; }
+.gcash-reconciliation-queue-tabs button span { min-width: 22px; padding: 0.15rem 0.38rem; border-radius: 999px; background: var(--color-background); font-size: 0.62rem; text-align: center; }
+.gcash-reconciliation-overdue { margin-top: -0.4rem; padding: 0.65rem 0.8rem; display: flex; align-items: center; gap: 0.5rem; border: 1px solid #fecaca; border-radius: var(--radius-md); background: #fff7f7; color: #991b1b; font-size: 0.68rem; }
+.gcash-reconciliation-cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.75rem; }
+.gcash-reconciliation-card { min-width: 0; padding: 0.9rem; display: flex; align-items: center; gap: 0.7rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); box-shadow: var(--shadow-sm); }
+.gcash-reconciliation-card > span { width: 34px; height: 34px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 9px; background: #eaf1ff; color: #1d4ed8; }
+.gcash-reconciliation-card.amber > span { background: #fff7df; color: #b45309; }
+.gcash-reconciliation-card.violet > span { background: #f1edff; color: #6d28d9; }
+.gcash-reconciliation-card.red > span { background: #fff0f0; color: #c62828; }
+.gcash-reconciliation-card.slate > span { background: #eef2f6; color: #475569; }
+.gcash-reconciliation-card div { min-width: 0; display: grid; gap: 0.08rem; }
+.gcash-reconciliation-card strong { color: var(--color-text-primary); font-size: 1.1rem; line-height: 1; }
+.gcash-reconciliation-card small { overflow: hidden; color: var(--color-text-secondary); font-size: 0.66rem; text-overflow: ellipsis; white-space: nowrap; }
+.gcash-reconciliation-card em { color: #b91c1c; font-size: 0.61rem; font-style: normal; font-weight: 700; }
+.gcash-reconciliation-toolbar { display: flex; align-items: center; gap: 0.75rem; }
+.gcash-reconciliation-search { min-height: 42px; flex: 1; padding: 0 0.85rem; display: flex; align-items: center; gap: 0.55rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.gcash-reconciliation-search svg { color: var(--color-text-secondary); }
+.gcash-reconciliation-search input, .gcash-reconciliation-toolbar select { width: 100%; border: 0; outline: 0; background: transparent; color: var(--color-text-primary); font: inherit; font-size: 0.82rem; }
+.gcash-reconciliation-toolbar select { width: 200px; min-height: 42px; padding: 0 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.gcash-reconciliation-toolbar > button, .gcash-reconciliation-open, .gcash-reconciliation-submit { min-height: 40px; padding: 0.55rem 0.85rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border: 0; border-radius: var(--radius-md); background: var(--color-primary); color: #fff; font: inherit; font-size: 0.74rem; font-weight: 700; cursor: pointer; }
+.gcash-reconciliation-table-card { overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: var(--shadow-sm); }
+.gcash-reconciliation-table-title { min-height: 52px; padding: 0.8rem 1.15rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--color-border); }
+.gcash-reconciliation-table-title div { display: flex; align-items: center; gap: 0.5rem; font-size: 0.84rem; }
+.gcash-reconciliation-table-title div > span { display: grid; gap: 0.12rem; }
+.gcash-reconciliation-table-title div > span small { color: var(--color-text-secondary); font-size: 0.65rem; font-weight: 500; }
+.gcash-reconciliation-table-title div svg { color: var(--color-primary); }
+.gcash-reconciliation-table-title > span { color: var(--color-text-secondary); font-size: 0.68rem; }
+.gcash-reconciliation-table-wrap { overflow-x: auto; }
+.gcash-reconciliation-table-wrap table { width: 100%; border-collapse: collapse; }
+.gcash-reconciliation-table-wrap th { padding: 0.72rem 0.9rem; border-bottom: 1px solid var(--color-border); background: var(--color-background); color: var(--color-text-secondary); font-size: 0.66rem; letter-spacing: 0.05em; text-align: left; text-transform: uppercase; white-space: nowrap; }
+.gcash-reconciliation-table-wrap td { padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--color-border); color: var(--color-text-primary); font-size: 0.76rem; white-space: nowrap; }
+.gcash-reconciliation-table-wrap tbody tr:last-child td { border-bottom: 0; }
+.gcash-reconciliation-table-wrap tbody tr.is-overdue td { background: #fffafa; }
+.gcash-reconciliation-code { font-family: 'SF Mono', 'Monaco', 'Roboto Mono', monospace; font-size: 0.7rem !important; }
+.gcash-reconciliation-amount { color: var(--color-primary) !important; font-weight: 700; }
+.gcash-reconciliation-status { padding: 0.22rem 0.5rem; display: inline-flex; border-radius: 6px; background: #fff7df; color: #92400e; font-size: 0.61rem; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; }
+.gcash-reconciliation-status.matched { background: #dcfce7; color: #166534; }
+.gcash-reconciliation-status.exception_open { background: #fee2e2; color: #991b1b; }
+.gcash-reconciliation-status.exception_resolved { background: #e8eef6; color: #334155; }
+.gcash-reconciliation-status-stack { display: grid; justify-items: start; gap: 0.3rem; }
+.gcash-reconciliation-timing { font-size: 0.61rem; font-weight: 700; }
+.gcash-reconciliation-timing.due_soon, .gcash-reconciliation-system-record dd.due_soon { color: #b45309; }
+.gcash-reconciliation-timing.overdue, .gcash-reconciliation-system-record dd.overdue { color: #b91c1c; }
+.gcash-reconciliation-open { min-height: 28px; padding: 0.35rem 0.6rem; background: rgba(26, 75, 204, 0.1); color: #1a4bcc; font-size: 0.66rem; }
+.gcash-reconciliation-empty { min-height: 220px; padding: 2.5rem; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; color: var(--color-text-secondary); text-align: center; }
+.gcash-reconciliation-empty strong { color: var(--color-text-primary); font-size: 0.82rem; }
+.gcash-reconciliation-empty small { font-size: 0.7rem; }
+.gcash-reconciliation-modal { position: fixed; inset: 0; z-index: 9999; padding: 1rem; display: flex; align-items: center; justify-content: center; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
+.gcash-reconciliation-dialog { width: min(100%, 900px); max-height: 92vh; overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: 0 24px 65px rgba(0,0,0,0.24); }
+.gcash-reconciliation-dialog-header { padding: 0.9rem 1.15rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--color-border); background: var(--color-background); }
+.gcash-reconciliation-dialog-header span { color: var(--color-primary); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.gcash-reconciliation-dialog-header h2 { margin: 0.15rem 0 0; font-size: 0.95rem; }
+.gcash-reconciliation-dialog-header button { width: 31px; height: 31px; display: grid; place-items: center; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text-secondary); cursor: pointer; }
+.gcash-reconciliation-dialog-body { max-height: calc(92vh - 64px); padding: 1.1rem; display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(340px, 1.15fr); gap: 1rem; overflow-y: auto; }
+.gcash-reconciliation-dialog-body > div { padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+.gcash-reconciliation-system-record h3 { margin: 0 0 0.7rem; font-size: 0.82rem; }
+.gcash-reconciliation-system-record dl { margin: 0; }
+.gcash-reconciliation-system-record dl div { padding: 0.6rem 0; display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--color-border); }
+.gcash-reconciliation-system-record dt { color: var(--color-text-secondary); font-size: 0.68rem; }
+.gcash-reconciliation-system-record dd { margin: 0; color: var(--color-text-primary); font-size: 0.7rem; font-weight: 700; text-align: right; overflow-wrap: anywhere; }
+.gcash-reconciliation-warning, .gcash-reconciliation-admin-only { margin-top: 0.9rem; padding: 0.8rem; display: flex; gap: 0.55rem; border: 1px solid #fecaca; border-radius: var(--radius-sm); background: #fff7f7; color: #991b1b; }
+.gcash-reconciliation-warning strong, .gcash-reconciliation-admin-only strong { font-size: 0.7rem; }
+.gcash-reconciliation-warning p, .gcash-reconciliation-admin-only p { margin: 0.15rem 0 0; font-size: 0.66rem; line-height: 1.45; }
+.gcash-reconciliation-action-tabs { margin-bottom: 0.85rem; padding: 0.22rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.25rem; border-radius: var(--radius-md); background: var(--color-background); }
+.gcash-reconciliation-action-tabs button { min-height: 35px; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--color-text-secondary); font: inherit; font-size: 0.69rem; font-weight: 700; cursor: pointer; }
+.gcash-reconciliation-action-tabs button.active { background: #eaf7ee; color: #166534; box-shadow: var(--shadow-sm); }
+.gcash-reconciliation-action-tabs button.active.danger { background: #fff0f0; color: #b91c1c; }
+.gcash-reconciliation-form { display: grid; gap: 0.7rem; }
+.gcash-reconciliation-form label { display: grid; gap: 0.3rem; }
+.gcash-reconciliation-form label > span { color: var(--color-text-primary); font-size: 0.66rem; font-weight: 700; }
+.gcash-reconciliation-form input, .gcash-reconciliation-form select, .gcash-reconciliation-form textarea { width: 100%; min-height: 39px; padding: 0.55rem 0.7rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); outline: 0; background: var(--color-surface); color: var(--color-text-primary); font: inherit; font-size: 0.73rem; }
+.gcash-reconciliation-form textarea { min-height: 82px; resize: vertical; }
+.gcash-reconciliation-form-row { display: grid; grid-template-columns: 0.75fr 1.25fr; gap: 0.6rem; }
+.gcash-reconciliation-check { padding: 0.65rem; display: flex !important; align-items: flex-start; gap: 0.5rem !important; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-background); }
+.gcash-reconciliation-check input { width: 15px; height: 15px; min-height: auto; flex: 0 0 auto; }
+.gcash-reconciliation-check span { color: var(--color-text-secondary) !important; font-weight: 500 !important; line-height: 1.4; }
+.gcash-reconciliation-submit { width: 100%; margin-top: 0.85rem; background: #166534; }
+.gcash-reconciliation-submit.danger { background: #b91c1c; }
+.gcash-reconciliation-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+@media (max-width: 1050px) { .gcash-reconciliation-cards { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 760px) { .gcash-reconciliation-cards { grid-template-columns: repeat(2, 1fr); } .gcash-reconciliation-queue-tabs { overflow-x: auto; } .gcash-reconciliation-queue-tabs button { flex: 0 0 auto; } .gcash-reconciliation-toolbar { align-items: stretch; flex-direction: column; } .gcash-reconciliation-toolbar select { width: 100%; } .gcash-reconciliation-dialog-body { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .gcash-reconciliation-cards { grid-template-columns: 1fr; } .gcash-reconciliation-modal { padding: 0; } .gcash-reconciliation-dialog { height: 100%; max-height: 100%; border-radius: 0; } .gcash-reconciliation-dialog-body { max-height: calc(100vh - 64px); } .gcash-reconciliation-form-row { grid-template-columns: 1fr; } }

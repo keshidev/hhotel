@@ -1,0 +1,202 @@
+.staff-date-picker-trigger {
+  width: 100%;
+  min-width: 170px;
+  height: 42px;
+  justify-content: flex-start;
+  gap: 0.65rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(26, 75, 204, 0.18);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0d1b3e;
+  box-shadow: 0 1px 2px rgba(13, 27, 62, 0.04);
+  font-family: Inter, sans-serif;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.staff-date-picker-trigger:hover,
+.staff-date-picker-trigger[aria-expanded='true'] {
+  border-color: rgba(26, 75, 204, 0.55);
+  background: #ffffff;
+  color: #1a4bcc;
+  box-shadow: 0 0 0 3px rgba(26, 75, 204, 0.08);
+}
+
+.staff-date-picker-trigger[data-invalid] {
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.08);
+}
+
+.staff-date-picker-trigger[data-empty='true'] {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.staff-date-picker-icon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  color: #1a4bcc;
+}
+
+.staff-date-picker-value {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.staff-date-picker-value small {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.staff-date-picker-chevron {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: #718096;
+}
+
+.staff-date-picker-popover {
+  --background: #ffffff;
+  --foreground: #0d1b3e;
+  --primary: #1a4bcc;
+  --primary-foreground: #ffffff;
+  --muted: #eef2ff;
+  --muted-foreground: #64748b;
+  --ring: #1a4bcc;
+  width: auto;
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(26, 75, 204, 0.14);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(13, 27, 62, 0.18);
+}
+
+.staff-date-picker-calendar {
+  min-width: 286px;
+  padding: 0.8rem;
+  background: #ffffff;
+}
+
+.staff-date-picker-calendar button[data-selected-single='true'] {
+  background: #1d4ed8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(26, 75, 204, 0.25);
+}
+
+.staff-date-picker-calendar button[data-selected-single='true']:hover,
+.staff-date-picker-calendar button[data-selected-single='true']:focus-visible {
+  background: #173fae !important;
+  color: #ffffff !important;
+}
+
+.staff-date-picker-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.6rem 0.8rem;
+  border-top: 1px solid rgba(26, 75, 204, 0.1);
+  background: #f8f9fd;
+}
+
+.staff-date-picker-actions button {
+  min-height: 32px;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid rgba(26, 75, 204, 0.2);
+  border-radius: 7px;
+  background: #ffffff;
+  color: #1a4bcc;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.staff-date-picker-actions button:hover {
+  border-color: #1a4bcc;
+  background: rgba(26, 75, 204, 0.06);
+}
+
+.staff-date-time-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0.85rem;
+  border-top: 1px solid rgba(26, 75, 204, 0.1);
+  background: #f8f9fd;
+}
+
+.staff-date-time-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #0d1b3e;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.staff-date-time-row label svg {
+  width: 15px;
+  height: 15px;
+  color: #1a4bcc;
+}
+
+.staff-date-time-row input {
+  width: 118px;
+  height: 34px;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(26, 75, 204, 0.2);
+  border-radius: 7px;
+  background: #ffffff;
+  color: #0d1b3e;
+  font: 600 0.78rem Inter, sans-serif;
+}
+
+.staff-date-time-row input:focus {
+  border-color: #1a4bcc;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(26, 75, 204, 0.09);
+}
+
+.staff-date-time-actions {
+  padding-top: 0;
+}
+
+.staff-date-time-actions button {
+  min-width: 72px;
+  border-color: #1a4bcc;
+  background: #1a4bcc;
+  color: #ffffff;
+}
+
+.staff-date-time-actions button:hover {
+  background: #1340b8;
+  color: #ffffff;
+}
+
+@media (max-width: 480px) {
+  .staff-date-picker-popover {
+    max-width: calc(100vw - 1.5rem);
+  }
+
+  .staff-date-picker-calendar {
+    min-width: 276px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .staff-date-picker-trigger {
+    transition: none;
+  }
+}

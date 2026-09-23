@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.receptionist-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 280px;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.receptionist-sidebar.collapsed {
+  width: 80px;
+}
+
+.receptionist-sidebar .sidebar-logo {
+  width: 140px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.receptionist-sidebar .sidebar-header {
+  padding: 1.5rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 80px;
+}
+
+.receptionist-sidebar .sidebar-brand h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+}
+
+.receptionist-sidebar .brand-subtitle {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: 'Inter', sans-serif;
+}
+
+.receptionist-sidebar .sidebar-toggle {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  transition: all 0.3s;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.receptionist-sidebar .sidebar-toggle:hover {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.receptionist-sidebar .sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.receptionist-sidebar .nav-list {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+  flex: 1;
+}
+
+.receptionist-sidebar .nav-list li {
+  margin: 0.25rem 0;
+}
+
+.receptionist-sidebar .navbar-link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  color: #4a5568;
+  text-decoration: none;
+  transition: all 0.3s;
+  border-left: 3px solid transparent;
+  white-space: nowrap;
+}
+
+.receptionist-sidebar .navbar-link:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #1a1a1a;
+}
+
+.receptionist-sidebar .navbar-link.active {
+  background: rgba(0, 0, 0, 0.06);
+  color: #1a1a1a;
+  border-left-color: #1a1a1a;
+  font-weight: 700;
+}
+
+.receptionist-sidebar .nav-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.receptionist-sidebar .nav-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Section divider */
+.receptionist-sidebar .nav-section-divider {
+  padding: 0.5rem 1.25rem 0.25rem;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted, #9e9e9e);
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.receptionist-sidebar.collapsed .nav-section-divider {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+}
+
+.receptionist-sidebar.collapsed .nav-label {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.receptionist-sidebar.collapsed .sidebar-brand {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.receptionist-sidebar.collapsed .navbar-link {
+  justify-content: center;
+  padding: 0.875rem;
+}
+
+.receptionist-sidebar .sidebar-footer {
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.receptionist-sidebar .logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  color: var(--color-error, #c62828);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: all 0.3s;
+  white-space: nowrap;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+.receptionist-sidebar .logout-btn:hover {
+  background: rgba(211, 47, 47, 0.08);
+  border-color: var(--color-error, #c62828);
+}
+
+.receptionist-sidebar.collapsed .logout-btn {
+  justify-content: center;
+  padding: 0.875rem;
+}
+
+.receptionist-sidebar.collapsed .logout-btn .nav-label {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+/* Scrollbar */
+.receptionist-sidebar .sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.receptionist-sidebar .sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.receptionist-sidebar .sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+}
+
+.receptionist-sidebar .sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.22);
+}
+
+@media (max-width: 1024px) {
+  .receptionist-sidebar {
+    transform: translateX(-100%);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+  .receptionist-sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+/* ── Force fix stat cards ── */
+.r-dashboard-page .stat-card {
+  background: #ffffff !important;
+}
+
+.r-dashboard-page .stat-value {
+  color: #0d1b3e !important;
+}
+
+.r-dashboard-page .stat-title {
+  color: #4a5568 !important;
+}
+
+/* ── Fix table row hover ── */
+.r-dashboard-page .data-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* ── Fix pending item hover ── */
+.r-dashboard-page .pending-item:hover {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* ── Fix pending amount color ── */
+.r-dashboard-page .pending-amount {
+  color: #0d1b3e !important;
+}
+
+/* ── Fix badge count ── */
+.r-dashboard-page .badge-count {
+  background: #1a4bcc !important;
+}
+
+/* ── Fix view all button ── */
+.r-dashboard-page .view-all-btn {
+  color: #1a4bcc !important;
+}
+
+.r-dashboard-page .view-all-btn:hover {
+  color: #1340b8 !important;
+}
+
+/* ── Fix status pending badge ── */
+.r-dashboard-page .status-pending {
+  background: rgba(26, 75, 204, 0.1) !important;
+  color: #1a4bcc !important;
+}

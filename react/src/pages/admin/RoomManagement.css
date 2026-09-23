@@ -1,0 +1,751 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import './AdminShared.css';
+
+.room-management-page {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* ============================================
+   TOOLBAR & FILTERS (Same as Reservation)
+   ============================================ */
+
+.page-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1rem;
+  flex: 1;
+  min-width: 240px;
+  transition: border-color 0.2s;
+}
+
+.search-wrap:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(26,75,204,0.1);
+}
+
+.search-wrap svg {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.search-wrap input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  width: 100%;
+}
+
+.search-wrap input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.filter-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.625rem 2rem 0.625rem 0.875rem;
+  min-width: 180px;
+  transition: border-color 0.2s;
+}
+
+.filter-wrap:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(26,75,204,0.1);
+}
+
+.filter-wrap svg:first-child {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.filter-wrap select {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  flex: 1;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select-chevron {
+  position: absolute;
+  right: 0.75rem;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+/* ============================================
+   TABLE STYLES (Same as Reservation)
+   ============================================ */
+
+.table-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.table-container { 
+  overflow-x: auto; 
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 0.875rem 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td { 
+  border-bottom: none; 
+}
+
+.data-table tbody tr:hover { 
+  background: rgba(26,75,204,0.04);
+}
+
+.empty-row {
+  text-align: center;
+  padding: 3rem !important;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* ============================================
+   TABLE CELL STYLES
+   ============================================ */
+
+.room-name-cell {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.type-badge {
+  display: inline-flex;
+  padding: 0.25rem 0.625rem;
+  background: var(--color-background);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.capacity-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--color-text-secondary);
+}
+
+.capacity-cell svg {
+  color: var(--color-text-muted);
+}
+
+.price-cell {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* ============================================
+   STATUS BADGES (With CLEANING color)
+   ============================================ */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+/* Room Status Colors */
+.status-available { 
+  background: rgba(46,125,50,0.1);  
+  color: #2e7d32; 
+}
+
+.status-occupied { 
+  background: rgba(198,40,40,0.1);  
+  color: #c62828; 
+}
+
+.status-maintenance { 
+  background: rgba(245,127,23,0.12); 
+  color: #e65100; 
+}
+
+.status-cleaning { 
+  background: rgba(33,150,243,0.12);  /* Light blue */
+  color: #1565c0;                      /* Blue text */
+}
+
+/* ============================================
+   ACTION BUTTONS (Same as Reservation)
+   ============================================ */
+
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.act-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.act-edit { 
+  background: rgba(26,75,204,0.12);
+  color: #1A4BCC;
+}
+
+.act-edit:hover { 
+  background: rgba(26,75,204,0.22);
+}
+
+.act-delete { 
+  background: rgba(198,40,40,0.1);  
+  color: #c62828; 
+}
+
+.act-delete:hover { 
+  background: rgba(198,40,40,0.22); 
+}
+
+
+/* ============================================
+   MODAL STYLES
+   ============================================ */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content.modal-large {
+  max-width: 800px;
+}
+
+.modal-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1f2937;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 1.35rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  color: #1f2937;
+}
+
+.modal-content form {
+  padding: 1.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #1A4BCC;
+  box-shadow: 0 0 0 3px rgba(26, 75, 204, 0.1);
+}
+
+.room-management-page .form-group textarea {
+  resize: none !important;
+  font-family: inherit;
+}
+
+.form-group .error {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: -0.25rem;
+}
+
+.form-group .field-help {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.modal-footer {
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+/* Rebooking modal visual token sync */
+.room-management-page .modal-content {
+  background: var(--color-surface);
+  font-family: 'Inter', sans-serif;
+  color: var(--color-text-primary);
+}
+
+.room-management-page .modal-header,
+.room-management-page .modal-footer {
+  background: var(--color-background);
+}
+
+.room-management-page .modal-header h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.room-management-page .form-group label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.room-management-page .modal-content .form-group input,
+.room-management-page .modal-content .form-group select,
+.room-management-page .modal-content .form-group textarea {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+}
+
+.room-management-page .modal-footer .btn-secondary {
+  padding: 0.625rem 1.25rem;
+  width: 108px;
+  justify-content: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.room-management-page .modal-footer .btn-secondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.room-management-page .modal-footer .btn-primary {
+  border: 1px solid #2e7d32;
+  background: #2e7d32;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.room-management-page .modal-footer .btn-primary:hover:not(:disabled) {
+  background: #276d2c;
+  border-color: #276d2c;
+  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.28);
+}
+
+/* Amenities Grid */
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.checkbox-label:hover {
+  background: #f3f4f6;
+}
+
+.checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .amenities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    max-width: 100%;
+    margin: 0;
+    border-radius: 0;
+    max-height: 100vh;
+  }
+
+  .page-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-wrap {
+    min-width: 100%;
+  }
+
+  .filter-wrap {
+    min-width: 100%;
+  }
+}
+/* ✅ ADD THIS TO YOUR EXISTING RoomManagement.css FILE */
+
+/* ===== SINGLE IMAGE UPLOAD - COMPACT ===== */
+
+/* Image preview - single image */
+.image-preview-single {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #e0e0e0;
+  background: #f5f5f5;
+}
+
+.image-preview-single img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-image-btn-small {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.95);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.remove-image-btn-small:hover {
+  background: #b91c1c;
+  transform: scale(1.1);
+}
+
+/* Compact upload wrapper */
+.upload-compact-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Compact upload button */
+.upload-btn-compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f5f5f5;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-btn-compact:hover {
+  background: #e8e8e8;
+  border-color: #1A4BCC;
+  color: #1A4BCC;
+}
+
+.upload-btn-compact svg {
+  flex-shrink: 0;
+}
+
+/* Small hint text */
+.upload-hint {
+  font-size: 0.8rem;
+  color: #999;
+  font-style: italic;
+}
+/* ═══════════════════════════════════════════════
+   Amenity Grid — add-amenity extensions
+   Append these rules to your RoomManagement.css
+   ═══════════════════════════════════════════════ */
+
+/* Each amenity checkbox row — allow the delete X to sit on the right */
+.amenity-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.amenity-checkbox-item .amenity-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Small ✕ that appears only on custom amenities */
+.amenity-delete-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1;
+}
+
+.amenity-delete-btn:hover:not(:disabled) {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.amenity-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Loading placeholder */
+.amenities-loading {
+  font-size: 13px;
+  color: #9ca3af;
+  padding: 8px 0;
+}
+
+/* ── Add Amenity row ── */
+.add-amenity-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.add-amenity-input {
+  flex: 1;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #374151;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.add-amenity-input:focus {
+  border-color: #1A4BCC;
+  box-shadow: 0 0 0 3px rgba(26, 75, 204, 0.15);
+}
+
+.add-amenity-input::placeholder {
+  color: #9ca3af;
+}
+
+.add-amenity-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid #1A4BCC;
+  border-radius: 6px;
+  background: transparent;
+  color: #1A4BCC;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.add-amenity-btn:hover:not(:disabled) {
+  background: #1A4BCC;
+  color: #fff;
+}
+
+.add-amenity-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Inline error below the add-amenity row */
+.amenity-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #ef4444;
+}

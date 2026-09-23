@@ -1,0 +1,146 @@
+.auth-recovery-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6fb;
+  padding: 1.5rem;
+}
+
+.auth-recovery-card {
+  width: 100%;
+  max-width: 460px;
+  background: #fff;
+  border: 1px solid #dce3f0;
+  border-radius: 12px;
+  padding: 1.6rem;
+  box-shadow: 0 14px 38px rgba(0, 26, 102, 0.08);
+}
+
+.auth-recovery-card h1 {
+  margin: 0 0 0.4rem;
+  color: #0d1b3e;
+  font-size: 1.4rem;
+}
+
+.auth-recovery-eyebrow {
+  margin-bottom: 0.55rem;
+  color: #1a4bcc;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.auth-recovery-sub {
+  margin: 0 0 1.1rem;
+  color: #516184;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.auth-recovery-field {
+  margin-bottom: 0.9rem;
+}
+
+.auth-recovery-field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #22315a;
+  margin-bottom: 0.35rem;
+}
+
+.auth-recovery-input {
+  width: 100%;
+  border: 1px solid #cfd9ec;
+  border-radius: 8px;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.93rem;
+  font-family: inherit;
+}
+
+.auth-recovery-input:focus {
+  outline: none;
+  border-color: #1a4bcc;
+  box-shadow: 0 0 0 3px rgba(26, 75, 204, 0.1);
+}
+
+.auth-recovery-input:disabled {
+  background: #f1f4f9;
+  color: #7a849b;
+}
+
+.auth-recovery-account {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #d7e0f1;
+  border-radius: 8px;
+  background: #f7f9fd;
+  color: #516184;
+  font-size: 0.78rem;
+}
+
+.auth-recovery-account strong {
+  color: #0d1b3e;
+  font-size: 0.9rem;
+}
+
+.auth-recovery-requirements {
+  margin: -0.1rem 0 1rem 1.1rem;
+  color: #64708c;
+  font-size: 0.76rem;
+  line-height: 1.65;
+}
+
+.auth-recovery-btn {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  background: #1a4bcc;
+  color: #fff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  font-family: inherit;
+  padding: 0.72rem 0.9rem;
+  cursor: pointer;
+}
+
+.auth-recovery-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-recovery-message {
+  border-radius: 8px;
+  padding: 0.62rem 0.72rem;
+  font-size: 0.84rem;
+  margin-bottom: 0.8rem;
+}
+
+.auth-recovery-message.success {
+  background: #e8f8f1;
+  color: #0b7e54;
+  border: 1px solid #b4ead4;
+}
+
+.auth-recovery-message.error {
+  background: #fef0ef;
+  color: #b3261e;
+  border: 1px solid #f4c2bf;
+}
+
+.auth-recovery-footer {
+  margin-top: 0.9rem;
+  text-align: center;
+  font-size: 0.84rem;
+}
+
+.auth-recovery-footer a {
+  color: #1a4bcc;
+  text-decoration: none;
+  font-weight: 600;
+}

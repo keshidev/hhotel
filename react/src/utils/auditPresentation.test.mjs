@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {auditSummary,auditArea,detailRows,readableValue,imageUrl,reportActivity} from './auditPresentation.js';
+const cms={action_activity:'CMS Settings Updated',old_values:{about_image:'/images/old.jpg'},new_values:{about_image:'https://example.com/new.jpg',updated_keys:'["about_image"]',updated_by:'Admin'}};
+assert.equal(auditArea(cms),'About Us');
+assert.equal(auditSummary(cms),'Updated About Us photo');
+assert.equal(detailRows(cms).length,1);
+assert.equal(auditSummary({action_activity:cms.action_activity,new_value_summary:'about_image: https://example.com/new.jpg, updated_by: Admin'}),'Updated About Us photo');
+assert.equal(detailRows({old_values:{name:'A',removed:'B'},new_values:{name:'A'}})[0].key,'removed');
+assert.equal(readableValue(false),'No');
+assert.equal(readableValue(0),'0');
+assert.equal(readableValue('["pending_approval"]'),'pending_approval');
+assert.equal(readableValue('2026-09-07'),'September 7, 2026');
+assert.equal(imageUrl('javascript:alert(1)','about_image'),null);
+assert.equal(imageUrl('//example.com/x','about_image'),null);
+assert.equal(reportActivity({action_activity:'Modified Reservation Report Viewed'}),true);
+assert.equal(detailRows({action_activity:'Reservation Report Viewed',new_values:{total_reservations:9}})[0].after,9);
+console.log('Audit presentation checks passed.');

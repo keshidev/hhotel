@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+.receptionist-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.receptionist-main {
+  flex: 1;
+  margin-left: 280px;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.receptionist-main.sidebar-collapsed {
+  margin-left: 80px;
+}
+
+.receptionist-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .receptionist-main {
+    margin-left: 0;
+  }
+
+  .receptionist-main.sidebar-collapsed {
+    margin-left: 0;
+  }
+
+  .receptionist-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .receptionist-content {
+    padding: 1rem;
+  }
+}

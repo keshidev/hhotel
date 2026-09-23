@@ -1,0 +1,272 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Room;
+use Illuminate\Database\Seeder;
+
+class RoomSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $rooms = [
+
+            // ── Floor 1 — Superior Twin ───────────────────────────────────
+            [
+                'room_number'     => '101',
+                'room_type'       => 'superior_twin',
+                'capacity'        => 2,
+                'price_per_night' => 2200.00,
+                'price_day_tour'  => 1430.00,   // ~65% of overnight
+                'floor'           => 1,
+                'status'          => 'available',
+                'description'     => 'Superior Twin room with two single beds, modern furnishings, and city views.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'toiletries', 'coffee_maker']),
+                'images'          => json_encode(['rooms/superior-twin-101.jpg']),
+            ],
+            [
+                'room_number'     => '102',
+                'room_type'       => 'superior_twin',
+                'capacity'        => 2,
+                'price_per_night' => 2200.00,
+                'price_day_tour'  => 1430.00,
+                'floor'           => 1,
+                'status'          => 'occupied',
+                'description'     => 'Superior Twin room with two single beds, modern furnishings, and city views.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'toiletries', 'coffee_maker']),
+                'images'          => json_encode(['rooms/superior-twin-102.jpg']),
+            ],
+            [
+                'room_number'     => '103',
+                'room_type'       => 'superior_twin',
+                'capacity'        => 2,
+                'price_per_night' => 2200.00,
+                'price_day_tour'  => 1430.00,
+                'floor'           => 1,
+                'status'          => 'available',
+                'description'     => 'Superior Twin room with two single beds, modern furnishings, and city views.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'toiletries', 'coffee_maker']),
+                'images'          => json_encode(['rooms/superior-twin-103.jpg']),
+            ],
+
+            // ── Floor 1 — Superior Queen ──────────────────────────────────
+            [
+                'room_number'     => '104',
+                'room_type'       => 'superior_queen',
+                'capacity'        => 2,
+                'price_per_night' => 2200.00,
+                'price_day_tour'  => 1430.00,
+                'floor'           => 1,
+                'status'          => 'available',
+                'description'     => 'Superior Queen room with plush queen bed, refined interiors, and modern amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'toiletries', 'coffee_maker']),
+                'images'          => json_encode(['rooms/superior-queen-104.jpg']),
+            ],
+            [
+                'room_number'     => '105',
+                'room_type'       => 'superior_queen',
+                'capacity'        => 2,
+                'price_per_night' => 2200.00,
+                'price_day_tour'  => 1430.00,
+                'floor'           => 1,
+                'status'          => 'cleaning',
+                'description'     => 'Superior Queen room with plush queen bed, refined interiors, and modern amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'toiletries', 'coffee_maker']),
+                'images'          => json_encode(['rooms/superior-queen-105.jpg']),
+            ],
+            [
+                'room_number'     => '106',
+                'room_type'       => 'superior_queen',
+                'capacity'        => 2,
+                'price_per_night' => 2200.00,
+                'price_day_tour'  => 1430.00,
+                'floor'           => 1,
+                'status'          => 'available',
+                'description'     => 'Superior Queen room with plush queen bed, refined interiors, and modern amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'toiletries', 'coffee_maker']),
+                'images'          => json_encode(['rooms/superior-queen-106.jpg']),
+            ],
+
+            // ── Floor 2 — Deluxe ─────────────────────────────────────────
+            [
+                'room_number'     => '201',
+                'room_type'       => 'deluxe',
+                'capacity'        => 2,
+                'price_per_night' => 2500.00,
+                'price_day_tour'  => 1625.00,
+                'floor'           => 2,
+                'status'          => 'available',
+                'description'     => 'Spacious Deluxe room with king bed, sitting area, and premium amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'toiletries']),
+                'images'          => json_encode(['rooms/deluxe-201.jpg', 'rooms/deluxe-201-bath.jpg']),
+            ],
+            [
+                'room_number'     => '202',
+                'room_type'       => 'deluxe',
+                'capacity'        => 2,
+                'price_per_night' => 2500.00,
+                'price_day_tour'  => 1625.00,
+                'floor'           => 2,
+                'status'          => 'occupied',
+                'description'     => 'Spacious Deluxe room with king bed, sitting area, and premium amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'toiletries']),
+                'images'          => json_encode(['rooms/deluxe-202.jpg']),
+            ],
+            [
+                'room_number'     => '203',
+                'room_type'       => 'deluxe',
+                'capacity'        => 2,
+                'price_per_night' => 2500.00,
+                'price_day_tour'  => 1625.00,
+                'floor'           => 2,
+                'status'          => 'available',
+                'description'     => 'Spacious Deluxe room with king bed, sitting area, and premium amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'toiletries']),
+                'images'          => json_encode(['rooms/deluxe-203.jpg']),
+            ],
+            [
+                'room_number'     => '204',
+                'room_type'       => 'deluxe',
+                'capacity'        => 2,
+                'price_per_night' => 2500.00,
+                'price_day_tour'  => 1625.00,
+                'floor'           => 2,
+                'status'          => 'maintenance',
+                'description'     => 'Spacious Deluxe room with king bed, sitting area, and premium amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'toiletries']),
+                'images'          => json_encode(['rooms/deluxe-204.jpg']),
+            ],
+
+            // ── Floor 3 — Premier ─────────────────────────────────────────
+            [
+                'room_number'     => '301',
+                'room_type'       => 'premier',
+                'capacity'        => 2,
+                'price_per_night' => 3200.00,
+                'price_day_tour'  => 2080.00,
+                'floor'           => 3,
+                'status'          => 'available',
+                'description'     => 'Premier room with king bed, upscale furnishings, and enhanced privacy.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'toiletries', 'safe']),
+                'images'          => json_encode(['rooms/premier-301.jpg']),
+            ],
+            [
+                'room_number'     => '302',
+                'room_type'       => 'premier',
+                'capacity'        => 2,
+                'price_per_night' => 3200.00,
+                'price_day_tour'  => 2080.00,
+                'floor'           => 3,
+                'status'          => 'available',
+                'description'     => 'Premier room with king bed, upscale furnishings, and enhanced privacy.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'toiletries', 'safe']),
+                'images'          => json_encode(['rooms/premier-302.jpg']),
+            ],
+            [
+                'room_number'     => '303',
+                'room_type'       => 'premier',
+                'capacity'        => 2,
+                'price_per_night' => 3200.00,
+                'price_day_tour'  => 2080.00,
+                'floor'           => 3,
+                'status'          => 'occupied',
+                'description'     => 'Premier room with king bed, upscale furnishings, and enhanced privacy.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'toiletries', 'safe']),
+                'images'          => json_encode(['rooms/premier-303.jpg']),
+            ],
+
+            // ── Floor 4 — Family Room ─────────────────────────────────────
+            [
+                'room_number'     => '401',
+                'room_type'       => 'family',
+                'capacity'        => 5,
+                'price_per_night' => 3500.00,
+                'price_day_tour'  => 2275.00,
+                'floor'           => 4,
+                'status'          => 'available',
+                'description'     => 'Spacious Family Room with 2 queen beds, perfect for families with children.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'toiletries', 'microwave', 'refrigerator']),
+                'images'          => json_encode(['rooms/family-401.jpg']),
+            ],
+            [
+                'room_number'     => '402',
+                'room_type'       => 'family',
+                'capacity'        => 5,
+                'price_per_night' => 3500.00,
+                'price_day_tour'  => 2275.00,
+                'floor'           => 4,
+                'status'          => 'available',
+                'description'     => 'Spacious Family Room with 2 queen beds, perfect for families with children.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'toiletries', 'microwave', 'refrigerator']),
+                'images'          => json_encode(['rooms/family-402.jpg']),
+            ],
+            [
+                'room_number'     => '403',
+                'room_type'       => 'family',
+                'capacity'        => 5,
+                'price_per_night' => 3500.00,
+                'price_day_tour'  => 2275.00,
+                'floor'           => 4,
+                'status'          => 'occupied',
+                'description'     => 'Spacious Family Room with 2 queen beds, perfect for families with children.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'toiletries', 'microwave', 'refrigerator']),
+                'images'          => json_encode(['rooms/family-403.jpg']),
+            ],
+            [
+                'room_number'     => '404',
+                'room_type'       => 'family',
+                'capacity'        => 5,
+                'price_per_night' => 3500.00,
+                'price_day_tour'  => 2275.00,
+                'floor'           => 4,
+                'status'          => 'available',
+                'description'     => 'Extra spacious Family Room with 2 queen beds and 1 single bed.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'toiletries', 'microwave', 'refrigerator']),
+                'images'          => json_encode(['rooms/family-404.jpg']),
+            ],
+
+            // ── Floor 5 — Executive Suite ─────────────────────────────────
+            [
+                'room_number'     => '501',
+                'room_type'       => 'executive_suite',
+                'capacity'        => 3,
+                'price_per_night' => 5500.00,
+                'price_day_tour'  => 3575.00,
+                'floor'           => 5,
+                'status'          => 'available',
+                'description'     => 'Luxurious Executive Suite with separate living area, panoramic views, and VIP amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'jacuzzi', 'balcony', 'toiletries', 'safe']),
+                'images'          => json_encode(['rooms/executive-suite-501.jpg', 'rooms/executive-suite-501-living.jpg', 'rooms/executive-suite-501-bath.jpg']),
+            ],
+            [
+                'room_number'     => '502',
+                'room_type'       => 'executive_suite',
+                'capacity'        => 3,
+                'price_per_night' => 5500.00,
+                'price_day_tour'  => 3575.00,
+                'floor'           => 5,
+                'status'          => 'available',
+                'description'     => 'Luxurious Executive Suite with separate living area, panoramic views, and VIP amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'jacuzzi', 'balcony', 'toiletries', 'safe']),
+                'images'          => json_encode(['rooms/executive-suite-502.jpg']),
+            ],
+            [
+                'room_number'     => '503',
+                'room_type'       => 'executive_suite',
+                'capacity'        => 3,
+                'price_per_night' => 5500.00,
+                'price_day_tour'  => 3575.00,
+                'floor'           => 5,
+                'status'          => 'occupied',
+                'description'     => 'Luxurious Executive Suite with separate living area, panoramic views, and VIP amenities.',
+                'amenities'       => json_encode(['wifi', 'tv', 'ac', 'mini_bar', 'coffee_maker', 'bathtub', 'jacuzzi', 'balcony', 'toiletries', 'safe']),
+                'images'          => json_encode(['rooms/executive-suite-503.jpg']),
+            ],
+
+        ];
+
+        foreach ($rooms as $room) {
+            Room::create($room);
+        }
+    }
+}

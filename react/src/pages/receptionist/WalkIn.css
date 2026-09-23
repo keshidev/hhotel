@@ -1,0 +1,1383 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.walk-in-page {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   PAGE HEADER - FIXED
+   ============================================ */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.75rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-left {
+  flex: 1;
+}
+
+.page-header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.6rem;
+  color: var(--color-text-primary);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  font-family: 'Inter', sans-serif;
+}
+
+.page-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Step Indicator - FIXED UI */
+.walkStep-indicator {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 80px;
+}
+
+.step-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  color: #9ca3af;
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.step-item.active .step-badge {
+  background: #1a4bcc;
+  color: white;
+  border-color: #1a4bcc;
+  box-shadow: 0 4px 12px rgba(26, 75, 204, 0.3);
+}
+
+.step-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.step-item.active .step-label {
+  color: #1a4bcc;
+  font-weight: 600;
+}
+
+.walkStep-connector {
+  width: 60px;
+  height: 2px;
+  background: #e5e7eb;
+  margin: 0 -0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   FORM CARD
+   ============================================ */
+.walk-in-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.form-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+}
+
+.form-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.form-card-header svg {
+  color: #1a4bcc;
+}
+
+.form-card-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0d1b3e;
+}
+
+/* ============================================
+   FORM STYLES
+   ============================================ */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #0d1b3e;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.form-group input:disabled {
+  background: #f9fafb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #1a4bcc;
+  box-shadow: 0 0 0 3px rgba(26, 75, 204, 0.1);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon svg {
+  position: absolute;
+  left: 0.75rem;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.input-with-icon input,
+.input-with-icon select {
+  padding-left: 2.5rem;
+  width: 100%;
+}
+
+.error-input {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+}
+
+.error {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.info-text {
+  color: #6b7280;
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+/* Checkbox Label - Day Tour */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 1rem;
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.checkbox-label:hover {
+  border-color: #1a4bcc;
+  background: rgba(26, 75, 204, 0.05);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #1a4bcc;
+}
+
+.checkbox-label svg {
+  color: #1a4bcc;
+}
+
+.checkbox-label span {
+  font-weight: 500;
+  color: #0d1b3e;
+}
+
+.form-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background: #1a4bcc;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #1340b8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26, 75, 204, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #0d1b3e;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.btn-large {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   ROOM SELECTION
+   ============================================ */
+.room-selection-container {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 2rem;
+}
+
+.room-list-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: #0d1b3e;
+}
+
+.room-list-section h2 svg {
+  color: #1a4bcc;
+}
+
+.walkIns-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.walkIns-card {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.walkIns-card:hover {
+  border-color: #1a4bcc;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.walkIns-card.selected {
+  border-color: #1a4bcc;
+  background: rgba(26, 75, 204, 0.05);
+  box-shadow: 0 4px 12px rgba(26, 75, 204, 0.2);
+}
+
+.walkIns-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.walkIns-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+  color: #0d1b3e;
+}
+
+.room-type {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  background: #f3f4f6;
+  color: #6b7280;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.select-checkbox {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.select-checkbox.checked {
+  background: #1a4bcc;
+  border-color: #1a4bcc;
+  color: white;
+}
+
+.room-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.room-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.room-info svg {
+  color: #9ca3af;
+}
+
+.room-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0d1b3e;
+  margin-top: 0.5rem;
+}
+
+/* ============================================
+   BOOKING SUMMARY SIDEBAR
+   ============================================ */
+.booking-summary {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: fit-content;
+  position: sticky;
+  top: 2rem;
+}
+
+.booking-summary h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  color: #0d1b3e;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* Day Tour Badge */
+.day-tour-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, rgba(26, 75, 204, 0.1), rgba(26, 75, 204, 0.05));
+  border: 1px solid #1a4bcc;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  color: #1a4bcc;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.day-tour-badge svg {
+  flex-shrink: 0;
+}
+
+.summary-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.summary-section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.summary-section h4 {
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+  color: #0d1b3e;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.summary-item span {
+  color: #6b7280;
+}
+
+.summary-item strong {
+  color: #0d1b3e;
+  font-weight: 600;
+}
+
+.summary-item.total {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e5e7eb;
+  font-size: 1.125rem;
+}
+
+.summary-item.total strong {
+  color: #0d1b3e;
+  font-size: 1.5rem;
+}
+
+.selected-room-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.selected-room-item strong {
+  display: block;
+  color: #0d1b3e;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.wi-capacity-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1e3a8a;
+  font-size: 0.8rem;
+}
+
+.wi-capacity-summary--error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.wi-capacity-error {
+  margin: 0.45rem 0 0;
+  color: #b91c1c;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.room-type-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-transform: capitalize;
+}
+
+.room-price-sm {
+  font-weight: 600;
+  color: #0d1b3e;
+  font-size: 0.875rem;
+}
+
+.summary-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+  .room-selection-container {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-summary {
+    position: static;
+  }
+
+  .rooms-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .step-indicator {
+    width: 100%;
+  }
+
+  .step-item {
+    min-width: 60px;
+  }
+
+  .step-connector {
+    width: 30px;
+  }
+
+  .rooms-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .form-card {
+    padding: 1.5rem;
+  }
+}
+/* ============================================
+   ROOM IMAGE — append to WalkIn.css
+   ============================================ */
+
+/* Make the card a column flex so image sits on top of content */
+.walkIns-card {
+  padding: 0;               /* override original 1.5rem — body padding applied inside */
+  overflow: hidden;
+}
+
+.walkIns-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+/* Image container */
+.room-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  background: #f3f4f6;
+  border-radius: 10px 10px 0 0;   /* match card top corners */
+}
+
+.room-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+  display: block;
+}
+
+.walkIns-card:hover .room-image {
+  transform: scale(1.04);
+}
+
+/* Placeholder when no image / image fails */
+.room-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: #9ca3af;
+  background: #f9fafb;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Selection badge — top-right corner of image */
+.room-image-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.room-image-badge.checked {
+  background: #1a4bcc;
+  border-color: #1a4bcc;
+  color: white;
+}
+
+/* ── Server error banner ── */
+.server-error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  color: #991b1b;
+}
+ 
+.server-error-banner > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #ef4444;
+}
+ 
+.banner-body {
+  flex: 1;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+ 
+.banner-body strong {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+ 
+.server-error-list {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.8rem;
+  color: #b91c1c;
+}
+ 
+.server-error-list li {
+  margin-bottom: 0.2rem;
+}
+ 
+.error-field {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+ 
+.banner-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ef4444;
+  padding: 0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+ 
+.banner-close:hover {
+  color: #991b1b;
+}
+ 
+/* ── Room image ── */
+.walkIns-card {
+  padding: 0;
+  overflow: hidden;
+}
+ 
+.walkIns-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+ 
+.room-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  background: #f3f4f6;
+  border-radius: 10px 10px 0 0;
+}
+ 
+.room-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+  display: block;
+}
+ 
+.walkIns-card:hover .room-image {
+  transform: scale(1.04);
+}
+ 
+.room-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: #9ca3af;
+  background: #f9fafb;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+ 
+.room-image-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #d1d5db;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+ 
+.room-image-badge.checked {
+  background: #1a4bcc;
+  border-color: #1a4bcc;
+  color: white;
+}
+/* ============================================
+   PAGE HEADER — two-line style, no stepper
+   ============================================ */
+.wi-page-header {
+  margin-bottom: 1.75rem;
+}
+
+.wi-page-title {
+  margin: 0 0 0.3rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-primary, #0d1b3e);
+  letter-spacing: -0.02em;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.2;
+}
+
+.wi-page-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary, #6b7280);
+  font-weight: 400;
+}
+
+/* Hide old stepper if still referenced anywhere */
+.walkStep-indicator { display: none !important; }
+
+/* ============================================
+   ROOM LIST HEADER
+   ============================================ */
+.wi-room-header {
+  margin-bottom: 1rem;
+}
+
+.wi-room-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0d1b3e;
+}
+
+.wi-room-header h2 svg {
+  color: #1a4bcc;
+}
+
+/* ============================================
+   ROOM TYPE FILTER BAR
+   ============================================ */
+.wi-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.wi-filter-btn {
+  padding: 0.42rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid #e5e7eb;
+  background: white;
+  color: #6b7280;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.wi-filter-btn:hover {
+  border-color: #1a4bcc;
+  color: #1a4bcc;
+  background: rgba(26, 75, 204, 0.05);
+}
+
+.wi-filter-btn--active {
+  background: #1a4bcc;
+  border-color: #1a4bcc;
+  color: white;
+}
+
+.wi-filter-btn--active:hover {
+  background: #1340b8;
+  border-color: #1340b8;
+}
+
+/* ============================================
+   ROOM CARD — new layout
+   ============================================ */
+.walkIns-card {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  background: white;
+  cursor: default;
+  transition: all 0.2s;
+}
+
+.walkIns-card:hover {
+  border-color: #1a4bcc;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.walkIns-card.selected {
+  border-color: #1a4bcc;
+  background: rgba(26, 75, 204,0.03);
+  box-shadow: 0 4px 14px rgba(26, 75, 204,0.18);
+}
+
+/* Image */
+.room-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 175px;
+  overflow: hidden;
+  background: #f3f4f6;
+  border-radius: 10px 10px 0 0;
+  flex-shrink: 0;
+}
+
+.room-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+  display: block;
+}
+
+.walkIns-card:hover .room-image {
+  transform: scale(1.04);
+}
+
+.room-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: #9ca3af;
+  background: #f9fafb;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Capacity badge — top left */
+.room-capacity-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(26, 75, 204,0.3);
+  color: #1a4bcc;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Selected badge — top right */
+.room-selected-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1a4bcc;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(26, 75, 204,0.45);
+}
+
+/* Card body */
+.walkIns-body {
+  padding: 1rem 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  flex: 1;
+}
+
+/* Name + price row */
+.walkIns-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.walkIns-room-number {
+  margin: 0 0 0.15rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0d1b3e;
+  line-height: 1.3;
+}
+
+.walkIns-room-suffix {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.room-floor-tag {
+  font-size: 0.73rem;
+  color: #9ca3af;
+  display: block;
+}
+
+.walkIns-price-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.walkIns-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0d1b3e;
+  line-height: 1.2;
+}
+
+.walkIns-per {
+  font-size: 0.68rem;
+  color: #9ca3af;
+}
+
+/* Amenity pills */
+.walkIns-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.walkIns-amenity-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #f3f4f6;
+  color: #0d1b3e;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+}
+
+.walkIns-amenity-more {
+  background: #e5e7eb;
+  color: #6b7280;
+}
+
+/* Select / Selected button */
+.walkIns-select-btn {
+  width: 100%;
+  padding: 0.58rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid #1a4bcc;
+  background: white;
+  color: #1a4bcc;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+  margin-top: auto;
+}
+
+.walkIns-select-btn:hover {
+  background: rgba(26, 75, 204,0.08);
+}
+
+.walkIns-select-btn--selected {
+  background: #1a4bcc;
+  color: white;
+}
+
+.walkIns-select-btn--selected:hover {
+  background: #1340b8;
+}
+/* ── WalkIn promo code styles (add to WalkIn.css) ── */
+
+.wi-promo-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.wi-promo-input {
+  flex: 1;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-family: monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  outline: none;
+  transition: border-color 0.2s;
+  background: white;
+}
+
+.wi-promo-input:focus { border-color: #1a4bcc; box-shadow: 0 0 0 2px rgba(26, 75, 204,0.15); }
+
+.wi-promo-btn {
+  padding: 0.55rem 1rem;
+  background: #1a4bcc;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.wi-promo-btn:hover:not(:disabled) { background: #1340b8; }
+.wi-promo-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.wi-promo-error {
+  font-size: 0.73rem;
+  color: #ef4444;
+  margin: 0.3rem 0 0;
+}
+
+.wi-promo-applied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 7px;
+}
+
+.wi-promo-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #1d4ed8;
+  background: #eff6ff;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  font-family: monospace;
+  letter-spacing: 0.04em;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+
+.wi-promo-savings {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #16a34a;
+  display: block;
+}
+
+.wi-promo-remove {
+  font-size: 0.73rem;
+  color: #ef4444;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.2rem;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.wi-promo-remove:hover { opacity: 0.7; }
+
+/* Promo/discount badge in reservation table */
+.promo-code-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background: rgba(26, 75, 204,0.1);
+  color: #1a4bcc;
+  border-radius: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: monospace;
+  letter-spacing: 0.04em;
+  cursor: default;
+}
+
+.no-promo { color: #d1d5db; font-size: 0.85rem; }
+
+.promo-code-inline {
+  color: #1a4bcc !important;
+  font-family: monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.wi-payment-collection {
+  background: #fcfcfd;
+  border: 1px solid #eef0f5;
+  border-radius: 10px;
+  padding: 0.85rem;
+}
+
+.wi-payment-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.85rem;
+}
+
+.wi-payment-field:last-child {
+  margin-bottom: 0;
+}
+
+.wi-payment-field label {
+  font-size: 0.78rem;
+  color: #0d1b3e;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.wi-payment-field input,
+.wi-payment-field select {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.86rem;
+}
+
+.wi-payment-field input[readonly] {
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.wi-change-preview {
+  margin-bottom: 0.85rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.wi-change-positive {
+  color: #16a34a;
+}
+
+.wi-success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 12000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.wi-success-card {
+  width: min(520px, 96vw);
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24);
+  padding: 1.25rem;
+}
+
+.wi-success-title {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  color: #14532d;
+}
+
+.wi-success-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #eef2f7;
+  font-size: 0.92rem;
+}
+
+.wi-success-line:last-of-type {
+  border-bottom: 0;
+}
+
+.wi-change-due.has-change {
+  background: #eef2ff;
+  border: 1px solid #1a4bcc;
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.wi-change-due.has-change strong {
+  color: #1a4bcc;
+}
+
+.wi-success-meta {
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  color: #0d1b3e;
+}
+
+.wi-success-note {
+  margin-top: 0.9rem;
+  margin-bottom: 0.9rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  background: #eef2ff;
+  border: 1px solid #1a4bcc;
+  color: #0d1b3e;
+  font-weight: 600;
+}
+
+
+
+

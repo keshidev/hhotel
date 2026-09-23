@@ -1,0 +1,473 @@
+.confirmation-system-page {
+  min-height: 100vh;
+  background: #f3f4f6;
+  padding: 90px 0 44px;
+}
+
+.confirmation-system-page > .booking-progress {
+  margin-bottom: 28px;
+}
+
+.confirmation-paper {
+  width: calc(100% - 32px);
+  max-width: 1040px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #d9dee8;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  padding: 26px;
+}
+
+.confirmation-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.confirmation-error-actions button {
+  border: 1px solid #1d4ed8;
+  background: #1d4ed8;
+  color: #ffffff;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.confirmation-error-actions button.secondary {
+  background: #ffffff;
+  color: #1d4ed8;
+}
+
+.confirmation-error-actions button:hover {
+  filter: brightness(0.95);
+}
+
+.invoice-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+  border-bottom: 1px solid #dbe4f0;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+}
+
+.invoice-brand {
+  min-width: 0;
+}
+
+.invoice-logo {
+  width: auto;
+  max-width: 170px;
+  max-height: 58px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.invoice-brand-meta p {
+  margin: 0 0 4px;
+  color: #334155;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.invoice-meta {
+  text-align: right;
+  min-width: 290px;
+}
+
+.invoice-meta h1 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  letter-spacing: 0.04em;
+  font-size: 1.65rem;
+  font-weight: 800;
+}
+
+.invoice-meta-row {
+  display: grid;
+  grid-template-columns: 110px 190px;
+  justify-content: end;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 0.86rem;
+  color: #475569;
+}
+
+.invoice-meta-row span {
+  text-align: right;
+}
+
+.invoice-meta-row strong {
+  color: #0f172a;
+  text-align: right;
+}
+
+.invoice-block-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.invoice-block {
+  border: 1px solid #dbe4f0;
+}
+
+.invoice-block-head {
+  background: #0f172a;
+  color: #ffffff;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.invoice-block-body {
+  padding: 10px 12px;
+}
+
+.invoice-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid #edf2f8;
+  align-items: flex-start;
+}
+
+.invoice-line:last-child {
+  border-bottom: none;
+}
+
+.invoice-line span {
+  color: #475569;
+  font-size: 0.84rem;
+}
+
+.invoice-line strong {
+  color: #0f172a;
+  font-size: 0.86rem;
+  text-align: right;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.status-confirmed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-pending {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.status-failed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.invoice-table-section {
+  margin-bottom: 18px;
+}
+
+.invoice-table-wrap {
+  border: 1px solid #dbe4f0;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.invoice-table th {
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 0.74rem;
+  letter-spacing: 0.07em;
+  padding: 9px 8px;
+  border-right: 1px solid #1e293b;
+  text-align: left;
+}
+
+.invoice-table th:last-child {
+  border-right: none;
+}
+
+.invoice-table td {
+  border-top: 1px solid #edf2f8;
+  border-right: 1px solid #edf2f8;
+  padding: 9px 8px;
+  font-size: 0.84rem;
+  color: #1e293b;
+  vertical-align: top;
+}
+
+.invoice-table td:last-child {
+  border-right: none;
+}
+
+.invoice-table th:nth-child(1),
+.invoice-table td:nth-child(1) {
+  width: 10%;
+}
+
+.invoice-table th:nth-child(2),
+.invoice-table td:nth-child(2) {
+  width: 42%;
+}
+
+.invoice-table th:nth-child(3),
+.invoice-table td:nth-child(3) {
+  width: 10%;
+}
+
+.invoice-table th:nth-child(4),
+.invoice-table td:nth-child(4),
+.invoice-table th:nth-child(5),
+.invoice-table td:nth-child(5) {
+  width: 19%;
+}
+
+.invoice-table td:nth-child(3),
+.invoice-table td:nth-child(4),
+.invoice-table td:nth-child(5) {
+  text-align: right;
+}
+
+.filler-row td {
+  height: 28px;
+}
+
+.invoice-summary {
+  width: min(360px, 100%);
+  margin-left: auto;
+  margin-top: 12px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid #edf2f8;
+  color: #334155;
+  font-size: 0.84rem;
+}
+
+.summary-row strong {
+  color: #0f172a;
+}
+
+.summary-discount span,
+.summary-discount strong {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.summary-note {
+  margin: 6px 0 8px;
+  color: #64748b;
+  font-size: 0.74rem;
+  text-align: right;
+}
+
+.summary-total {
+  background: #e8eef7;
+  border: 1px solid #c9d6eb;
+  padding: 10px 10px;
+  margin-top: 6px;
+}
+
+.summary-total span,
+.summary-total strong {
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.summary-paid strong {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.summary-balance.is-open strong {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.summary-balance.is-settled strong {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.invoice-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.payment-panel {
+  border: 1px solid #dbe4f0;
+  background: #f8fafc;
+  padding: 14px 16px;
+}
+
+.payment-panel h3 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.payment-panel p {
+  margin: 0 0 5px;
+  color: #1e293b;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.payment-panel p span {
+  font-weight: 700;
+}
+
+.thank-you-panel {
+  border: 1px solid #dbe4f0;
+  background: #f8fafc;
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.thank-you-panel p {
+  margin: 0;
+  color: #a3a3a3;
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 0.92;
+  text-align: right;
+  letter-spacing: 0.01em;
+}
+
+.invoice-bottom {
+  border-top: 1px solid #dbe4f0;
+  padding-top: 12px;
+  text-align: center;
+}
+
+.invoice-bottom p {
+  margin: 0 0 6px;
+  color: #475569;
+  font-size: 0.83rem;
+}
+
+.invoice-thanks {
+  font-style: italic;
+  color: #0f172a;
+}
+
+.invoice-copy {
+  font-size: 0.74rem;
+  color: #94a3b8;
+}
+
+.invoice-title {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 1.55rem;
+}
+
+.invoice-muted {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .confirmation-system-page {
+    padding-top: 70px;
+  }
+
+  .confirmation-paper {
+    padding: 16px;
+  }
+
+  .invoice-top {
+    grid-template-columns: 1fr;
+  }
+
+  .invoice-meta {
+    text-align: left;
+    min-width: 0;
+  }
+
+  .invoice-meta-row {
+    grid-template-columns: 120px minmax(0, 1fr);
+    justify-content: flex-start;
+  }
+
+  .invoice-meta-row span,
+  .invoice-meta-row strong {
+    text-align: left;
+  }
+
+  .invoice-block-grid,
+  .invoice-footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .invoice-summary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .invoice-table th,
+  .invoice-table td {
+    font-size: 0.73rem;
+    padding: 7px 6px;
+  }
+
+  .invoice-line {
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .invoice-line strong {
+    text-align: left;
+  }
+
+  .thank-you-panel p {
+    font-size: 3.5rem;
+  }
+}
+
+@media print {
+  .confirmation-system-page > .booking-progress { display: none; }
+  .confirmation-system-page {
+    background: #ffffff;
+    padding: 0;
+  }
+
+  .confirmation-paper {
+    box-shadow: none;
+    border: 1px solid #dbe4f0;
+    max-width: 100%;
+    margin: 0;
+  }
+}
