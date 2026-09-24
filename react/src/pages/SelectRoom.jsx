@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ChevronLeft, ChevronRight, Users, Bed, X, AlertTriangle,
@@ -8,6 +8,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import Button from '../components/Button';
+import RoomDetailsModal from '../components/RoomDetailsModal';
 import BookingProgress from '../components/BookingProgress';
 import { calculateBookingEstimate } from '../utils/bookingPricing';
 import { formatCurrency } from '../utils/currency';
@@ -1415,39 +1416,14 @@ const SelectRoom = () => {
 
             {/* Room Details Modal */}
             {modalRoom && (
-              <div className="room-modal-overlay" onClick={() => setModalRoom(null)}>
-                <div className="room-modal" onClick={e => e.stopPropagation()}>
-                  {(() => {
-                    const modalCmsContent = getRoomContent(modalRoom.room_type);
-                    return (
-                      <>
-                  <button className="room-modal-close" onClick={() => setModalRoom(null)} aria-label="Close room details">&times;</button>
-                  <div className="room-modal-image">
-                    <img src={modalCmsContent.image || (modalRoom.image_urls?.length>0 ? modalRoom.image_urls[0] : 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=600&fit=crop')} alt={modalRoom.room_type}/>
-                  </div>
-                  <div className="room-modal-body">
-                    <h2 className="room-modal-title">{getRoomLabel(modalRoom.room_type)}</h2>
-                    <p className="room-modal-meta">
-                      {modalRoom.bed_type && <span>{modalRoom.bed_type}</span>}
-                      {modalRoom.bed_type && modalRoom.capacity && <span className="room-meta-dot">&middot;</span>}
-                      {modalRoom.capacity && <span>Sleeps {modalRoom.capacity}</span>}
-                      {modalRoom.size_sqm && <><span className="room-meta-dot">&middot;</span><span>{modalRoom.size_sqm} sq m</span></>}
-                    </p>
-                    <p className="room-modal-desc">{modalRoom.description||'Comfortable room with all essential amenities'}</p>
-                    <h4 className="room-modal-amenities-heading">Amenities</h4>
-                    <div className="room-modal-amenities">
-                      {modalRoom.amenities.map((a,i) => (
-                        <span key={i} className="amenity-tag">{getAmenityIcon(a)}{a}</span>
-                      ))}
-                    </div>
-                  </div>
-                      </>
-                    );
-                  })()}
-                </div>
-              </div>
+              <RoomDetailsModal
+                room={modalRoom}
+                label={getRoomLabel(modalRoom.room_type)}
+                image={getRoomContent(modalRoom.room_type).image || modalRoom.image_urls?.[0]}
+                getAmenityIcon={getAmenityIcon}
+                onClose={() => setModalRoom(null)}
+              />
             )}
-
             {/* Cart Sidebar */}
             <aside className="cart-sidebar">
               <div className="cart-card">
