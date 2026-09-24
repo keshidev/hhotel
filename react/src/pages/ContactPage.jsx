@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useCms } from '../context/CmsContext';
 import api from '../services/api';
+import { formatPhilippineMobile, isPhilippineMobileInput, normalizePhilippineMobileInput } from '../utils/philippineMobile';
 import './ContactPageContent.css';
 
 const emptyContactForm = {
@@ -72,6 +73,7 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [referenceNumber, setReferenceNumber] = useState('');
 
   const contactInfo = {
@@ -91,7 +93,8 @@ export default function ContactPage() {
   ];
 
   const updateForm = (field, value) => {
-    setForm((current) => ({ ...current, [field]: value }));
+    setForm((current) => ({ ...current, [field]: field === 'phone' ? normalizePhilippineMobileInput(value) : value }));
+    if (field === 'phone') setPhoneError('');
   };
 
   const resetForm = () => {
@@ -99,11 +102,25 @@ export default function ContactPage() {
     setReferenceNumber('');
     setSubmitError('');
     setForm(emptyContactForm);
+    setPhoneError('');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (submitting) return;
+
+    if (form.firstName.trim().length < 2 || form.lastName.trim().length < 2) {
+      setSubmitError('Enter at least 2 characters for your first and last names.');
+      return;
+    }
+    if (form.message.trim().length < 10) {
+      setSubmitError('Enter a message with at least 10 characters.');
+      return;
+    }
+    if (form.phone && !isPhilippineMobileInput(form.phone)) {
+      setPhoneError('Enter 10 digits starting with 9 after +63.');
+      return;
+    }
 
     setSubmitting(true);
     setSubmitError('');
@@ -114,7 +131,7 @@ export default function ContactPage() {
         first_name: form.firstName.trim(),
         last_name: form.lastName.trim(),
         email: form.email.trim(),
-        phone: form.phone.trim() || null,
+        phone: form.phone ? formatPhilippineMobile(form.phone) : null,
         booking_reference: form.bookingReference.trim() || null,
         subject: form.subject,
         message: form.message.trim(),
@@ -256,6 +273,7 @@ export default function ContactPage() {
                           value={form.firstName}
                           onChange={(event) => updateForm('firstName', event.target.value)}
                           maxLength={80}
+                          minLength={2}
                           required
                         />
                       </label>
@@ -269,6 +287,7 @@ export default function ContactPage() {
                           value={form.lastName}
                           onChange={(event) => updateForm('lastName', event.target.value)}
                           maxLength={80}
+                          minLength={2}
                           required
                         />
                       </label>
@@ -286,17 +305,29 @@ export default function ContactPage() {
                         />
                       </label>
 
-                      <label className="contact-field">
-                        <span>Phone number <em>Optional</em></span>
-                        <input
-                          type="tel"
-                          autoComplete="tel"
-                          placeholder="+63 917 809 9482"
-                          value={form.phone}
-                          onChange={(event) => updateForm('phone', event.target.value)}
-                          maxLength={30}
-                        />
-                      </label>
+                      <div className="contact-field">
+                        <label htmlFor="contact-phone">Philippine mobile number <em>Optional</em></label>
+                        <div className="contact-phone-input">
+                          <span className="contact-phone-prefix" aria-hidden="true">+63</span>
+                          <input
+                            id="contact-phone"
+                            type="tel"
+                            inputMode="numeric"
+                            autoComplete="tel-national"
+                            placeholder="9171234567"
+                            value={form.phone}
+                            onChange={(event) => updateForm('phone', event.target.value)}
+                            onBlur={() => setPhoneError(form.phone && !isPhilippineMobileInput(form.phone) ? 'Enter 10 digits starting with 9 after +63.' : '')}
+                            maxLength={24}
+                            pattern="9[0-9]{9}"
+                            aria-invalid={Boolean(phoneError)}
+                            aria-describedby="contact-phone-help"
+                          />
+                        </div>
+                        <small id="contact-phone-help" className={phoneError ? 'contact-field-error' : 'contact-field-help'}>
+                          {phoneError || 'Enter 10 digits starting with 9, or paste your 09 number.'}
+                        </small>
+                      </div>
 
                       <label className="contact-field contact-field-full">
                         <span>Booking reference <em>Optional</em></span>

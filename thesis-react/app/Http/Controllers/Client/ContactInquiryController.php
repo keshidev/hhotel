@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ContactInquiry;
 use App\Services\ContactInquiryNotificationService;
 use App\Services\PublicCaptchaService;
+use App\Support\PhilippineMobileNumber;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -20,11 +21,14 @@ class ContactInquiryController extends Controller
         PublicCaptchaService $captcha,
         ContactInquiryNotificationService $notifications
     ): JsonResponse {
+        if ($request->has('phone')) {
+            $request->merge(['phone' => PhilippineMobileNumber::normalize($request->input('phone'))]);
+        }
         $validated = $request->validate([
-            'first_name' => ['required', 'string', 'max:80'],
-            'last_name' => ['required', 'string', 'max:80'],
+            'first_name' => ['required', 'string', 'min:2', 'max:80'],
+            'last_name' => ['required', 'string', 'min:2', 'max:80'],
             'email' => ['required', 'email:rfc', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:30', 'regex:/^[0-9+()\-\s.]*$/'],
+            'phone' => ['nullable', 'string', 'regex:/^\+639[0-9]{9}$/D'],
             'booking_reference' => ['nullable', 'string', 'max:40'],
             'subject' => ['required', Rule::in(['general', 'reservation', 'billing', 'feedback'])],
             'message' => ['required', 'string', 'min:10', 'max:3000'],
@@ -32,7 +36,7 @@ class ContactInquiryController extends Controller
             'captcha_token' => ['nullable', 'string', 'max:4096'],
         ], [
             'website.max' => 'The inquiry could not be submitted.',
-            'phone.regex' => 'Enter a valid phone number.',
+            'phone.regex' => 'Enter a Philippine mobile number: +63 followed by 10 digits starting with 9.',
         ]);
 
         $captcha->verify($validated['captcha_token'] ?? null, $request->ip());

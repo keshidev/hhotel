@@ -44,6 +44,7 @@ class ContactInquiryTest extends TestCase
         $inquiry = ContactInquiry::firstOrFail();
         $this->assertStringStartsWith('INQ', $inquiry->reference_number);
         $this->assertSame('guest@example.com', $inquiry->email);
+        $this->assertSame('+639123456789', $inquiry->phone);
         $this->assertNotSame('127.0.0.1', $inquiry->source_ip_hash);
 
         Queue::assertPushed(SendContactInquiryNotifications::class, function ($job) use ($inquiry) {
@@ -51,6 +52,48 @@ class ContactInquiryTest extends TestCase
         });
     }
 
+    public function test_contact_phone_is_optional_and_supported_local_format_is_normalized(): void
+    {
+        Queue::fake();
+
+        $this->postJson('/api/client/contact-inquiries', $this->validPayload([
+            'phone' => '09171234567',
+        ]))->assertCreated();
+
+        $this->assertSame('+639171234567', ContactInquiry::firstOrFail()->phone);
+    }
+
+    public function test_invalid_contact_phones_are_rejected_without_creating_an_inquiry(): void
+    {
+        Queue::fake();
+
+        foreach (['123456', '91234567890', '+6391234567890', '+638123456789', '+447700900123', '++639123456789', '9abc123456', 9123456789] as $phone) {
+            $this->postJson('/api/client/contact-inquiries', $this->validPayload([
+                'phone' => $phone,
+            ]))->assertUnprocessable()->assertJsonValidationErrors('phone');
+        }
+
+        $this->assertDatabaseCount('contact_inquiries', 0);
+        Queue::assertNothingPushed();
+    }
+
+    public function test_short_names_and_messages_are_rejected(): void
+    {
+        Queue::fake();
+
+        foreach ([
+            ['first_name' => 'A'],
+            ['last_name' => 'B'],
+            ['message' => 'Too short'],
+        ] as $override) {
+            $this->postJson('/api/client/contact-inquiries', $this->validPayload($override))
+                ->assertUnprocessable()
+                ->assertJsonValidationErrors(array_key_first($override));
+        }
+
+        $this->assertDatabaseCount('contact_inquiries', 0);
+        Queue::assertNothingPushed();
+    }
     public function test_duplicate_inquiry_returns_existing_reference_without_creating_another_record(): void
     {
         Queue::fake();

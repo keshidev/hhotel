@@ -282,6 +282,7 @@ a.contact-info-item:hover strong {
 }
 
 .contact-field > span,
+.contact-field > label,
 .contact-field legend {
   color: #0d1b3e;
   font-size: 0.72rem;
@@ -323,6 +324,38 @@ a.contact-info-item:hover strong {
   line-height: 1.65;
 }
 
+.contact-phone-input {
+  display: flex;
+  min-width: 0;
+}
+
+.contact-phone-prefix {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 0.85rem;
+  border: 1px solid #ced8e8;
+  border-right: 0;
+  background: #eef3ff;
+  color: #0d1b3e;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.contact-phone-input input {
+  flex: 1;
+  min-width: 0;
+  width: 0;
+}
+
+.contact-field-help,
+.contact-field-error {
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.contact-field-help { color: #65728a; }
+.contact-field-error { color: #a51d1d; }
 .contact-field input::placeholder,
 .contact-field textarea::placeholder {
   color: #a4afc0;
