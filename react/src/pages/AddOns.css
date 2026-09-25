@@ -602,8 +602,7 @@
     box-shadow: 0 3px 12px rgba(13, 27, 62, 0.06);
   }
 
-  .addon-image,
-  .addon-policies {
+  .addon-image {
     display: none;
   }
 

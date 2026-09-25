@@ -9,7 +9,8 @@ import { persistBookingCart, restoreBookingCartToSession } from '../utils/bookin
 import { useCms } from '../context/CmsContext';
 import './AddOns.css';
 
-const ADDON_POLICY = 'You may cancel before 3PM local time within 24 hours or 1 day prior to arrival date to avoid 100% add-on penalty. Credit Card is required to guarantee the Add-Ons. This will be charged anytime between your check-in and check-out dates.';
+const DEFAULT_DOWNPAYMENT_POLICY = 'Down payment is required to confirm the reservation.';
+const DEFAULT_CANCELLATION_POLICY = 'If cancellation is requested within 24 hours of check-in time, it is non-refundable.';
 
 const ADDONS = [
   {
@@ -26,8 +27,6 @@ const ADDONS = [
     quantityLabel: 'Number of items',
     minQty: 1,
     maxQty: 2,
-    policy: ADDON_POLICY,
-    requiresCreditCard: true,
     active: true,
     image: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=560&h=360&fit=crop',
   },
@@ -45,8 +44,6 @@ const ADDONS = [
     quantityLabel: 'Number of items',
     minQty: 1,
     maxQty: 6,
-    policy: ADDON_POLICY,
-    requiresCreditCard: true,
     active: true,
     image: 'https://images.unsplash.com/photo-1616628182509-6f0a8a7f3f5a?w=560&h=360&fit=crop',
   },
@@ -64,8 +61,6 @@ const ADDONS = [
     quantityLabel: 'Number of guests',
     minQty: 1,
     maxQty: 12,
-    policy: ADDON_POLICY,
-    requiresCreditCard: true,
     active: true,
     image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=560&h=360&fit=crop',
   },
@@ -83,8 +78,6 @@ const ADDONS = [
     quantityLabel: 'Number of items',
     minQty: 1,
     maxQty: 1,
-    policy: ADDON_POLICY,
-    requiresCreditCard: true,
     active: true,
     image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=560&h=360&fit=crop',
   },
@@ -102,8 +95,6 @@ const ADDONS = [
     quantityLabel: 'Number of items',
     minQty: 1,
     maxQty: 1,
-    policy: ADDON_POLICY,
-    requiresCreditCard: true,
     active: true,
     image: 'https://images.unsplash.com/photo-1455587734955-081b22074882?w=560&h=360&fit=crop',
   },
@@ -121,8 +112,6 @@ const ADDONS = [
     quantityLabel: 'Number of items',
     minQty: 1,
     maxQty: 10,
-    policy: ADDON_POLICY,
-    requiresCreditCard: true,
     active: true,
     image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=560&h=360&fit=crop',
   },
@@ -140,8 +129,6 @@ const ADDONS = [
     quantityLabel: 'Number of items',
     minQty: 1,
     maxQty: 10,
-    policy: ADDON_POLICY,
-    requiresCreditCard: true,
     active: true,
     image: 'https://images.unsplash.com/photo-1626806787461-102c1a0f4f79?w=560&h=360&fit=crop',
   },
@@ -290,7 +277,7 @@ const QuantityModal = ({ addon, quantity, nights, onChangeQty, onCancel, onConfi
 
 const AddOns = () => {
   const navigate = useNavigate();
-  const { addonsItems, taxRate, downpaymentRate } = useCms();
+  const { addonsItems, taxRate, downpaymentRate, get } = useCms();
   const mounted = useRef(false);
   const successTimerRef = useRef(null);
 
@@ -358,6 +345,13 @@ const AddOns = () => {
 
   const nights = calculateNights(bookingData?.checkIn, bookingData?.checkOut);
 
+  const addonPolicy = [
+    'Selected add-ons are included in your booking total and follow the same payment and cancellation terms as your room reservation.',
+    get('policy_downpayment', DEFAULT_DOWNPAYMENT_POLICY),
+    'The required down payment is paid through GCash, and any remaining balance is due at check-in.',
+    get('policy_cancellation', DEFAULT_CANCELLATION_POLICY),
+  ].join(' ');
+
   const cmsAddonMap = useMemo(() => {
     const map = {};
     (addonsItems || []).forEach((item) => {
@@ -371,17 +365,15 @@ const AddOns = () => {
   const displayAddons = useMemo(() => (
     ADDONS.map((addon) => {
       const cmsItem = cmsAddonMap[addon.id];
-      if (!cmsItem) {
-        return addon;
-      }
 
       return {
         ...addon,
-        description: cmsItem.display_description || addon.description,
-        image: cmsItem.image || addon.image,
+        description: cmsItem?.display_description || addon.description,
+        image: cmsItem?.image || addon.image,
+        policy: addonPolicy,
       };
     })
-  ), [cmsAddonMap]);
+  ), [addonPolicy, cmsAddonMap]);
 
   const groupedAddons = useMemo(() => {
     const grouped = displayAddons.filter((addon) => addon.active).reduce((acc, addon) => {
@@ -447,7 +439,6 @@ const AddOns = () => {
       minQty: addon.minQty,
       maxQty: addon.maxQty,
       policy: addon.policy,
-      requiresCreditCard: addon.requiresCreditCard,
       active: addon.active,
       quantity,
       addon_id: addon.id,
