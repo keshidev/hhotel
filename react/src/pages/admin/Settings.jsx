@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Save, Globe, Bell, Lock, Mail, AlertTriangle, RefreshCw, Send, CheckCircle2, XCircle, QrCode, Upload, Trash2 } from 'lucide-react';
 import api from '../../services/adminApi';
 import { showToast } from '../../utils/showToast';
+import ConfirmDialog from '../../components/ConfirmDialog';
 import './Settings.css';
 
 const initialState = {
@@ -35,6 +36,24 @@ const Settings = () => {
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [confirmation, setConfirmation] = useState(null);
+  const confirmationActionRef = useRef(null);
+
+  const requestConfirmation = (dialog, action) => {
+    confirmationActionRef.current = action;
+    setConfirmation(dialog);
+  };
+
+  const closeConfirmation = () => {
+    confirmationActionRef.current = null;
+    setConfirmation(null);
+  };
+
+  const confirmAction = () => {
+    const action = confirmationActionRef.current;
+    closeConfirmation();
+    action?.();
+  };
   const [loadError, setLoadError] = useState(null);
   const [savedMaintenanceMode, setSavedMaintenanceMode] = useState(false);
   const [mailStatus, setMailStatus] = useState(null);
@@ -177,7 +196,7 @@ const Settings = () => {
     replaceManualGcashPreview(URL.createObjectURL(file));
   };
 
-  const handleSaveManualGcash = async () => {
+  const handleSaveManualGcash = async (confirmed = false) => {
     if (savingManualGcash || !manualGcashForm.merchant_name.trim() || !manualGcashForm.account_name.trim()) {
       showToast('Merchant name and GCash account name are required.', 'error');
       return;
@@ -193,9 +212,12 @@ const Settings = () => {
       return;
     }
 
-    if (manualGcash?.qr?.available && manualGcashFile && !window.confirm(
-      'Replace the current merchant QR image? Confirm that the new QR belongs to the official hotel GCash account.'
-    )) {
+    if (manualGcash?.qr?.available && manualGcashFile && confirmed !== true) {
+      requestConfirmation({
+        title: 'Replace merchant QR image?',
+        message: 'Confirm that the new QR belongs to the official hotel GCash account. It will replace the current merchant QR image.',
+        confirmLabel: 'Replace QR Image',
+      }, () => handleSaveManualGcash(true));
       return;
     }
 
@@ -222,10 +244,15 @@ const Settings = () => {
     }
   };
 
-  const handleRemoveManualGcash = async () => {
-    if (!manualGcash?.configured || removingManualGcash || !window.confirm(
-      'Remove the merchant GCash configuration and private QR image? Manual GCash cannot be enabled without configuring it again.'
-    )) {
+  const handleRemoveManualGcash = async (confirmed = false) => {
+    if (!manualGcash?.configured || removingManualGcash) return;
+    if (confirmed !== true) {
+      requestConfirmation({
+        title: 'Remove GCash configuration?',
+        message: 'This will remove the merchant GCash configuration and private QR image. Manual GCash cannot be enabled without configuring it again.',
+        confirmLabel: 'Remove Configuration',
+        danger: true,
+      }, () => handleRemoveManualGcash(true));
       return;
     }
 
@@ -258,15 +285,19 @@ const Settings = () => {
     }
   };
 
-  const handleSave = async () => {
-    if (!settings) {
+  const handleSave = async (confirmed = false) => {
+    if (!settings || saving) {
       return;
     }
 
     const enablingMaintenance = !savedMaintenanceMode && Boolean(settings.maintenance_mode);
-    if (enablingMaintenance && !window.confirm(
-      'Enable Maintenance Mode? New online room searches and booking creation will be blocked. Existing verification links, payments, cancellations, and staff operations will continue to work.'
-    )) {
+    if (enablingMaintenance && confirmed !== true) {
+      requestConfirmation({
+        title: 'Enable maintenance mode?',
+        message: 'New online room searches and booking creation will be blocked. Existing verification links, payments, cancellations, and staff operations will continue to work.',
+        confirmLabel: 'Enable Maintenance Mode',
+        danger: true,
+      }, () => handleSave(true));
       return;
     }
 
@@ -325,6 +356,12 @@ const Settings = () => {
 
   return (
     <div className="settings-page">
+      <ConfirmDialog
+        open={Boolean(confirmation)}
+        {...confirmation}
+        onConfirm={confirmAction}
+        onCancel={closeConfirmation}
+      />
       <div className="page-header">
         <div>
           <h1>Settings</h1>

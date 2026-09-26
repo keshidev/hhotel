@@ -8,6 +8,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import Button from '../components/Button';
+import ConfirmDialog from '../components/ConfirmDialog';
 import RoomDetailsModal from '../components/RoomDetailsModal';
 import BookingProgress from '../components/BookingProgress';
 import { calculateBookingEstimate } from '../utils/bookingPricing';
@@ -569,6 +570,7 @@ const SelectRoom = () => {
   const [draftRoomFilter, setDraftRoomFilter] = useState('all');
   const [draftSortOrder, setDraftSortOrder] = useState('recommended');
   const [modalRoom,      setModalRoom]      = useState(null);
+  const [roomsUnavailable, setRoomsUnavailable] = useState(false);
 
   // â”€â”€ Remove confirmation modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [removeTarget, setRemoveTarget] = useState(null); // room object to confirm removal
@@ -689,43 +691,43 @@ const SelectRoom = () => {
         setAvailableRooms(liveRooms);
         setError(null);
         setErrorCode(null);
-        setSelectedRooms(prev => {
-          const typeUsage = {};
-          const valid = prev.flatMap((room) => {
-            const selectedTypeKey = typeKey(room.requested_room_type || room.room_type);
-            if (!selectedTypeKey) return [];
+        // Read the latest cart after the availability request completes.
+        const prev = ssGet('selectedRooms', []);
+        const typeUsage = {};
+        const valid = prev.flatMap((room) => {
+          const selectedTypeKey = typeKey(room.requested_room_type || room.room_type);
+          if (!selectedTypeKey) return [];
 
-            const availableCount = liveRoomsByType[selectedTypeKey]?.length || 0;
-            const usedCount = typeUsage[selectedTypeKey] || 0;
-            if (usedCount >= availableCount) return [];
+          const availableCount = liveRoomsByType[selectedTypeKey]?.length || 0;
+          const usedCount = typeUsage[selectedTypeKey] || 0;
+          if (usedCount >= availableCount) return [];
 
-            typeUsage[selectedTypeKey] = usedCount + 1;
-            const representative = representativeByType[selectedTypeKey] || liveRoomsByType[selectedTypeKey]?.[0];
-            if (!representative) return [];
+          typeUsage[selectedTypeKey] = usedCount + 1;
+          const representative = representativeByType[selectedTypeKey] || liveRoomsByType[selectedTypeKey]?.[0];
+          if (!representative) return [];
 
-            return [{
-              ...room,
-              id: representative.id,
-              sourceRoomId: representative.id,
-              room_type: representative.room_type || room.room_type,
-              requested_room_type: representative.room_type || room.requested_room_type || room.room_type,
-              name: `${formatRoomType(representative.room_type || room.room_type)}`,
-              description: room.description || representative.description || 'Comfortable room with modern amenities',
-              price: parseFloat(representative.price_per_night || representative.price || room.price || 0),
-            }];
-          });
-
-          if (JSON.stringify(valid) !== JSON.stringify(prev)) {
-            sessionStorage.setItem('selectedRooms', JSON.stringify(valid));
-            const vIds   = new Set(valid.map(r => String(r.roomId)));
-            const pruned = Object.fromEntries(Object.entries(ssGet('roomAddons',{})).filter(([k]) => vIds.has(k)));
-            sessionStorage.setItem('roomAddons', JSON.stringify(pruned));
-            persistBookingCart({ bookingData: booking, selectedRooms: valid, roomAddons: pruned });
-            setRoomAddons(pruned);
-            if (valid.length < prev.length) alert('One or more rooms are no longer available and have been removed.');
-          }
-          return valid;
+          return [{
+            ...room,
+            id: representative.id,
+            sourceRoomId: representative.id,
+            room_type: representative.room_type || room.room_type,
+            requested_room_type: representative.room_type || room.requested_room_type || room.room_type,
+            name: `${formatRoomType(representative.room_type || room.room_type)}`,
+            description: room.description || representative.description || 'Comfortable room with modern amenities',
+            price: parseFloat(representative.price_per_night || representative.price || room.price || 0),
+          }];
         });
+
+        if (JSON.stringify(valid) !== JSON.stringify(prev)) {
+          sessionStorage.setItem('selectedRooms', JSON.stringify(valid));
+          const vIds   = new Set(valid.map(r => String(r.roomId)));
+          const pruned = Object.fromEntries(Object.entries(ssGet('roomAddons',{})).filter(([k]) => vIds.has(k)));
+          sessionStorage.setItem('roomAddons', JSON.stringify(pruned));
+          persistBookingCart({ bookingData: booking, selectedRooms: valid, roomAddons: pruned });
+          setRoomAddons(pruned);
+          if (valid.length < prev.length) setRoomsUnavailable(true);
+        }
+        setSelectedRooms(valid);
       }
     } catch (err) {
       const msgs = err.response?.data?.errors ? Object.values(err.response.data.errors).flat() : null;
@@ -1048,6 +1050,15 @@ const SelectRoom = () => {
 
   return (
     <div className="select-room-page">
+      <ConfirmDialog
+        open={roomsUnavailable}
+        title="Room availability changed"
+        message="One or more rooms are no longer available and have been removed from your cart. Please review your remaining rooms before continuing."
+        confirmLabel="Review Rooms"
+        hideCancel
+        onConfirm={() => setRoomsUnavailable(false)}
+        onCancel={() => setRoomsUnavailable(false)}
+      />
       <BookingProgress currentStep={2} />
 
       {/* Remove Room Confirmation Modal */}
