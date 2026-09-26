@@ -195,6 +195,7 @@ const PromoManagement = () => {
 
   const validateForm = () => {
     const errs = {};
+    const activeUsageCount = editing?.active_usages_count ?? editing?.total_used ?? 0;
     if (!form.code.trim())           errs.code = 'Code is required';
     if (!form.name.trim())           errs.name = 'Name is required';
     if (!form.discount_value)        errs.discount_value = 'Discount value is required';
@@ -209,6 +210,8 @@ const PromoManagement = () => {
       errs.booking_end_date = 'End date must be on or after the start date';
     if (form.discount_type === 'percentage' && Number(form.discount_value) > 100)
       errs.discount_value = 'Percentage cannot exceed 100';
+    if (form.usage_limit && Number(form.usage_limit) < activeUsageCount)
+      errs.usage_limit = `Limit cannot be lower than ${activeUsageCount} active usage${activeUsageCount === 1 ? '' : 's'}`;
     setFormErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -405,9 +408,11 @@ const PromoManagement = () => {
                         <TableActionButton
                           iconOnly
                           tone="danger"
-                          label="Delete promo code"
+                          label={(promo.usages_count ?? promo.total_used) > 0
+                            ? 'Promo codes with booking history must be deactivated'
+                            : 'Delete promo code'}
                           onClick={() => setDeleteTarget(promo)}
-                          disabled={promo.total_used > 0}
+                          disabled={(promo.usages_count ?? promo.total_used) > 0}
                         >
                           <Trash2 size={14} />
                         </TableActionButton>
@@ -590,11 +595,19 @@ const PromoManagement = () => {
                 <div className="promo-field">
                   <label>Global Usage Limit <span className="optional-tag">optional</span></label>
                   <input
-                    type="number" min="1"
+                    type="number"
+                    min={Math.max(1, editing?.active_usages_count ?? editing?.total_used ?? 0)}
                     value={form.usage_limit}
                     onChange={e => handleField('usage_limit', e.target.value)}
                     placeholder="Unlimited"
+                    className={formErrors.usage_limit ? 'field-error' : ''}
                   />
+                  {formErrors.usage_limit && <span className="field-err-msg">{formErrors.usage_limit}</span>}
+                  {editing && (editing.active_usages_count ?? editing.total_used ?? 0) > 0 && (
+                    <span className="promo-field-hint">
+                      Minimum {(editing.active_usages_count ?? editing.total_used)} based on reserved and completed bookings. Leave blank for Unlimited.
+                    </span>
+                  )}
                 </div>
 
                 {/* Per-user limit */}

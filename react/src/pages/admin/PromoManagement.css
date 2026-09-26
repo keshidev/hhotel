@@ -440,6 +440,7 @@
 
 .promo-field input.field-error { border-color: #ef4444; background: #fef2f2; }
 .field-err-msg { font-size: 0.72rem; color: #ef4444; }
+.promo-field-hint { font-size: 0.72rem; line-height: 1.35; color: #64748b; }
 
 .promo-input-icon {
   position: relative;

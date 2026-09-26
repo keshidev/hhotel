@@ -20,7 +20,10 @@ class PromoCodeController extends Controller
 
     public function index(Request $request)
     {
-        $query = PromoCode::withCount('usages')
+        $query = PromoCode::withCount([
+            'usages',
+            'usages as active_usages_count' => fn ($query) => $query->active(),
+        ])
             ->withSum('usages', 'discount_amount');
 
         if ($request->filled('search')) {
@@ -52,7 +55,10 @@ class PromoCodeController extends Controller
 
     public function show(PromoCode $promoCode)
     {
-        $promoCode->loadCount('usages');
+        $promoCode->loadCount([
+            'usages',
+            'usages as active_usages_count' => fn ($query) => $query->active(),
+        ]);
         $promoCode->loadSum('usages', 'discount_amount');
         $promoCode->load(['usages' => fn ($q) => $q->latest()->limit(10)->with('booking')]);
 
@@ -116,6 +122,21 @@ class PromoCodeController extends Controller
         $rules          = $this->rules();
         $rules['code'] .= ',' . $promoCode->id;
         $validator = Validator::make($request->all(), $rules);
+        $activeUsageCount = $promoCode->usages()->active()->count();
+
+        $validator->after(function ($validator) use ($request, $activeUsageCount) {
+            if (
+                $request->input('usage_limit') !== null
+                && (int) $request->input('usage_limit') < $activeUsageCount
+            ) {
+                $validator->errors()->add(
+                    'usage_limit',
+                    'Global usage limit cannot be lower than the ' . $activeUsageCount . ' active '
+                    . 'usage' . ($activeUsageCount === 1 ? '' : 's') . ' (reserved or consumed).'
+                );
+            }
+        });
+
         if ($validator->fails()) {
             return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
