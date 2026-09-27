@@ -9,6 +9,7 @@ import {
   ChevronDown,
   CreditCard,
   Eye,
+  ExternalLink,
   FileText,
   Filter,
   Hash,
@@ -351,9 +352,16 @@ const ManualGcashReviews = ({ role }) => {
                   ) : proofUrl ? (
                     selected.proof.mime_type === 'application/pdf'
                       ? <iframe src={proofUrl} title="Payment proof PDF" />
-                      : <img src={proofUrl} alt="Private payment proof" />
+                      : <a className="manual-review-proof-image-link" href={proofUrl} target="_blank" rel="noopener noreferrer" aria-label="Open full payment proof in a new tab">
+                          <img src={proofUrl} alt="Private payment proof" />
+                        </a>
                   ) : <div><Loader className="spin" size={20} /> Loading proof...</div>}
                 </div>
+                {proofUrl && !proofUnavailable && (
+                  <a className="manual-review-proof-open" href={proofUrl} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink size={14} /> Open full proof in new tab
+                  </a>
+                )}
               </section>
 
               <section className="manual-review-verification">
