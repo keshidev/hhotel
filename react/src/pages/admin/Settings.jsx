@@ -431,9 +431,9 @@ const Settings = () => {
                 <div className={`manual-gcash-summary ${manualGcash.configured ? 'is-ready' : 'has-issues'}`}>
                   {manualGcash.configured ? <CheckCircle2 size={24} /> : <AlertTriangle size={24} />}
                   <div>
-                    <strong>{manualGcash.configured ? 'Merchant QR configuration is ready' : 'Merchant QR configuration is incomplete'}</strong>
-                    <p>The QR is stored privately and can only be viewed by an authenticated administrator.</p>
-                    <p>Phase 2 does not enable customer manual GCash checkout. That remains locked until Phase 3.</p>
+                    <strong>{manualGcash.configured ? 'GCash payment details are saved' : 'Set up GCash payment details'}</strong>
+                    <p>{manualGcash.configured ? "Keep the hotel's GCash account details and merchant QR image up to date for guest payments." : "Enter the hotel's GCash account details and upload the official merchant QR image."}</p>
+                    <p>Before saving a new QR image, scan it with GCash and verify that the recipient is the official hotel account.</p>
                   </div>
                 </div>
 
@@ -468,7 +468,7 @@ const Settings = () => {
                         onChange={(event) => handleManualGcashField('account_number', event.target.value)}
                         placeholder="09XX XXX XXXX"
                       />
-                      <span className="form-hint">This will be displayed to customers only after the Phase 3 checkout is approved.</span>
+                      <span className="form-hint">Enter the mobile number registered to the hotel's GCash account, if available.</span>
                     </div>
                     <div className="form-group">
                       <label htmlFor="manual-gcash-qr">Official Merchant QR Image</label>
@@ -778,7 +778,7 @@ const Settings = () => {
                   {mailStatus.configured ? <CheckCircle2 size={24} /> : <XCircle size={24} />}
                   <div>
                     <strong>{mailStatus.configured ? 'Email delivery is configured' : 'Email configuration needs attention'}</strong>
-                    <p>Credentials are managed securely in the server <code>.env</code> file and are never displayed here.</p>
+                    <p>Review the email delivery details below. Contact your system administrator to update the sending account or connection settings.</p>
                   </div>
                 </div>
 
