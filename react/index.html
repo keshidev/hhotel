@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="referrer" content="no-referrer" />
     
+    <link rel="preload" as="image" href="/images/logo/logo-withoutbg.png" />
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,10 +21,64 @@
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body, #root { width: 100%; margin: 0; padding: 0; }
       body { background: #000; }
+      #hotel-startup {
+        position: fixed; inset: 0; z-index: 20000;
+        display: grid; place-items: center; padding: 24px;
+        background: #fff; opacity: 1; transition: opacity 180ms ease;
+      }
+      #hotel-startup.is-ready { opacity: 0; pointer-events: none; }
+      #hotel-startup .hotel-startup-content { width: min(250px, 100%); text-align: center; }
+      #hotel-startup .hotel-startup-logo {
+        display: block; width: 150px; height: auto; margin: 0 auto 36px;
+      }
+      #hotel-startup .hotel-startup-track {
+        height: 3px; overflow: hidden; border-radius: 3px; background: #eef0f4;
+      }
+      #hotel-startup .hotel-startup-track::after {
+        content: ''; display: block; width: 30%; height: 100%; border-radius: inherit;
+        background: #1a4bcc; animation: hotel-startup-progress 1.2s ease-in-out infinite;
+      }
+      #hotel-startup .hotel-startup-status {
+        position: absolute; width: 1px; height: 1px; padding: 0;
+        overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+      }
+      #hotel-startup .hotel-startup-help {
+        margin-top: 24px; color: #0d1b3e; font: 14px/1.6 Arial, sans-serif;
+      }
+      #hotel-startup .hotel-startup-help a { color: #1a4bcc; text-decoration: underline; }
+      #hotel-startup-help {
+        position: absolute; top: calc(50% + 80px); left: 50%;
+        width: min(280px, calc(100% - 48px)); transform: translateX(-50%);
+        text-align: center; visibility: hidden;
+        animation: hotel-startup-delay 0s 15s forwards;
+      }
+      @keyframes hotel-startup-delay { to { visibility: visible; } }
+      @keyframes hotel-startup-progress {
+        from { transform: translateX(-100%); }
+        to { transform: translateX(334%); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #hotel-startup { transition: none; }
+        #hotel-startup .hotel-startup-track::after { animation: none; margin: auto; }
+      }
     </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="hotel-startup" role="status" aria-live="polite" aria-label="Loading H+ Hotel">
+      <div class="hotel-startup-content">
+        <img class="hotel-startup-logo" src="/images/logo/logo-withoutbg.png" alt="H+ Hotel" width="539" height="237" fetchpriority="high" />
+        <div class="hotel-startup-track" aria-hidden="true"></div>
+        <span class="hotel-startup-status">Loading H+ Hotel...</span>
+        <p id="hotel-startup-help" class="hotel-startup-help">
+          Taking longer than expected.<br /><a href="">Refresh the page</a> to try again.
+        </p>
+        <noscript>
+          <style>#hotel-startup .hotel-startup-track, #hotel-startup-help { display: none; }</style>
+          <p class="hotel-startup-help">Please enable JavaScript to open H+ Hotel.</p>
+        </noscript>
+      </div>
+    </div>
+    <div id="root" inert></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

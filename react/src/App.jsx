@@ -12,6 +12,7 @@ import ScrollToTop from './components/ScrollToTop';
 import PublicScrollMotion from './components/PublicScrollMotion';
 import CookieConsent from './components/CookieConsent';
 import BookingRecoveryModal from './components/BookingRecoveryModal';
+import StartupReady from './components/StartupReady';
 
 import Home from './pages/Home';
 
@@ -345,6 +346,7 @@ function App() {
             } />
 
           </Routes>
+          <StartupReady />
           </Suspense>
         </BrowserRouter>
       </CmsProvider>
