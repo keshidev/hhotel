@@ -525,154 +525,164 @@ const UserManagement = () => {
       </div>
 
       {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>{editingUser ? 'Edit User' : 'Add New User'}</h2>
-              <button className="modal-close" onClick={() => setShowModal(false)}>
+        <div className="um-modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="um-modal-content" role="dialog" aria-modal="true" aria-labelledby="um-edit-title" onClick={(e) => e.stopPropagation()}>
+            <div className="um-modal-header">
+              <h2 id="um-edit-title">{editingUser ? 'Edit User' : 'Add New User'}</h2>
+              <button type="button" aria-label="Close user form" className="um-modal-close" onClick={() => setShowModal(false)}>
                 <X size={20} />
               </button>
             </div>
 
-            {modalPermissions?.note && (
-              <div className="modal-notice">
-                <AlertTriangle size={16} />
-                <span>{modalPermissions.note}</span>
-              </div>
-            )}
-
             <form onSubmit={handleSubmit}>
-              <div className="form-grid">
-
-                <div className="form-group">
-                  <label>Name *</label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => handleNameChange(e.target.value)}
-                    placeholder="Enter full staff name"
-                    className={errors.name ? 'error-input' : ''}
-                    disabled={modalPermissions?.isReadOnly}
-                  />
-                  {errors.name && <span className="error">{errors.name[0]}</span>}
-                  <small className="form-hint">Letters, spaces, apostrophes, periods, and hyphens are allowed.</small>
+              <div className="um-modal-body">
+              {modalPermissions?.note && (
+                <div className="um-modal-notice">
+                  <AlertTriangle size={16} />
+                  <span>{modalPermissions.note}</span>
                 </div>
+              )}
 
-                <div className="form-group">
-                  <label>Email *</label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="user@example.com"
-                    className={errors.email ? 'error-input' : ''}
-                    disabled={modalPermissions?.isReadOnly}
-                  />
-                  {errors.email && <span className="error">{errors.email[0]}</span>}
-                </div>
+                <div className="um-form-grid">
 
-                <div className="form-group">
-                  <label>Phone</label>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={11}
-                    value={formData.phone}
-                    onChange={(e) => handlePhoneChange(e.target.value)}
-                    placeholder="09XXXXXXXXX"
-                    className={errors.phone ? 'error-input' : ''}
-                    disabled={modalPermissions?.isReadOnly}
-                  />
-                  {errors.phone
-                    ? <span className="error">{errors.phone[0]}</span>
-                    : <small className="form-hint">Must start with 09 — exactly 11 digits, numbers only</small>
-                  }
-                </div>
-
-                <div className="form-group">
-                  <label>Role *</label>
-                  <select
-                    value={formData.role}
-                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                    disabled={editingUser ? !modalPermissions?.canEditRole : false}
-                  >
-                    <option value="receptionist">Receptionist</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                  {!modalPermissions?.canEditRole && editingUser && (
-                    <small className="form-hint">Role cannot be changed</small>
-                  )}
-                </div>
-
-                {editingUser && <div className="form-group">
-                  <label>Status *</label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                    disabled={editingUser ? !modalPermissions?.canEditStatus : false}
-                  >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                  {!modalPermissions?.canEditStatus && editingUser && (
-                    <small className="form-hint">Status cannot be changed</small>
-                  )}
-                </div>}
-
-                {!editingUser && (
-                  <div className="form-group full-width">
-                    <p className="form-hint">A secure setup link will be emailed to this staff member. They will choose their own password. If the link expires, they can use Forgot Password on the staff login page.</p>
-                  </div>
-                )}
-
-                {editingUser && currentUser?.id === editingUser.id && <div className="form-group">
-                  <label>New Password</label>
-                  <input
-                    type="password"
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    placeholder="Leave blank to keep current"
-                    className={errors.password ? 'error-input' : ''}
-                    disabled={modalPermissions?.isReadOnly}
-                  />
-                  {errors.password && <span className="error">{errors.password[0]}</span>}
-                  <small className="form-hint">Use 12+ characters, uppercase, lowercase, a number, and a symbol.</small>
-                </div>}
-
-                {editingUser && currentUser?.id === editingUser.id && <div className="form-group">
-                  <label>Confirm New Password</label>
-                  <input
-                    type="password"
-                    value={formData.password_confirmation}
-                    onChange={(e) => setFormData({ ...formData, password_confirmation: e.target.value })}
-                    placeholder="Re-enter password"
-                    className={errors.password_confirmation ? 'error-input' : ''}
-                    disabled={modalPermissions?.isReadOnly}
-                  />
-                  {errors.password_confirmation && <span className="error">{errors.password_confirmation[0]}</span>}
-                </div>}
-
-                {!modalPermissions?.isReadOnly && (
-                  <div className="form-group full-width">
-                    <label>Your Administrator Password *</label>
+                  <div className="um-form-group">
+                    <label htmlFor="um-name">Name *</label>
                     <input
-                      type="password"
-                      value={formData.current_password}
-                      onChange={(e) => setFormData({ ...formData, current_password: e.target.value })}
-                      placeholder={editingUser ? 'Required for password, role, or status changes' : 'Required to create a staff account'}
-                      className={errors.current_password ? 'error-input' : ''}
-                      autoComplete="current-password"
+                      id="um-name"
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => handleNameChange(e.target.value)}
+                      placeholder="Enter full staff name"
+                      className={errors.name ? 'um-error-input' : ''}
+                      disabled={modalPermissions?.isReadOnly}
                     />
-                    {errors.current_password && <span className="error">{errors.current_password[0]}</span>}
-                    <small className="form-hint">
-                      {editingUser ? 'Required for security-sensitive changes.' : 'Required to authorize account creation.'}
-                    </small>
+                    {errors.name && <span className="error">{errors.name[0]}</span>}
+                    <small className="um-form-hint">Letters, spaces, apostrophes, periods, and hyphens are allowed.</small>
                   </div>
-                )}
+
+                  <div className="um-form-group">
+                    <label htmlFor="um-email">Email *</label>
+                    <input
+                      id="um-email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="user@example.com"
+                      className={errors.email ? 'um-error-input' : ''}
+                      disabled={modalPermissions?.isReadOnly}
+                    />
+                    {errors.email && <span className="error">{errors.email[0]}</span>}
+                  </div>
+
+                  <div className="um-form-group">
+                    <label htmlFor="um-phone">Phone</label>
+                    <input
+                      id="um-phone"
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={11}
+                      value={formData.phone}
+                      onChange={(e) => handlePhoneChange(e.target.value)}
+                      placeholder="09XXXXXXXXX"
+                      className={errors.phone ? 'um-error-input' : ''}
+                      disabled={modalPermissions?.isReadOnly}
+                    />
+                    {errors.phone
+                      ? <span className="error">{errors.phone[0]}</span>
+                      : <small className="um-form-hint">Must start with 09 — exactly 11 digits, numbers only</small>
+                    }
+                  </div>
+
+                  <div className="um-form-group">
+                    <label htmlFor="um-role">Role *</label>
+                    <select
+                      id="um-role"
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      disabled={editingUser ? !modalPermissions?.canEditRole : false}
+                    >
+                      <option value="receptionist">Receptionist</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                    {!modalPermissions?.canEditRole && editingUser && (
+                      <small className="um-form-hint">Role cannot be changed</small>
+                    )}
+                  </div>
+
+                  {editingUser && <div className="um-form-group">
+                    <label htmlFor="um-status">Status *</label>
+                    <select
+                      id="um-status"
+                      value={formData.status}
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                      disabled={editingUser ? !modalPermissions?.canEditStatus : false}
+                    >
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select>
+                    {!modalPermissions?.canEditStatus && editingUser && (
+                      <small className="um-form-hint">Status cannot be changed</small>
+                    )}
+                  </div>}
+
+                  {!editingUser && (
+                    <div className="um-form-group full-width">
+                      <p className="um-form-hint">A secure setup link will be emailed to this staff member. They will choose their own password. If the link expires, they can use Forgot Password on the staff login page.</p>
+                    </div>
+                  )}
+
+                  {editingUser && currentUser?.id === editingUser.id && <div className="um-form-group">
+                    <label htmlFor="um-new-password">New Password</label>
+                    <input
+                      id="um-new-password"
+                      type="password"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      placeholder="Leave blank to keep current"
+                      className={errors.password ? 'um-error-input' : ''}
+                      disabled={modalPermissions?.isReadOnly}
+                    />
+                    {errors.password && <span className="error">{errors.password[0]}</span>}
+                    <small className="um-form-hint">Use 12+ characters, uppercase, lowercase, a number, and a symbol.</small>
+                  </div>}
+
+                  {editingUser && currentUser?.id === editingUser.id && <div className="um-form-group">
+                    <label htmlFor="um-confirm-password">Confirm New Password</label>
+                    <input
+                      id="um-confirm-password"
+                      type="password"
+                      value={formData.password_confirmation}
+                      onChange={(e) => setFormData({ ...formData, password_confirmation: e.target.value })}
+                      placeholder="Re-enter password"
+                      className={errors.password_confirmation ? 'um-error-input' : ''}
+                      disabled={modalPermissions?.isReadOnly}
+                    />
+                    {errors.password_confirmation && <span className="error">{errors.password_confirmation[0]}</span>}
+                  </div>}
+
+                  {!modalPermissions?.isReadOnly && (
+                    <div className="um-form-group full-width">
+                      <label htmlFor="um-current-password">Your Administrator Password *</label>
+                      <input
+                        id="um-current-password"
+                        type="password"
+                        value={formData.current_password}
+                        onChange={(e) => setFormData({ ...formData, current_password: e.target.value })}
+                        placeholder={editingUser ? 'Required for password, role, or status changes' : 'Required to create a staff account'}
+                        className={errors.current_password ? 'um-error-input' : ''}
+                        autoComplete="current-password"
+                      />
+                      {errors.current_password && <span className="error">{errors.current_password[0]}</span>}
+                      <small className="um-form-hint">
+                        {editingUser ? 'Required for security-sensitive changes.' : 'Required to authorize account creation.'}
+                      </small>
+                    </div>
+                  )}
+
+                </div>
 
               </div>
-
-              <div className="modal-footer">
+              <div className="um-modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowModal(false)}>
                   Cancel
                 </button>
@@ -686,28 +696,32 @@ const UserManagement = () => {
       )}
 
       {showDeleteModal && userToDelete && (
-        <div className="modal-overlay" onClick={() => setShowDeleteModal(false)}>
-          <div className="modal-content modal-confirm" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <div className="warning-icon">
-                <AlertTriangle size={24} color="#ef4444" />
+        <div className="um-modal-overlay" onClick={() => setShowDeleteModal(false)}>
+          <div className="um-modal-content um-modal-confirm" role="dialog" aria-modal="true" aria-labelledby="um-deactivate-title" onClick={(e) => e.stopPropagation()}>
+            <div className="um-modal-header">
+              <div className="um-modal-heading">
+                <div className="um-warning-icon">
+                  <AlertTriangle size={20} color="#c62828" />
+                </div>
+                <h2 id="um-deactivate-title">Deactivate Staff Account</h2>
               </div>
-              <h2>Deactivate Staff Account</h2>
+              <button type="button" className="um-modal-close" aria-label="Close deactivation dialog" onClick={() => setShowDeleteModal(false)}><X size={20} /></button>
             </div>
-            <div className="modal-body">
-              <p className="confirm-message">This immediately removes access for:</p>
-              <div className="user-info-box">
+            <div className="um-modal-body">
+              <p className="um-confirm-message">This immediately removes access for:</p>
+              <div className="um-user-info-box">
                 <strong>{userToDelete.name}</strong>
                 <span className="user-email">{userToDelete.email}</span>
                 <span className={`role-badge role-${userToDelete.role}`}>{userToDelete.role}</span>
               </div>
-              <div className="warning-box">
+              <div className="um-warning-box">
                 <AlertTriangle size={16} />
                 <p><strong>Important:</strong> The user will be signed out. Historical booking and audit records will be preserved.</p>
               </div>
-              <div className="form-group" style={{ marginTop: '1rem' }}>
-                <label>Your Administrator Password *</label>
+              <div className="um-form-group" style={{ marginTop: '1rem' }}>
+                <label htmlFor="um-deactivate-password">Your Administrator Password *</label>
                 <input
+                  id="um-deactivate-password"
                   type="password"
                   value={deleteCurrentPassword}
                   onChange={(e) => setDeleteCurrentPassword(e.target.value)}
@@ -716,7 +730,7 @@ const UserManagement = () => {
                 />
               </div>
             </div>
-            <div className="modal-footer">
+            <div className="um-modal-footer">
               <button type="button" className="btn-secondary" onClick={() => setShowDeleteModal(false)}>Cancel</button>
               <button
                 type="button"
