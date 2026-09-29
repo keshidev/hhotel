@@ -975,7 +975,7 @@ const GuestDetails = () => {
                 </span>
                 <span className="price-title-mobile">Price Details</span>
               </h2>
-              <div className="cart-items" tabIndex={0} role="region" aria-label="Selected rooms">
+              <div className="cart-items" role="region" aria-label="Selected rooms">
                 {selectedRooms.map((room, index) => {
                   const lastRoomId = selectedRooms[selectedRooms.length - 1]?.roomId;
                   const roomAddonList = roomAddons[room.roomId] || [];

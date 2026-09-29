@@ -661,7 +661,7 @@ const AddOns = () => {
               Your Cart: {selectedRooms.length} Item{selectedRooms.length > 1 ? 's' : ''}
             </h2>
 
-            <div className="cart-items" tabIndex={0} role="region" aria-label="Selected rooms">
+            <div className="cart-items" role="region" aria-label="Selected rooms">
               {selectedRooms.map((room, idx) => (
                 <div
                   key={room.roomId}

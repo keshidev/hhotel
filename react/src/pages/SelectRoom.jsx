@@ -1442,7 +1442,7 @@ const SelectRoom = () => {
                 <h2 className="cart-title">Your Cart: {selectedRooms.length} Item{selectedRooms.length!==1?'s':''}</h2>
                 {selectedRooms.length>0 ? (
                   <>
-                    <div className="cart-items" tabIndex={0} role="region" aria-label="Selected rooms">
+                    <div className="cart-items" role="region" aria-label="Selected rooms">
                       {selectedRooms.map((room,idx) => (
                         <div key={room.roomId} className="cart-item">
                           <div className="item-label">ROOM {idx+1}</div>
