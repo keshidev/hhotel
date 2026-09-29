@@ -1,3 +1,4 @@
+import StickyBookingCart from '../components/StickyBookingCart';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, X } from 'lucide-react';
@@ -654,13 +655,13 @@ const AddOns = () => {
           </div>
         </div>
 
-        <aside className="cart-sidebar">
+        <StickyBookingCart className="cart-sidebar" rooms={selectedRooms} total={pricing.total} onContinue={handleContinue}>
           <div className="cart-card">
             <h2 className="cart-title">
               Your Cart: {selectedRooms.length} Item{selectedRooms.length > 1 ? 's' : ''}
             </h2>
 
-            <div className="cart-items">
+            <div className="cart-items" tabIndex={0} role="region" aria-label="Selected rooms">
               {selectedRooms.map((room, idx) => (
                 <div
                   key={room.roomId}
@@ -737,7 +738,7 @@ const AddOns = () => {
             <Button variant="primary" fullWidth onClick={handleContinue}>CONTINUE</Button>
             <Button variant="outline" fullWidth onClick={handleBack}>ADD A ROOM</Button>
           </div>
-        </aside>
+        </StickyBookingCart>
       </section>
 
       <div className="addons-mobile-actions" aria-label="Booking actions">

@@ -1,0 +1,65 @@
+/* Preserve viewport scrolling: hidden creates a competing scroll container. */
+html:has(.booking-sticky-cart), body:has(.booking-sticky-cart), #root:has(.booking-sticky-cart) { overflow-x: clip; }
+:is(.select-room-page, .addons-page, .checkout-page) aside.booking-sticky-cart {
+  display: block; position: sticky; top: var(--booking-cart-top, 100px);
+  align-self: start; min-width: 0; height: auto; z-index: 40;
+}
+.booking-sticky-cart .booking-sticky-details > :is(.cart-card, .price-card) {
+  display: flex; flex-direction: column;
+  max-height: calc(100dvh - var(--booking-cart-top, 100px) - 16px); padding: 1.25rem;
+}
+.booking-sticky-cart .cart-title { flex-shrink: 0; margin: 0 0 1rem; padding-bottom: 0.75rem; }
+.booking-sticky-cart .cart-items {
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain;
+  scrollbar-gutter: stable; margin-bottom: 1rem;
+}
+.booking-sticky-cart .cart-item { flex-shrink: 0; }
+.booking-sticky-cart .cart-summary { flex-shrink: 0; margin-bottom: 1rem; padding: 0.75rem 0; }
+.booking-sticky-cart .cart-summary .summary-row.total { margin-top: 0; padding-top: 0; border-top: 0; }
+.booking-sticky-cart .desktop-submit { display: block; flex-shrink: 0; }
+.booking-sticky-cart .booking-info { flex-shrink: 0; margin-bottom: 0; }
+.booking-sticky-cart .btn { flex-shrink: 0; }
+.booking-sticky-dock { display: none; }
+@media (max-width: 1024px) {
+  :is(.select-room-page, .addons-page, .checkout-page):has(.booking-sticky-cart) {
+    padding-bottom: calc(var(--booking-cart-dock-height, 140px) + 24px);
+  }
+  :is(.select-room-page, .addons-page, .checkout-page) aside.booking-sticky-cart {
+    position: fixed; top: auto; right: 0; bottom: 0; left: 0; width: 100%; z-index: 950;
+    background: #fff; box-shadow: 0 -4px 20px rgb(13 27 62 / 14%);
+  }
+  .booking-sticky-cart .booking-sticky-details { display: none; }
+  .booking-sticky-cart[data-expanded="true"] .booking-sticky-details { display: block; }
+  .booking-sticky-cart .booking-sticky-details > :is(.cart-card, .price-card) {
+    max-height: calc(100dvh - var(--booking-cart-top, 100px) - var(--booking-cart-dock-height, 140px) - 12px);
+    padding: 1rem; overflow-y: auto; box-shadow: none;
+  }
+  .booking-sticky-cart .cart-title { font-size: 1rem; }
+  .booking-sticky-cart .cart-items { min-height: 70px; }
+  .booking-sticky-cart .cart-summary { font-size: 0.85rem; }
+  .booking-sticky-cart .booking-sticky-dock {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(130px, 0.8fr);
+    align-items: center; gap: 0.75rem;
+    padding: 0.75rem max(1rem, env(safe-area-inset-right)) max(0.75rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+    border-top: 1px solid #dce2ed;
+  }
+  .booking-sticky-dock .booking-sticky-toggle {
+    display: grid; min-width: 0; gap: 0.15rem; padding: 0; border: 0;
+    background: transparent; color: #0d1b3e; text-align: left; font: inherit; cursor: pointer;
+  }
+  .booking-sticky-room { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.8rem; }
+  .booking-sticky-total { font-size: 0.85rem; }
+  .booking-sticky-total strong { color: #1a4bcc; }
+  .booking-sticky-hint { color: #52617a; font-size: 0.72rem; text-decoration: underline; }
+  .booking-sticky-dock .booking-sticky-continue {
+    min-height: 48px; padding: 0.7rem; border: 0; background: #1a4bcc; color: #fff;
+    font: inherit; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; cursor: pointer;
+  }
+  .booking-sticky-continue:disabled { opacity: 0.5; cursor: not-allowed; }
+  .booking-sticky-dock button:focus-visible { outline: 3px solid #1a4bcc; outline-offset: 3px; }
+  .addons-page:has(.booking-sticky-cart) .addons-mobile-actions,
+  .checkout-page:has(.booking-sticky-cart) .mobile-submit { display: none; }
+}
+
+/* The floating shortcut must not cover the cart's actions. */
+body:has(.booking-sticky-cart) .scroll-to-top { left: 1rem; right: auto; }

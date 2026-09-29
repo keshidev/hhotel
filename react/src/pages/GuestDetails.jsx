@@ -1,4 +1,5 @@
-﻿import React, { useState, useEffect } from 'react';
+import StickyBookingCart from '../components/StickyBookingCart';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, User, MapPin, FileText, AlertCircle, Loader } from 'lucide-react';
 import Button from '../components/Button';
@@ -966,7 +967,7 @@ const GuestDetails = () => {
           </div>
 
           {/* Sidebar */}
-          <aside className="price-sidebar">
+          <StickyBookingCart className="price-sidebar" rooms={selectedRooms} total={total} onContinue={handleContinueToPayment} continueLabel="Continue to payment">
             <div className="price-card">
               <h2 className="cart-title price-card-title">
                 <span className="price-title-desktop">
@@ -974,7 +975,7 @@ const GuestDetails = () => {
                 </span>
                 <span className="price-title-mobile">Price Details</span>
               </h2>
-              <div className="cart-items">
+              <div className="cart-items" tabIndex={0} role="region" aria-label="Selected rooms">
                 {selectedRooms.map((room, index) => {
                   const lastRoomId = selectedRooms[selectedRooms.length - 1]?.roomId;
                   const roomAddonList = roomAddons[room.roomId] || [];
@@ -1005,6 +1006,13 @@ const GuestDetails = () => {
                     </div>
                   );
                 })}
+                <div className="booking-info">
+                  <div className="booking-dates">{checkInDate} - {checkOutDate}</div>
+                  <div className="booking-guests">
+                    {adultsCount} Adult{adultsCount > 1 ? 's' : ''}
+                    {childrenCount > 0 ? `, ${childrenCount} Child${childrenCount > 1 ? 'ren' : ''}` : ''}
+                  </div>
+              </div>
               </div>
               <div className="cart-summary">
                 <div className="summary-row total">
@@ -1020,13 +1028,6 @@ const GuestDetails = () => {
                   <span>{formatCurrency(remainingBalance)}</span>
                 </div>
               </div>
-              <div className="booking-info">
-                <div className="booking-dates">{checkInDate} - {checkOutDate}</div>
-                <div className="booking-guests">
-                  {adultsCount} Adult{adultsCount > 1 ? 's' : ''}
-                  {childrenCount > 0 ? `, ${childrenCount} Child${childrenCount > 1 ? 'ren' : ''}` : ''}
-                </div>
-              </div>
               <div className="desktop-submit">
                 <Button variant="primary" fullWidth onClick={handleContinueToPayment}>
                   CONTINUE TO PAYMENT
@@ -1035,7 +1036,7 @@ const GuestDetails = () => {
 
               </div>
             </div>
-          </aside>
+          </StickyBookingCart>
         </div>
       </section>
     </div>
