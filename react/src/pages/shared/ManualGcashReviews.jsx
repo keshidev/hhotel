@@ -1,11 +1,10 @@
 import { useNotificationTarget } from '../../hooks/useNotificationTarget';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertCircle,
   ArrowRight,
   CalendarClock,
   CheckCircle,
-  ClipboardCheck,
   ChevronDown,
   CreditCard,
   Eye,
@@ -52,6 +51,16 @@ const emptyOperationsSummary = {
 };
 
 const ManualGcashReviews = ({ role }) => {
+  const pageRef = useRef(null);
+  useEffect(() => {
+    const banner = document.querySelector('.test-mode-banner');
+    if (!banner) return;
+    const update = () => pageRef.current?.style.setProperty('--payment-banner-height', `${banner.getBoundingClientRect().height}px`);
+    const observer = new ResizeObserver(update);
+    observer.observe(banner);
+    update();
+    return () => observer.disconnect();
+  }, []);
   const api = role === 'admin' ? adminApi : receptionistApi;
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -204,13 +213,6 @@ const ManualGcashReviews = ({ role }) => {
     setSearchParams(nextParams, { replace: true });
   };
 
-  const openWorkQueue = (nextSection, nextQueue) => {
-    closeReview();
-    selectSection(nextSection);
-    if (nextSection === 'reviews') setReviewQueue(nextQueue);
-    else setReconciliationQueue(nextQueue);
-  };
-
   const proofQueueDetails = {
     ready: {
       title: 'Proofs ready for review',
@@ -229,11 +231,11 @@ const ManualGcashReviews = ({ role }) => {
   }[reviewQueue];
 
   return (
-    <div className="manual-review-page">
+    <div className="manual-review-page" ref={pageRef}>
       <div className="manual-review-page-header">
         <div>
           <h1>Payment Operations</h1>
-          <p>Review GCash submissions, reconcile merchant records, and search the complete payment ledger.</p>
+          <p>Review payments, reconcile collections, and find records.</p>
         </div>
         <button type="button" className="manual-review-refresh" onClick={refresh}>
           <RefreshCw size={15} /> Refresh
@@ -241,16 +243,9 @@ const ManualGcashReviews = ({ role }) => {
       </div>
 
       <div className="manual-review-section-tabs" role="tablist" aria-label="Manual GCash operations">
-        <button type="button" role="tab" aria-selected={section === 'reviews'} className={section === 'reviews' ? 'active' : ''} onClick={() => selectSection('reviews')}><span>1</span><div><strong>Proof Review</strong><small>Verify guest submissions</small></div><em>{operationsSummary.pending_review}</em></button>
-        <button type="button" role="tab" aria-selected={section === 'reconciliation'} className={section === 'reconciliation' ? 'active' : ''} onClick={() => selectSection('reconciliation')}><span>2</span><div><strong>Daily Reconciliation</strong><small>Match approved payments</small></div><em>{operationsSummary.unreconciled + operationsSummary.open_exceptions}</em></button>
-        <button type="button" role="tab" aria-selected={section === 'records'} className={section === 'records' ? 'active' : ''} onClick={() => selectSection('records')}><span>3</span><div><strong>Payment Records</strong><small>Search every payment method</small></div></button>
-      </div>
-
-      <div className="manual-review-work-overview" aria-label="Manual GCash work queues">
-        <button type="button" onClick={() => openWorkQueue('reviews', 'ready')} className={section === 'reviews' && reviewQueue === 'ready' ? 'active' : ''}><ShieldCheck size={18} /><span><strong>{operationsSummary.pending_verification}</strong><small>Proofs ready for review</small></span><ArrowRight size={15} /></button>
-        <button type="button" onClick={() => openWorkQueue('reviews', 'admin')} className={`attention ${section === 'reviews' && reviewQueue === 'admin' ? 'active' : ''}`}><AlertCircle size={18} /><span><strong>{operationsSummary.escalated_review}</strong><small>Need administrator</small></span><ArrowRight size={15} /></button>
-        <button type="button" onClick={() => openWorkQueue('reconciliation', 'needs_reconciliation')} className={section === 'reconciliation' && reconciliationQueue === 'needs_reconciliation' ? 'active' : ''}><ClipboardCheck size={18} /><span><strong>{operationsSummary.unreconciled}</strong><small>Need reconciliation</small></span><ArrowRight size={15} /></button>
-        <button type="button" onClick={() => openWorkQueue('reconciliation', 'exceptions')} className={`attention ${section === 'reconciliation' && reconciliationQueue === 'exceptions' ? 'active' : ''}`}><XCircle size={18} /><span><strong>{operationsSummary.open_exceptions}</strong><small>Open exceptions</small></span><ArrowRight size={15} /></button>
+        <button type="button" role="tab" aria-selected={section === 'reviews'} className={section === 'reviews' ? 'active' : ''} onClick={() => selectSection('reviews')}>Proof Review <em>{operationsSummary.pending_review}</em></button>
+        <button type="button" role="tab" aria-selected={section === 'reconciliation'} className={section === 'reconciliation' ? 'active' : ''} onClick={() => selectSection('reconciliation')}>Daily Reconciliation <em>{operationsSummary.unreconciled + operationsSummary.open_exceptions}</em></button>
+        <button type="button" role="tab" aria-selected={section === 'records'} className={section === 'records' ? 'active' : ''} onClick={() => selectSection('records')}>Payment Records</button>
       </div>
 
       {operationsSummary.refund_required > 0 && (

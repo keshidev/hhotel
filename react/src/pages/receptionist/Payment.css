@@ -1,43 +1,99 @@
-/* Payment-specific styles */
-
-.payment-summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 2rem;
-}
-
-.pay-sum-item {
+/* Compact payment ledger. All layout rules stay inside the payment page. */
+.r-payment-page .payment-ledger {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.r-payment-page .payment-summary {
   display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-  transition: box-shadow 0.2s ease;
-  box-shadow: var(--shadow-sm);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1.75rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.pay-sum-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.r-payment-page .pay-sum-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
 }
 
-
-.pay-sum-label {
-  font-size: 0.875rem;
-  font-weight: 500;
+.r-payment-page .pay-sum-label {
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
-  margin: 0;
 }
 
-.pay-sum-val {
-  font-size: 2rem;
+.r-payment-page .pay-sum-val {
+  font-size: 0.875rem;
   font-weight: 700;
   color: var(--color-text-primary);
-  letter-spacing: -0.025em;
-  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.r-payment-page .payment-ledger > .page-toolbar {
   margin: 0;
+  padding: 1rem;
+  gap: 0.75rem;
+}
+
+.r-payment-page .payment-ledger .search-wrap {
+  min-width: 220px;
+  padding: 0.55rem 0.75rem;
+}
+
+.r-payment-page .payment-ledger .filter-wrap {
+  min-width: 150px;
+  padding: 0.55rem 2rem 0.55rem 0.75rem;
+}
+
+.r-payment-page .payment-ledger input,
+.r-payment-page .payment-ledger select {
+  font-size: 0.8125rem;
+}
+
+.r-payment-page .payment-ledger > .table-card {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.r-payment-page .payment-overview {
+  table-layout: fixed;
+  min-width: 790px;
+}
+
+.r-payment-page .payment-overview th,
+.r-payment-page .payment-overview td {
+  padding: 12px 14px;
+}
+
+.r-payment-page .payment-overview th {
+  font-size: 0.6875rem;
+  letter-spacing: 0.025em;
+}
+
+.r-payment-page .payment-overview td { font-size: 0.8125rem; }
+.r-payment-page .payment-overview th { width: calc(100% / 7); }
+.r-payment-page .payment-overview th:not(:first-child),
+.r-payment-page .payment-overview td:not(:first-child) { text-align: center; }
+.r-payment-page .payment-overview .amount-cell { font-variant-numeric: tabular-nums; }
+.r-payment-page .payment-overview .action-group { justify-content: center; }
+.r-payment-page .payment-overview .payment-guest-cell { white-space: normal; overflow-wrap: anywhere; }
+.r-payment-page .payment-guest-cell > span,
+.r-payment-page .payment-overview .date-cell > span,
+.r-payment-page .payment-overview .date-cell > small { display: block; }
+.r-payment-page .payment-guest-cell .booking-id { margin-top: 3px; font-size: 11px; }
+.r-payment-page .payment-overview .date-cell > small { margin-top: 3px; color: var(--color-text-secondary); font-size: 12px; }
+.r-payment-page .payment-overview .hhotel-status-badge { white-space: normal; text-align: center; }
+
+@media (max-width: 600px) {
+  .r-payment-page .payment-summary { gap: 0.5rem 1.25rem; }
+  .r-payment-page .payment-ledger > .page-toolbar { padding: 0.75rem; }
+  .r-payment-page .payment-ledger .search-wrap { flex-basis: 100%; min-width: 0; }
+  .r-payment-page .payment-ledger .filter-wrap { flex: 1; min-width: 0; }
 }
 
 .date-cell {

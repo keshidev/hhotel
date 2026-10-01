@@ -216,127 +216,108 @@ const PaymentPage = ({ embedded = false, role = 'receptionist', onOpenProofRevie
         </div>
       </div>}
 
-      {/* Summary cards — matches Dashboard stat-card layout */}
-      <div className="payment-summary">
-        <div className="pay-sum-item">
-          <span className="pay-sum-label">All Records</span>
-          <span className="pay-sum-val">{stats.total}</span>
+      {/* Compact summary, filters, and payment ledger */}
+      <div className="payment-ledger">
+        <div className="payment-summary" aria-label="Payment record totals">
+          <div className="pay-sum-item">
+            <span className="pay-sum-label">All Records</span>
+            <span className="pay-sum-val">{stats.total}</span>
+          </div>
+          <div className="pay-sum-item">
+            <span className="pay-sum-label">Pending</span>
+            <span className="pay-sum-val">{stats.pending}</span>
+          </div>
+          <div className="pay-sum-item">
+            <span className="pay-sum-label">Completed</span>
+            <span className="pay-sum-val">{stats.accepted}</span>
+          </div>
+          <div className="pay-sum-item">
+            <span className="pay-sum-label">Failed</span>
+            <span className="pay-sum-val">{stats.rejected}</span>
+          </div>
         </div>
-        <div className="pay-sum-item">
-          <span className="pay-sum-label">Pending</span>
-          <span className="pay-sum-val">{stats.pending}</span>
-        </div>
-        <div className="pay-sum-item">
-          <span className="pay-sum-label">Completed</span>
-          <span className="pay-sum-val">{stats.accepted}</span>
-        </div>
-        <div className="pay-sum-item">
-          <span className="pay-sum-label">Failed</span>
-          <span className="pay-sum-val">{stats.rejected}</span>
-        </div>
-      </div>
 
-      {/* Toolbar */}
-      <div className="page-toolbar">
-        <div className="search-wrap">
-          <Search size={16} />
-          <input
-            type="text"
-            placeholder="Search by guest, payment ID, booking ID, method…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        {/* Toolbar */}
+        <div className="page-toolbar">
+          <div className="search-wrap">
+            <Search size={16} />
+            <input
+              type="text"
+              aria-label="Search payment records"
+              placeholder="Search guest, payment ID, booking ID, method"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="filter-wrap">
+            <Filter size={16} />
+            <select aria-label="Payment status" value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+              {STATUS_FILTERS.map((s) => <option key={s} value={s}>{s === 'All' ? 'All statuses' : s}</option>)}
+            </select>
+            <ChevronDown size={14} className="select-chevron" />
+          </div>
+          <div className="filter-wrap">
+            <CreditCard size={16} />
+            <select aria-label="Payment method" value={methodFilter} onChange={(e) => setMethodFilter(e.target.value)}>
+              <option value="All">All methods</option>
+              <option>Cash</option>
+              <option>GCash</option>
+            </select>
+            <ChevronDown size={14} className="select-chevron" />
+          </div>
         </div>
-        <div className="filter-wrap">
-          <Filter size={16} />
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-            {STATUS_FILTERS.map((s) => <option key={s}>{s}</option>)}
-          </select>
-          <ChevronDown size={14} className="select-chevron" />
-        </div>
-        <div className="filter-wrap">
-          <CreditCard size={16} />
-          <select value={methodFilter} onChange={(e) => setMethodFilter(e.target.value)}>
-            <option>All</option>
-            <option>Cash</option>
-            <option>GCash</option>
-          </select>
-          <ChevronDown size={14} className="select-chevron" />
-        </div>
-      </div>
 
-      {/* Table */}
-      <div className="table-card">
-        <div className="table-container">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Payment ID</th><th>Booking ID</th><th>Guest</th>
-                <th>Method</th><th>Reference</th><th>Amount</th>
-                <th>Date</th><th>Status</th><th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedData.length === 0 ? (
-                <tr><td colSpan={9} className="empty-row">No payments found.</td></tr>
-              ) : (
-                paginatedData.map((r) => (
-                  <tr key={r.id}>
-                    <td className="booking-id">{r.id}</td>
-                    <td className="booking-id">{r.bookingId}</td>
-                    <td className="guest-name">{r.guest}</td>
-                    <td>{r.method}</td>
-                    <td className="booking-id">{r.reference}</td>
-                    <td className="amount-cell">{formatAmount(r)}</td>
-                    <td className="date-cell">{r.displayDate || r.recordedAt}</td>
-                    <td>
-                      <StatusBadge status={r.status} />
-                    </td>
-                    <td>
-                      <div className="action-group">
-                        <TableActionButton iconOnly label="View payment details" onClick={() => setSelected(r)}>
-                          <Eye size={15} />
-                        </TableActionButton>
-                        {isManualPending(r) && (
-                          <>
-                            <TableActionButton iconOnly tone="success" label="Accept payment" onClick={() => handleAccept(r.id)}>
-                              <CheckCircle size={15} />
-                            </TableActionButton>
-                            <TableActionButton
-                              iconOnly
-                              tone="danger"
-                              label="Reject payment"
-                              onClick={() => { setSelected(r); setShowRejectConfirm(true); }}
-                            >
-                              <XCircle size={15} />
-                            </TableActionButton>
-                          </>
-                        )}
-                        {isGcashReviewOnly(r) && onOpenProofReview && (
-                          <TableActionButton iconOnly label="Open GCash proof review" onClick={onOpenProofReview}>
-                            <ShieldCheck size={15} />
+        {/* Table */}
+        <div className="table-card">
+          <div className="table-container">
+            <table className="data-table payment-overview">
+              <thead>
+                <tr>
+                  <th>Guest / Booking</th><th>Payment ID</th><th>Method</th>
+                  <th>Amount</th><th>Date</th><th>Status</th><th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedData.length === 0 ? (
+                  <tr><td colSpan={7} className="empty-row">No payments found.</td></tr>
+                ) : (
+                  paginatedData.map((r) => (
+                    <tr key={r.id}>
+                      <td className="payment-guest-cell"><span className="guest-name">{r.guest}</span><span className="booking-id">{r.bookingId}</span></td>
+                      <td className="booking-id">{r.id}</td>
+                      <td>{r.method}</td>
+                      <td className="amount-cell">{formatAmount(r)}</td>
+                      <td className="date-cell"><span>{(r.displayDate || r.recordedAt || 'N/A').split(' ')[0]}</span><small>{(r.displayDate || r.recordedAt || '').split(' ').slice(1).join(' ')}</small></td>
+                      <td>
+                        <StatusBadge status={r.status} />
+                      </td>
+                      <td>
+                        <div className="action-group">
+                          <TableActionButton iconOnly label="View payment details" onClick={() => setSelected(r)}>
+                            <Eye size={15} />
                           </TableActionButton>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {!loading && paginatedData.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+              pageSizeOptions={[10, 25, 50, 100]}
+            />
+          )}
         </div>
 
-        {!loading && paginatedData.length > 0 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            totalItems={totalItems}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
-            pageSizeOptions={[10, 25, 50, 100]}
-          />
-        )}
       </div>
 
       {/* Modal */}
