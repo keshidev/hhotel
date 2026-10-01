@@ -81,3 +81,47 @@
     transform: rotate(90deg);
   }
 }
+/* Match the compact receptionist reservation overview. */
+.r-cancellation-page .cancellation-overview {
+  table-layout: fixed;
+  min-width: 850px;
+}
+.r-cancellation-page .cancellation-overview th,
+.r-cancellation-page .cancellation-overview td {
+  padding: 16px 14px;
+}
+.r-cancellation-page .cancellation-overview th:nth-child(1) { width: 24%; }
+.r-cancellation-page .cancellation-overview th:nth-child(2) { width: 17%; }
+.r-cancellation-page .cancellation-overview th:nth-child(3) { width: 12%; }
+.r-cancellation-page .cancellation-overview th:nth-child(4) { width: 14%; }
+.r-cancellation-page .cancellation-overview th:nth-child(5) { width: 15%; }
+.r-cancellation-page .cancellation-overview th:nth-child(6) { width: 11%; }
+.r-cancellation-page .cancellation-overview th:nth-child(7) { width: 7%; }
+.r-cancellation-page .cancellation-guest-cell,
+.r-cancellation-page .cancellation-requested-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  line-height: 1.4;
+}
+.r-cancellation-page .cancellation-guest-cell,
+.r-cancellation-page .cancellation-overview .cancellation-room-cell {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.r-cancellation-page .cancellation-guest-cell .booking-id {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+.r-cancellation-page .cancellation-requested-time {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+.r-cancellation-page .cancellation-overview .hhotel-status-badge {
+  max-width: 100%;
+  white-space: normal;
+}
+.r-cancellation-page .cancellation-overview th:last-child,
+.r-cancellation-page .cancellation-overview td:last-child { text-align: center; }
+.r-cancellation-page .cancellation-overview .action-group { justify-content: center; }

@@ -2,6 +2,7 @@ import { useNotificationTarget } from '../../hooks/useNotificationTarget';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Search, Filter, ChevronDown, Eye, X, User, BedDouble, ClipboardCheck } from 'lucide-react';
 import '../receptionist/Reservation.css';
+import './Cancellation.css';
 import cancellationRequestService from '../../services/receptionist/cancellationRequestService';
 import { PageSkeletonLoader, usePageCache } from '../../components/ProtectedRoute';
 import StatusBadge from '../../components/StatusBadge';
@@ -230,34 +231,40 @@ const CancellationPage = () => {
 
       <div className="table-card">
         <div className="table-container">
-          <table className="data-table">
+          <table className="data-table cancellation-overview">
             <thead>
               <tr>
-                <th>Request ID</th>
-                <th>Booking ID</th>
-                <th>Guest</th>
+                <th>Guest / Booking</th>
                 <th>Room</th>
                 <th>Check-in</th>
                 <th>Refund Amount</th>
                 <th>Status</th>
                 <th>Requested On</th>
-                <th>Actions</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <tr><td colSpan={9} className="empty-row">No cancellation requests found.</td></tr>
+                <tr><td colSpan={7} className="empty-row">No cancellation requests found.</td></tr>
               ) : (
                 filtered.map((record) => (
                   <tr key={record.id}>
-                    <td className="booking-id">{record.id}</td>
-                    <td className="booking-id">{record.bookingId}</td>
-                    <td className="guest-name">{record.guest}</td>
-                    <td>{record.room}</td>
+                    <td>
+                      <div className="cancellation-guest-cell">
+                        <span className="guest-name">{record.guest}</span>
+                        <span className="booking-id">{record.bookingId}</span>
+                      </div>
+                    </td>
+                    <td className="cancellation-room-cell">{record.room}</td>
                     <td>{record.checkIn}</td>
                     <td className="amount-cell">₱{Number(record.refundAmount || 0).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</td>
                     <td><StatusBadge status={record.statusLabel} /></td>
-                    <td className="date-cell">{record.requestedAt ? String(record.requestedAt).replace('T', ' ').slice(0, 16) : 'N/A'}</td>
+                    <td>
+                      <div className="cancellation-requested-cell">
+                        <span>{record.requestedAt ? String(record.requestedAt).slice(0, 10) : 'N/A'}</span>
+                        {record.requestedAt && <span className="cancellation-requested-time">{String(record.requestedAt).slice(11, 16)}</span>}
+                      </div>
+                    </td>
                     <td>
                       <div className="action-group">
                         <TableActionButton iconOnly label="View cancellation details" onClick={() => setSelected(record)}>

@@ -1,9 +1,10 @@
 import { useNotificationTarget } from '../../hooks/useNotificationTarget';
-﻿import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Search, Filter, ChevronDown, Eye,
-  X, User, BedDouble
+  X, User, BedDouble, CreditCard
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './Reservation.css';
 import reservationService from '../../services/receptionist/reservationService';
 import transferRequestService from '../../services/receptionist/transferRequestService';
@@ -63,6 +64,12 @@ const showToast = (message, type = 'success') => {
 };
 
 const ReservationPage = () => {
+  const navigate = useNavigate();
+  const openPaymentReview = (booking) => {
+    navigate('/receptionist/manual-gcash-reviews?section=reviews', {
+      state: { notificationTarget: { search: booking.id, reviewQueue: booking.paymentReview?.queue || 'ready' } },
+    });
+  };
   useNotificationTarget((target) => { setSearch(target.search); setStatusFilter('All'); setSelected(null); });
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
@@ -368,7 +375,7 @@ const ReservationPage = () => {
         <div className="page-header">
           <div>
             <h1>Reservations</h1>
-            <p className="page-subtitle">Browse and search guest reservations.</p>
+            <p className="page-subtitle">Browse reservations, including pending bookings with submitted payment proof.</p>
           </div>
         </div>
         <div style={{ textAlign: 'center', padding: '3rem', color: 'red' }}>
@@ -385,7 +392,7 @@ const ReservationPage = () => {
       <div className="page-header">
         <div>
           <h1>Reservations</h1>
-          <p className="page-subtitle">Browse and search guest reservations.</p>
+          <p className="page-subtitle">Browse reservations, including pending bookings with submitted payment proof.</p>
         </div>
       </div>
 
@@ -417,32 +424,32 @@ const ReservationPage = () => {
       {/* Table */}
       <div className="table-card">
         <div className="table-container">
-          <table className="data-table">
+          <table className="data-table reservation-overview">
             <thead>
               <tr>
-                <th>Booking ID</th>
-                <th>Guest</th>
+                <th>Guest / Booking</th>
                 <th>Room</th>
-                <th>Check-in</th>
-                <th>Check-out</th>
-                <th>Total</th>
+                <th>Stay</th>
                 <th>Balance</th>
                 <th>Payment</th>
                 <th>Status</th>
-                <th>Source</th>
-                <th>Actions</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {paginatedData.length === 0 ? (
                 <tr>
-                  <td colSpan={11} className="empty-row">No reservations found.</td>
+                  <td colSpan={7} className="empty-row">No reservations found.</td>
                 </tr>
               ) : (
                 paginatedData.map((r) => (
                   <tr key={r.id}>
-                    <td className="booking-id">{r.id}</td>
-                    <td className="guest-name">{r.guest}</td>
+                    <td>
+                      <div className="reservation-guest-cell">
+                        <span className="guest-name">{r.guest}</span>
+                        <span className="booking-id">{r.id}</span>
+                      </div>
+                    </td>
                     <td>
                       <div className="room-cell">
                         {r.room.split(', ').map((rm, i) => (
@@ -453,22 +460,29 @@ const ReservationPage = () => {
                         )}
                       </div>
                     </td>
-                    <td>{r.checkIn}</td>
-                    {/* Day use: display same date as check-in */}
-                    <td>{(r.stayType === 'day_use' || r.isDayTour) ? r.checkIn : r.checkOut}</td>
-                    <td className="amount-cell">{formatCurrency(Number(r.totalAmount || 0))}</td>
+                    <td>
+                      <div className="reservation-stay-cell">
+                        <span aria-label={`Check-in ${r.checkIn}`}>{r.checkIn}</span>
+                        {(r.stayType === 'day_use' || r.isDayTour) ? (
+                          <span className="reservation-day-use">Day Use</span>
+                        ) : (
+                          <span className="reservation-checkout" aria-label={`Check-out ${r.checkOut}`}>
+                            <span aria-hidden="true">&rarr; </span>{r.checkOut}
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     <td className="amount-cell">{formatCurrency(Number(r.remainingBalance || 0))}</td>
                     <td>
-                      <StatusBadge status={r.paymentStatus || 'pending'} />
+                      <div className="reservation-payment-cell">
+                        <StatusBadge status={r.paymentStatus || 'pending'} />
+                        {r.paymentReview && (
+                          <span className={`reservation-review-note review-${r.paymentReview.status}`}>{r.paymentReview.label}</span>
+                        )}
+                      </div>
                     </td>
                     <td>
                       <StatusBadge status={r.status} />
-                    </td>
-                    <td>
-                      <span className={`source-badge source-${(r.bookingSource || 'online').replace('_', '-')}`}>
-                        {r.bookingSource === 'walk_in' ? 'Walk-In' : 'Online'}
-                        {(r.stayType === 'day_use' || r.isDayTour) && <span className="day-tour-tag"> - Day Use</span>}
-                      </span>
                     </td>
                     <td>
                       <div className="action-group">
@@ -490,21 +504,7 @@ const ReservationPage = () => {
                         >
                           <Eye size={15} />
                         </TableActionButton>
-                        {canAssignRoomManually(r) && (
-                          <TableActionButton
-                            label="Assign room"
-                            onClick={async () => {
-                              setSelected(r);
-                              setAssignableRooms([]);
-                              setPendingBookingLines([]);
-                              setAssignBookingRoomId('');
-                              setAssignTargetRoomId('');
-                              await loadAssignableRooms(null, r.id);
-                            }}
-                          >
-                            Assign Room
-                          </TableActionButton>
-                        )}
+
                       </div>
                     </td>
                   </tr>
@@ -609,6 +609,19 @@ const ReservationPage = () => {
                   </span>
                 </div>
               </div>
+
+              {selected.paymentReview && (
+                <div className={`reservation-review-panel review-${selected.paymentReview.status}`}>
+                  <div>
+                    <strong>{selected.paymentReview.label}</strong>
+                    <p>Submitted proof is counted toward the paid amount only after approval.</p>
+                  </div>
+                  <TableActionButton onClick={() => openPaymentReview(selected)}>
+                    <CreditCard size={16} />
+                    {selected.paymentReview.status === 'pending_verification' ? 'Review Payment' : 'View Payment Review'}
+                  </TableActionButton>
+                </div>
+              )}
 
               {selectedAddonItems.length > 0 && (
                 <div className="detail-section reservation-addons-section">

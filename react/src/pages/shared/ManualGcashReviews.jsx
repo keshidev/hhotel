@@ -78,7 +78,9 @@ const ManualGcashReviews = ({ role }) => {
     setSection(['reviews', 'reconciliation', 'records'].includes(requested) ? requested : 'reviews');
   }, [searchParams]);
   useNotificationTarget((target) => {
-    setSearch(target.search); setReviewQueue('ready'); setReviewHistoryStatus(''); closeReview();
+    setSearch(target.search);
+    setReviewQueue(['ready', 'admin', 'history'].includes(target.reviewQueue) ? target.reviewQueue : 'ready');
+    setReviewHistoryStatus(''); closeReview();
   });
 
   const canReview = useMemo(

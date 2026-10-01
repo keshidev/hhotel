@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\ManualGcashSubmission;
+use App\Models\Payment;
 use App\Models\Room;
 use App\Services\RoomPricingService;
 use App\Services\RoomStateService;
@@ -33,8 +35,7 @@ class ReservationController extends Controller
 
     public function index(Request $request)
     {
-        $query = Booking::visibleToStaff()
-            ->with(['primaryGuest', 'bookingRooms.room', 'payments', 'promoCode']);
+        $query = $this->reservationQuery();
 
         if ($request->has('search')) {
             $search = $request->search;
@@ -82,8 +83,7 @@ class ReservationController extends Controller
 
     public function show($referenceNumber)
     {
-        $booking = Booking::visibleToStaff()
-            ->with(['primaryGuest', 'bookingRooms.room', 'payments', 'promoCode'])
+        $booking = $this->reservationQuery()
             ->where('reference_number', $referenceNumber)
             ->firstOrFail();
 
@@ -107,6 +107,57 @@ class ReservationController extends Controller
     // ─────────────────────────────────────────────────────────────────────────
     // SHARED FORMAT HELPER
     // ─────────────────────────────────────────────────────────────────────────
+
+    private function reservationQuery()
+    {
+        // Submitted pending bookings belong in this directory. The shared
+        // paid-only staff scope continues to govern other staff screens.
+        return Booking::query()->where(function ($query) {
+            $query->where(fn ($visible) => $visible->visibleToStaff())
+                ->orWhere(function ($pending) {
+                    $pending->where('booking_status', 'pending')
+                        ->whereHas('payments', function ($payment) {
+                            $payment->where('payment_type', '!=', Payment::TYPE_REFUND)
+                                ->whereHas('manualGcashSubmissions');
+                        });
+                });
+        })->with(['primaryGuest', 'bookingRooms.room', 'payments.manualGcashSubmissions', 'promoCode']);
+    }
+
+    private function paymentReviewSummary(Booking $booking): ?array
+    {
+        if (! in_array($booking->booking_status, ['pending', 'confirmed', 'checked_in'], true)) {
+            return null;
+        }
+
+        $payment = $booking->payments
+            ->filter(fn ($payment) => $payment->payment_status === 'pending'
+                && $payment->payment_type !== Payment::TYPE_REFUND
+                && $payment->manualGcashSubmissions->isNotEmpty())
+            ->sortByDesc('id')->first();
+        $submission = $payment?->manualGcashSubmissions->sortByDesc('id')->first();
+
+        if (! $submission) return null;
+
+        $canRetry = $payment->payment_due_at?->isFuture()
+            && (int) $payment->submission_attempts < max(1, (int) config('payment.manual_gcash.max_submission_attempts', 3));
+        $label = match ($submission->status) {
+            ManualGcashSubmission::STATUS_PENDING => 'Awaiting verification',
+            ManualGcashSubmission::STATUS_ESCALATED => 'Needs administrator',
+            ManualGcashSubmission::STATUS_REJECTED => $canRetry ? 'Awaiting corrected proof' : 'Proof rejected',
+            default => null,
+        };
+
+        return $label ? [
+            'status' => $submission->status,
+            'label' => $label,
+            'queue' => match ($submission->status) {
+                ManualGcashSubmission::STATUS_ESCALATED => 'admin',
+                ManualGcashSubmission::STATUS_REJECTED => 'history',
+                default => 'ready',
+            },
+        ] : null;
+    }
 
     private function formatBooking(Booking $booking, bool $full = false): array
     {
@@ -204,6 +255,7 @@ class ReservationController extends Controller
             'remainingBalance'   => round($remainingBalance, 2),
             'status'             => $this->formatStatus($booking->booking_status),
             'paymentStatus'      => $this->getPaymentSummaryStatus($booking),
+            'paymentReview'      => $this->paymentReviewSummary($booking),
             'hasVerifiedPayment' => $hasVerifiedPayment,
             'bookingSource'      => $booking->booking_source ?? 'online',
             'stayType'           => $stayType,
