@@ -272,7 +272,6 @@ export default function AdminCms() {
   const [uploading, setUploading] = useState(false);
   const [tab, setTab] = useState('hero');
   const [activeRoomType, setActiveRoomType] = useState('executive_suite');
-  const [availableFeedbackCount, setAvailableFeedbackCount] = useState(0);
   const [revision, setRevision] = useState('');
   const [savedContentSignature, setSavedContentSignature] = useState('');
 
@@ -284,7 +283,10 @@ export default function AdminCms() {
   const [testimonials, setTestimonials] = useState(DEFAULT_TESTIMONIALS);
   const [policies, setPolicies] = useState(DEFAULT_POLICIES);
   const [addons, setAddons] = useState(normalizeAddonItems([]));
-  const [pendingTestimonialScrollIndex, setPendingTestimonialScrollIndex] = useState(null);
+  const listedFeedbackCount = testimonials.filter((item) => (
+    item?.source === 'guest_feedback' || Number(item?.feedback_id) > 0
+  )).length;
+  const listedFeedbackLabel = `${listedFeedbackCount} guest ${listedFeedbackCount === 1 ? 'review' : 'reviews'} listed`;
 
   const heroImageRef = useRef(null);
   const aboutImageRef = useRef(null);
@@ -294,14 +296,12 @@ export default function AdminCms() {
     try {
       const res = await api.get('/admin/cms');
       const rows = res.data?.data ?? [];
-      const availableCount = Number(res.data?.meta?.available_feedback_testimonials ?? 0);
       const serverRevision = String(res.data?.meta?.revision ?? '');
       const mapped = {};
       rows.forEach((item) => {
         mapped[item.key] = item.value ?? '';
       });
       setSettings(mapped);
-      setAvailableFeedbackCount(Number.isFinite(availableCount) ? availableCount : 0);
       setRevision(serverRevision);
 
       const hasSetting = (key) => Object.prototype.hasOwnProperty.call(mapped, key);
@@ -348,25 +348,6 @@ export default function AdminCms() {
 
   const setField = (key, value) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
-  };
-
-  useEffect(() => {
-    if (pendingTestimonialScrollIndex === null || tab !== 'testimonials') return;
-
-    const target = document.getElementById(`testimonial-card-${pendingTestimonialScrollIndex}`);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      setPendingTestimonialScrollIndex(null);
-    }
-  }, [pendingTestimonialScrollIndex, testimonials, tab]);
-
-  const addTestimonial = () => {
-    const nextIndex = testimonials.length;
-    setTestimonials((prev) => [
-      ...prev,
-      { guest_name: '', review_text: '', star_rating: 5, date: '', is_active: true, source: 'manual', feedback_id: null },
-    ]);
-    setPendingTestimonialScrollIndex(nextIndex);
   };
 
   const uploadImage = async ({ file, onSuccess }) => {
@@ -580,7 +561,7 @@ export default function AdminCms() {
                 <div className="cms-navigation-group-label">{group.label}</div>
                 {group.items.map(({ key, label, icon: Icon }) => {
                   const active = tab === key;
-                  const showFeedbackBadge = key === 'testimonials' && availableFeedbackCount > 0;
+                  const showFeedbackBadge = key === 'testimonials' && listedFeedbackCount > 0;
 
                   return (
                     <button
@@ -593,8 +574,8 @@ export default function AdminCms() {
                       <Icon size={16} aria-hidden="true" />
                       <span>{label}</span>
                       {showFeedbackBadge && (
-                        <span className="cms-navigation-badge" aria-label={`${availableFeedbackCount} testimonials available`}>
-                          {availableFeedbackCount}
+                        <span className="cms-navigation-badge" aria-label={listedFeedbackLabel}>
+                          {listedFeedbackCount}
                         </span>
                       )}
                     </button>
@@ -611,8 +592,8 @@ export default function AdminCms() {
               <span>Editing Section</span>
               <h2>{activeTab.label}</h2>
             </div>
-            {tab === 'testimonials' && availableFeedbackCount > 0 && (
-              <div className="cms-available-feedback">{availableFeedbackCount} guest feedback available</div>
+            {tab === 'testimonials' && listedFeedbackCount > 0 && (
+              <div className="cms-available-feedback">{listedFeedbackLabel}</div>
             )}
           </div>
 
@@ -860,14 +841,7 @@ export default function AdminCms() {
       )}
 
       {tab === 'testimonials' && (
-        <SectionCard
-          title="Testimonials"
-          right={
-            <button type="button" onClick={addTestimonial} style={{ border: `1px solid ${COLORS.blue}`, background: '#eef2ff', color: COLORS.blue, borderRadius: 6, padding: '6px 10px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'inherit' }}>
-              <Plus size={13} /> Add Testimonial
-            </button>
-          }
-        >
+        <SectionCard title="Testimonials">
           <Input label="Section Title" value={settings.testimonials_title || ''} onChange={(v) => setField('testimonials_title', v)} placeholder="TRUSTED BY OUR GUESTS." />
 
           {testimonials.map((item, index) => {
