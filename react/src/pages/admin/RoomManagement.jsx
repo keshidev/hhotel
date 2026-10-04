@@ -79,6 +79,27 @@ const RoomManagement = () => {
 
   // ── Modal / form state ──
   const [showModal, setShowModal] = useState(false);
+  const roomDialogRef = useRef(null);
+
+  useEffect(() => {
+    if (!showModal) return;
+    const dialog = roomDialogRef.current;
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    const banner = document.querySelector('.test-mode-banner');
+    const updateBanner = () => dialog.style.setProperty('--room-banner-height', `${banner?.getBoundingClientRect().height || 0}px`);
+    const observer = new ResizeObserver(updateBanner);
+    if (banner) observer.observe(banner);
+    updateBanner();
+    dialog.showModal();
+    document.body.style.overflow = 'hidden';
+    return () => {
+      observer.disconnect();
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus?.isConnected) previousFocus.focus();
+    };
+  }, [showModal]);
   const [confirmDialog, setConfirmDialog] = useState({
     open: false,
     type: null,
@@ -665,21 +686,24 @@ const RoomManagement = () => {
 
       {/* ── Modal ── */}
       {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content modal-large" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>{editingRoom ? 'Edit Room' : 'Add New Room'}</h2>
-              <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
+        <dialog ref={roomDialogRef} className="rm-dialog" aria-labelledby="room-form-title"
+          onCancel={(event) => { event.preventDefault(); setShowModal(false); }}>
+        <div className="rm-modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="rm-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="rm-modal-header">
+              <h2 id="room-form-title">{editingRoom ? 'Edit Room' : 'Add New Room'}</h2>
+              <button type="button" aria-label="Close room form" className="rm-modal-close" onClick={() => setShowModal(false)}><X size={18} /></button>
             </div>
 
             <form onSubmit={handleSubmit}>
-              <div className="form-grid">
+              <div className="rm-modal-body">
+              <div className="rm-form-grid">
 
                 {/* Room Number */}
-                <div className="form-group">
-                  <label>Room Number *</label>
+                <div className="rm-form-group">
+                  <label htmlFor="room-number">Room Number *</label>
                   <input
-                    type="text" value={formData.room_number}
+                    id="room-number" type="text" value={formData.room_number}
                     onChange={handleRoomNumberChange} disabled={disableRoomNumber}
                     placeholder="e.g. 101" required
                   />
@@ -687,9 +711,9 @@ const RoomManagement = () => {
                 </div>
 
                 {/* Room Type */}
-                <div className="form-group">
-                  <label>Room Type *</label>
-                  <select value={formData.room_type} onChange={(e) => handleRoomTypeChange(e.target.value)} required>
+                <div className="rm-form-group">
+                  <label htmlFor="room-type">Room Type *</label>
+                  <select id="room-type" value={formData.room_type} onChange={(e) => handleRoomTypeChange(e.target.value)} required>
                     <option value="executive_suite">Executive Suite</option>
                     <option value="family">Family Room</option>
                     <option value="deluxe">Deluxe</option>
@@ -700,46 +724,48 @@ const RoomManagement = () => {
                 </div>
 
                 {/* Capacity */}
-                <div className="form-group">
-                  <label>Capacity (Guests) *</label>
-                  <input type="number" min="1" value={formData.capacity}
+                <div className="rm-form-group">
+                  <label htmlFor="room-capacity">Capacity (Guests) *</label>
+                  <input id="room-capacity" type="number" min="1" value={formData.capacity}
                     onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
                     disabled={disableCapacity} required />
                 </div>
 
                 {/* Price */}
-                <div className="form-group">
-                  <label>Price Per Night (₱) *</label>
-                  <input type="number" step="0.01" min="0" value={formData.price_per_night}
+                <div className="rm-form-group">
+                  <label htmlFor="room-price">Price Per Night (₱) *</label>
+                  <input id="room-price" type="number" step="0.01" min="0" value={formData.price_per_night}
                     onChange={(e) => setFormData({ ...formData, price_per_night: e.target.value })}
                     disabled={disablePrice} required />
                 </div>
 
                 {/* Day Tour Price */}
-                <div className="form-group">
-                  <label>Day Tour Price (₱) <span style={{fontSize:'0.8em', color:'#888'}}>optional — 12-hr walk-in rate</span></label>
+                <div className="rm-form-group">
+                  <label htmlFor="room-day-price">Day Tour Price (₱) <span className="rm-optional">Optional</span></label>
                   <input
+                    id="room-day-price" aria-describedby="room-day-price-hint"
                     type="number"
                     step="0.01"
                     min="0"
                     value={formData.price_day_tour || ''}
-                    placeholder="Leave blank to auto-calculate (65% of overnight)"
+                    placeholder="Auto-calculate"
                     onChange={(e) => setFormData({ ...formData, price_day_tour: e.target.value })}
                   />
+                  <p id="room-day-price-hint" className="field-help">12-hour walk-in rate. Leave blank to use 65% of the overnight price.</p>
                 </div>
 
                 {/* Floor */}
-                <div className="form-group">
-                  <label>Floor</label>
-                  <input type="text" value={formData.floor} onChange={handleFloorChange}
+                <div className="rm-form-group">
+                  <label htmlFor="room-floor">Floor</label>
+                  <input id="room-floor" type="text" value={formData.floor} onChange={handleFloorChange}
                     disabled={disableFloor} placeholder="e.g. 1" />
                   {errors.floor && <span className="error">{errors.floor[0]}</span>}
                 </div>
 
                 {/* Status */}
-                <div className="form-group">
-                  <label>Status *</label>
-                  <select value={formData.status}
+                <div className="rm-form-group">
+                  <label htmlFor="room-status">Status *</label>
+                  <select id="room-status" value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                     disabled={disableStatus} required>
                     {editingRoom?.status === 'occupied' && (
@@ -758,22 +784,22 @@ const RoomManagement = () => {
                 </div>
 
                 {/* Description */}
-                <div className="form-group full-width">
-                  <label>Description</label>
-                  <textarea rows="3" value={formData.description}
+                <div className="rm-form-group full-width">
+                  <label htmlFor="room-description">Description</label>
+                  <textarea id="room-description" rows="3" value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Enter room description..." />
                 </div>
 
                 {/* ── Amenities ── */}
-                <div className="form-group full-width">
-                  <label>Amenities</label>
+                <div className="rm-form-group full-width">
+                  <span id="room-amenities-label" className="rm-field-label">Amenities</span>
 
                   {amenitiesLoading ? (
                     <p className="amenities-loading">Loading amenities…</p>
                   ) : (
                     <>
-                      <div className="amenities-grid">
+                      <div className="amenities-grid" role="group" aria-labelledby="room-amenities-label">
                         {allAmenities.map((amenity) => (
                           <label key={amenity.id} className="checkbox-label amenity-checkbox-item">
                             <input
@@ -811,6 +837,7 @@ const RoomManagement = () => {
                           ref={newAmenityInputRef}
                           type="text"
                           className="add-amenity-input"
+                          aria-label="New amenity name"
                           placeholder="New amenity name…"
                           value={newAmenityInput}
                           maxLength={100}
@@ -840,8 +867,8 @@ const RoomManagement = () => {
                 </div>
 
                 {/* Room Image */}
-                <div className="form-group full-width">
-                  <label>Room Image</label>
+                <div className="rm-form-group full-width">
+                  <span className="rm-field-label">Room Image</span>
                   {imagePreview ? (
                     <div className="image-preview-single">
                       <img src={imagePreview} alt="Room" />
@@ -853,7 +880,7 @@ const RoomManagement = () => {
                   ) : (
                     <div className="upload-compact-wrapper">
                       <input type="file" id="room-image" accept="image/*"
-                        onChange={handleImageUpload} style={{ display: 'none' }} />
+                        onChange={handleImageUpload} className="rm-file-input" />
                       <label htmlFor="room-image" className="upload-btn-compact">
                         <Upload size={14} /> Upload Image
                       </label>
@@ -862,9 +889,10 @@ const RoomManagement = () => {
                   )}
                 </div>
 
-              </div>{/* /form-grid */}
+              </div>{/* /rm-form-grid */}
+              </div>
 
-              <div className="modal-footer">
+              <div className="rm-modal-footer">
                 <button type="button" className="btn-secondary" onClick={() => setShowModal(false)}>
                   Cancel
                 </button>
@@ -875,6 +903,7 @@ const RoomManagement = () => {
             </form>
           </div>
         </div>
+        </dialog>
       )}
 
       <ConfirmDialog
