@@ -1,9 +1,10 @@
 import { useNotificationTarget } from '../../hooks/useNotificationTarget';
-import React, { useEffect, useMemo, useState } from 'react';
-import { Search, Filter, ChevronDown, Eye, X, ClipboardCheck, User, BedDouble, AlertTriangle, Upload, ExternalLink } from 'lucide-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Search, Filter, ChevronDown, Eye, ClipboardCheck, User, BedDouble, AlertTriangle, Upload, ExternalLink } from 'lucide-react';
 import approvalService from '../../services/admin/approvalService';
 import StatusBadge from '../../components/StatusBadge';
 import TableActionButton from '../../components/TableActionButton';
+import ApprovalRequestDialog from './ApprovalRequestDialog';
 import { refundApiFields, validateCancellationRefund } from '../../utils/cancellationRefundValidation';
 import './AdminShared.css';
 import './AdminApprovalToolbar.css';
@@ -28,14 +29,14 @@ const showToast = (message, type = 'success') => {
   const toast = document.createElement('div');
   toast.className = `simple-toast toast-${type}`;
   toast.textContent = message;
-  document.body.appendChild(toast);
+  (document.querySelector('.ar-dialog[open]') || document.body).appendChild(toast);
 
   setTimeout(() => toast.classList.add('show'), 10);
   setTimeout(() => {
     toast.classList.remove('show');
     setTimeout(() => {
       if (toast.parentNode) {
-        document.body.removeChild(toast);
+        toast.parentNode.removeChild(toast);
       }
     }, 300);
   }, 3000);
@@ -48,6 +49,7 @@ const AdminCancellationApprovals = () => {
   const [records, setRecords] = useState([]);
   const [selected, setSelected] = useState(null);
   const [openingDetails, setOpeningDetails] = useState(false);
+  const detailsOpenerRef = useRef(null);
   const [decisionNote, setDecisionNote] = useState('');
   const [finalizeNote, setFinalizeNote] = useState('');
   const [refundForm, setRefundForm] = useState({
@@ -153,8 +155,9 @@ const AdminCancellationApprovals = () => {
     ));
   }, [records, search]);
 
-  const openDetails = async (row) => {
+  const openDetails = async (row, opener) => {
     if (openingDetails) return;
+    detailsOpenerRef.current = opener;
     setOpeningDetails(true);
     try {
     const detail = await approvalService.getCancellationRequest(row.requestId);
@@ -219,7 +222,7 @@ const AdminCancellationApprovals = () => {
       });
       updateSelectedAndList(response.request);
       showToast(response.message || 'Request approved.', 'success');
-      await fetchRequests();
+      await fetchRequests({ showLoading: false });
     } catch (err) {
       showToast(err?.response?.data?.message || 'Failed to approve request.', 'error');
     } finally {
@@ -240,7 +243,7 @@ const AdminCancellationApprovals = () => {
       });
       updateSelectedAndList(response.request);
       showToast(response.message || 'Request rejected.', 'success');
-      await fetchRequests();
+      await fetchRequests({ showLoading: false });
     } catch (err) {
       showToast(err?.response?.data?.message || 'Failed to reject request.', 'error');
     } finally {
@@ -273,7 +276,7 @@ const AdminCancellationApprovals = () => {
       const response = await approvalService.processRefundForCancellationRequest(selected.requestId, payload);
       updateSelectedAndList(response.request);
       showToast(response.message || 'Refund processed.', 'success');
-      await fetchRequests();
+      await fetchRequests({ showLoading: false });
     } catch (err) {
       const fieldErrors = {};
       for (const [key, value] of Object.entries(err?.response?.data?.errors || {})) {
@@ -397,7 +400,7 @@ const AdminCancellationApprovals = () => {
                     <td><StatusBadge status={row.statusLabel} /></td>
                     <td>{row.requestedAt ? String(row.requestedAt).replace('T', ' ').slice(0, 16) : 'N/A'}</td>
                     <td>
-                      <TableActionButton iconOnly label="View cancellation details" disabled={openingDetails} onClick={() => openDetails(row)}>
+                      <TableActionButton iconOnly label="View cancellation details" disabled={openingDetails} onClick={(event) => openDetails(row, event.currentTarget)}>
                         <Eye size={15} />
                       </TableActionButton>
                     </td>
@@ -410,23 +413,25 @@ const AdminCancellationApprovals = () => {
       </div>
 
       {selected && (
-        <div className="modal-overlay" onClick={() => !saving && setSelected(null)}>
-          <div className="modal-content modal-large" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <div>
-                <h2>Cancellation Request {selected.id}</h2>
-                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{selected.bookingId}</div>
-              </div>
-              <button className="modal-close" onClick={() => setSelected(null)} disabled={saving}><X size={18} /></button>
-            </div>
-
-            <div style={{ padding: '1.5rem' }}>
-              <div className="detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+        <ApprovalRequestDialog
+          title={`Cancellation Request ${selected.id}`}
+          bookingReference={selected.bookingId}
+          saving={saving}
+          restoreFocusTo={detailsOpenerRef.current}
+          onClose={() => setSelected(null)}
+          actions={<>
+            <button className="btn-secondary" onClick={() => setSelected(null)} disabled={saving}>Close</button>
+            {selected.canReject && <button className="btn-danger" onClick={handleReject} disabled={saving}>Reject</button>}
+            {selected.canApprove && <button className="btn-primary" onClick={handleApprove} disabled={saving}>{selected.previouslyApproved ? 'Cancel Approved Reservation' : 'Approve Cancellation'}</button>}
+            {selected.canProcessRefund && <button className="btn-primary" onClick={handleProcessRefund} disabled={saving}>{selected.requiresManualGcashEvidence ? 'Record Completed Refund' : 'Process Refund'}</button>}
+          </>}
+        >
+              <div className="ar-details">
                 <div>
-                  <div style={{ fontWeight: 700, marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div className="ar-section-title">
                     <User size={15} /> Guest
                   </div>
-                  <div style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
+                  <div className="ar-detail-text">
                     <div><strong style={{ color: 'var(--color-text-primary)' }}>{selected.guest}</strong></div>
                     <div>Booking Status: {selected.bookingStatus}</div>
                     <div>Requested By: {selected.requestedBy}</div>
@@ -434,10 +439,10 @@ const AdminCancellationApprovals = () => {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontWeight: 700, marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div className="ar-section-title">
                     <BedDouble size={15} /> Reservation
                   </div>
-                  <div style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
+                  <div className="ar-detail-text">
                     <div><strong style={{ color: 'var(--color-text-primary)' }}>{selected.room}</strong></div>
                     <div>Check-in: {selected.checkIn}</div>
                     <div>Check-out: {selected.checkOut}</div>
@@ -447,15 +452,15 @@ const AdminCancellationApprovals = () => {
                 </div>
               </div>
 
-              <div style={{ marginTop: '1rem', padding: '0.9rem', border: '1px solid var(--color-border)', borderRadius: 8, background: 'var(--color-background)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: '0.5rem', fontWeight: 700 }}>
+              <div className="ar-panel ar-panel-muted">
+                <div className="ar-section-title">
                   <ClipboardCheck size={15} /> Workflow
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: '0.5rem' }}>
+                <div className="ar-status">
                   <span>Status</span>
                   <StatusBadge status={selected.statusLabel} />
                 </div>
-                <div style={{ fontSize: '0.86rem', color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
+                <div className="ar-history">
                   <div><strong>Booking: {selected.bookingStatus}</strong></div>
                   <div><strong>Refund: {selected.refundStatusLabel}</strong></div>
                   {selected.canApprove && <p>Approving cancels this reservation and releases its room allocation immediately. Any refund remains pending until the completed transfer is recorded.</p>}
@@ -469,40 +474,38 @@ const AdminCancellationApprovals = () => {
                 </div>
               </div>
 
-              <div style={{ marginTop: '1rem', padding: '0.9rem', border: '1px solid var(--color-border)', borderRadius: 8 }}>
-                <div style={{ fontWeight: 700, marginBottom: 6 }}>Reason</div>
+              <div className="ar-panel ar-panel-muted">
+                <div className="ar-section-title">Reason</div>
                 <div style={{ color: 'var(--color-text-secondary)' }}>{selected.reason}</div>
               </div>
 
               {selected.requestNote && (
-                <div style={{ marginTop: '0.75rem', padding: '0.9rem', border: '1px solid var(--color-border)', borderRadius: 8 }}>
-                  <div style={{ fontWeight: 700, marginBottom: 6 }}>Request Note</div>
+                <div className="ar-panel">
+                  <div className="ar-section-title">Request Note</div>
                   <div style={{ color: 'var(--color-text-secondary)' }}>{selected.requestNote}</div>
                 </div>
               )}
 
-              <div style={{ marginTop: '1rem' }}>
-                <label htmlFor="cancellation-decision-note" style={{ fontWeight: 600, fontSize: '0.86rem', display: 'block', marginBottom: 6 }}>Decision Note</label>
+              <div className="ar-note">
+                <label htmlFor="cancellation-decision-note">Decision Note</label>
                 <textarea
                   id="cancellation-decision-note"
                   rows={3}
                   value={decisionNote}
                   onChange={(e) => setDecisionNote(e.target.value)}
                   placeholder={selected.canApprove || selected.canReject ? 'Add note for approve/reject' : 'No decision note provided'}
-                  style={{ width: '100%', border: '1px solid var(--color-border)', borderRadius: 8, padding: '0.7rem', fontFamily: 'inherit', resize: 'vertical' }}
                   disabled={saving || (!selected.canApprove && !selected.canReject)}
                 />
               </div>
 
-              {(!selected.canProcessRefund || !selected.requiresManualGcashEvidence) && <div style={{ marginTop: '0.75rem' }}>
-                <label htmlFor="cancellation-refund-note" style={{ fontWeight: 600, fontSize: '0.86rem', display: 'block', marginBottom: 6 }}>Refund Note</label>
+              {(!selected.canProcessRefund || !selected.requiresManualGcashEvidence) && <div className="ar-note">
+                <label htmlFor="cancellation-refund-note">Refund Note</label>
                 <textarea
                   id="cancellation-refund-note"
                   rows={2}
                   value={finalizeNote}
                   onChange={(e) => setFinalizeNote(e.target.value)}
                   placeholder={selected.canProcessRefund ? 'Optional note for refund processing' : 'No refund note provided'}
-                  style={{ width: '100%', border: '1px solid var(--color-border)', borderRadius: 8, padding: '0.7rem', fontFamily: 'inherit', resize: 'vertical' }}
                   disabled={saving || !selected.canProcessRefund}
                 />
               </div>}
@@ -609,16 +612,7 @@ const AdminCancellationApprovals = () => {
                   )}
                 </section>
               )}
-            </div>
-
-            <div className="modal-footer">
-              <button className="btn-secondary modal-close-compact" onClick={() => setSelected(null)} disabled={saving}>Close</button>
-              {selected.canReject && <button className="btn-danger" onClick={handleReject} disabled={saving}>Reject</button>}
-              {selected.canApprove && <button className="btn-primary" onClick={handleApprove} disabled={saving}>{selected.previouslyApproved ? 'Cancel Approved Reservation' : 'Approve Cancellation'}</button>}
-              {selected.canProcessRefund && <button className="btn-primary" onClick={handleProcessRefund} disabled={saving}>{selected.requiresManualGcashEvidence ? 'Record Completed Refund' : 'Process Refund'}</button>}
-            </div>
-          </div>
-        </div>
+        </ApprovalRequestDialog>
       )}
     </div>
   );

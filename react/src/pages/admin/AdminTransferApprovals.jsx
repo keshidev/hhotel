@@ -1,9 +1,10 @@
 import { useNotificationTarget } from '../../hooks/useNotificationTarget';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Search, Filter, ChevronDown, Eye, X, BedDouble, ArrowRightLeft } from 'lucide-react';
+import { Search, Filter, ChevronDown, Eye, BedDouble, ArrowRightLeft } from 'lucide-react';
 import approvalService from '../../services/admin/approvalService';
 import StatusBadge from '../../components/StatusBadge';
 import TableActionButton from '../../components/TableActionButton';
+import ApprovalRequestDialog from './ApprovalRequestDialog';
 import './AdminShared.css';
 import './AdminApprovalToolbar.css';
 import useAutoRefresh from '../../hooks/useAutoRefresh';
@@ -20,14 +21,14 @@ const showToast = (message, type = 'success') => {
   const toast = document.createElement('div');
   toast.className = `simple-toast toast-${type}`;
   toast.textContent = message;
-  document.body.appendChild(toast);
+  (document.querySelector('.ar-dialog[open]') || document.body).appendChild(toast);
 
   setTimeout(() => toast.classList.add('show'), 10);
   setTimeout(() => {
     toast.classList.remove('show');
     setTimeout(() => {
       if (toast.parentNode) {
-        document.body.removeChild(toast);
+        toast.parentNode.removeChild(toast);
       }
     }, 300);
   }, 3000);
@@ -142,7 +143,7 @@ const AdminTransferApprovals = () => {
       });
       updateSelectedAndList(response.request);
       showToast(response.message || 'Request approved.', 'success');
-      await fetchRequests();
+      await fetchRequests({ showLoading: false });
     } catch (err) {
       showToast(err?.response?.data?.message || 'Failed to approve request.', 'error');
     } finally {
@@ -163,7 +164,7 @@ const AdminTransferApprovals = () => {
       });
       updateSelectedAndList(response.request);
       showToast(response.message || 'Request rejected.', 'success');
-      await fetchRequests();
+      await fetchRequests({ showLoading: false });
     } catch (err) {
       showToast(err?.response?.data?.message || 'Failed to reject request.', 'error');
     } finally {
@@ -180,7 +181,7 @@ const AdminTransferApprovals = () => {
       });
       updateSelectedAndList(response.request);
       showToast(response.message || 'Transfer completed.', 'success');
-      await fetchRequests();
+      await fetchRequests({ showLoading: false });
     } catch (err) {
       showToast(err?.response?.data?.message || 'Failed to complete transfer.', 'error');
     } finally {
@@ -278,23 +279,24 @@ const AdminTransferApprovals = () => {
       </div>
 
       {selected && (
-        <div className="modal-overlay" onClick={() => !saving && setSelected(null)}>
-          <div className="modal-content modal-large" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <div>
-                <h2>Transfer Request {selected.id}</h2>
-                <div style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{selected.bookingId}</div>
-              </div>
-              <button className="modal-close" onClick={() => setSelected(null)} disabled={saving}><X size={18} /></button>
-            </div>
-
-            <div style={{ padding: '1.5rem' }}>
-              <div className="detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+        <ApprovalRequestDialog
+          title={`Transfer Request ${selected.id}`}
+          bookingReference={selected.bookingId}
+          saving={saving}
+          onClose={() => setSelected(null)}
+          actions={<>
+            <button className="btn-secondary" onClick={() => setSelected(null)} disabled={saving}>Close</button>
+            {selected.canReject && <button className="btn-danger" onClick={handleReject} disabled={saving}>Reject</button>}
+            {selected.canApprove && <button className="btn-primary" onClick={handleApprove} disabled={saving}>Approve</button>}
+            {selected.canComplete && <button className="btn-primary" onClick={handleComplete} disabled={saving}>Complete Transfer</button>}
+          </>}
+        >
+              <div className="ar-details">
                 <div>
-                  <div style={{ fontWeight: 700, marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div className="ar-section-title">
                     <BedDouble size={15} /> Booking
                   </div>
-                  <div style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
+                  <div className="ar-detail-text">
                     <div><strong style={{ color: 'var(--color-text-primary)' }}>{selected.guest}</strong></div>
                     <div>Booking Status: {selected.bookingStatus}</div>
                     <div>Check-in: {selected.checkIn}</div>
@@ -302,10 +304,10 @@ const AdminTransferApprovals = () => {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontWeight: 700, marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div className="ar-section-title">
                     <ArrowRightLeft size={15} /> Transfer Details
                   </div>
-                  <div style={{ color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
+                  <div className="ar-detail-text">
                     <div>Current: <strong style={{ color: 'var(--color-text-primary)' }}>{selected.currentRoom}</strong></div>
                     <div>Target: <strong style={{ color: 'var(--color-text-primary)' }}>{selected.targetRoom}</strong></div>
                     <div>Requested By: {selected.requestedBy}</div>
@@ -314,12 +316,12 @@ const AdminTransferApprovals = () => {
                 </div>
               </div>
 
-              <div style={{ marginTop: '1rem', padding: '0.9rem', border: '1px solid var(--color-border)', borderRadius: 8, background: 'var(--color-background)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div className="ar-panel ar-panel-muted">
+                <div className="ar-status">
                   <span>Status</span>
                   <StatusBadge status={selected.statusLabel} />
                 </div>
-                <div style={{ fontSize: '0.86rem', color: 'var(--color-text-secondary)', lineHeight: 1.7, marginTop: '0.6rem' }}>
+                <div className="ar-history">
                   <div>Approved By: {selected.approvedBy || 'N/A'}</div>
                   <div>Approved At: {selected.approvedAt || 'N/A'}</div>
                   <div>Rejected At: {selected.rejectedAt || 'N/A'}</div>
@@ -328,44 +330,35 @@ const AdminTransferApprovals = () => {
                 </div>
               </div>
 
-              <div style={{ marginTop: '1rem', padding: '0.9rem', border: '1px solid var(--color-border)', borderRadius: 8 }}>
-                <div style={{ fontWeight: 700, marginBottom: 6 }}>Reason</div>
+              <div className="ar-panel ar-panel-muted">
+                <div className="ar-section-title">Reason</div>
                 <div style={{ color: 'var(--color-text-secondary)' }}>{selected.reason}</div>
               </div>
 
-              <div style={{ marginTop: '1rem' }}>
-                <label style={{ fontWeight: 600, fontSize: '0.86rem', display: 'block', marginBottom: 6 }}>Decision Note</label>
+              <div className="ar-note">
+                <label htmlFor="transfer-decision-note">Decision Note</label>
                 <textarea
+                  id="transfer-decision-note"
                   rows={3}
                   value={decisionNote}
                   onChange={(e) => setDecisionNote(e.target.value)}
                   placeholder="Add note for approve/reject"
-                  style={{ width: '100%', border: '1px solid var(--color-border)', borderRadius: 8, padding: '0.7rem', fontFamily: 'inherit', resize: 'vertical' }}
                   disabled={saving}
                 />
               </div>
 
-              <div style={{ marginTop: '0.75rem' }}>
-                <label style={{ fontWeight: 600, fontSize: '0.86rem', display: 'block', marginBottom: 6 }}>Completion Note</label>
+              <div className="ar-note">
+                <label htmlFor="transfer-completion-note">Completion Note</label>
                 <textarea
+                  id="transfer-completion-note"
                   rows={2}
                   value={completionNote}
                   onChange={(e) => setCompletionNote(e.target.value)}
                   placeholder="Optional note when completing transfer"
-                  style={{ width: '100%', border: '1px solid var(--color-border)', borderRadius: 8, padding: '0.7rem', fontFamily: 'inherit', resize: 'vertical' }}
                   disabled={saving}
                 />
               </div>
-            </div>
-
-            <div className="modal-footer">
-              <button className="btn-secondary modal-close-compact" onClick={() => setSelected(null)} disabled={saving}>Close</button>
-              {selected.canReject && <button className="btn-danger" onClick={handleReject} disabled={saving}>Reject</button>}
-              {selected.canApprove && <button className="btn-primary" onClick={handleApprove} disabled={saving}>Approve</button>}
-              {selected.canComplete && <button className="btn-primary" onClick={handleComplete} disabled={saving}>Complete Transfer</button>}
-            </div>
-          </div>
-        </div>
+        </ApprovalRequestDialog>
       )}
     </div>
   );
