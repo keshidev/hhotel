@@ -8,12 +8,12 @@ import {
   RefreshCw,
   Search,
   ShieldAlert,
-  X,
 } from 'lucide-react';
 import { showToast } from '../../utils/showToast';
 import { formatCurrency } from '../../utils/currency';
 import StatusBadge from '../../components/StatusBadge';
 import TableActionButton from '../../components/TableActionButton';
+import PaymentOperationsDialog from './PaymentOperationsDialog';
 import './ManualGcashReconciliationPanel.css';
 
 const emptySummary = {
@@ -81,8 +81,8 @@ const ManualGcashReconciliationPanel = ({ api, role, refreshKey, queue, onQueueC
   const isOpenException = selectedStatus === 'exception_open';
   const canResolve = isOpenException && role === 'admin';
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async ({ quiet = false } = {}) => {
+    if (!quiet) setLoading(true);
     try {
       const [summaryResponse, rowsResponse] = await Promise.all([
         api.get('/manual-gcash-reconciliations/summary'),
@@ -101,7 +101,7 @@ const ManualGcashReconciliationPanel = ({ api, role, refreshKey, queue, onQueueC
     } catch (error) {
       showToast(error.response?.data?.message || 'Unable to load GCash reconciliation records.', 'error');
     } finally {
-      setLoading(false);
+      if (!quiet) setLoading(false);
     }
   }, [api, historyStatus, onSummaryChange, queue, search]);
 
@@ -139,11 +139,13 @@ const ManualGcashReconciliationPanel = ({ api, role, refreshKey, queue, onQueueC
   };
 
   const close = () => {
+    if (saving) return;
     setSelected(null);
     setForm(emptyForm);
   };
 
   const submit = async () => {
+    if (saving) return;
     setSaving(true);
     try {
       if (action === 'match') {
@@ -180,8 +182,9 @@ const ManualGcashReconciliationPanel = ({ api, role, refreshKey, queue, onQueueC
         await api.post(`/manual-gcash-reconciliations/${selected.reconciliation.id}/resolve`, payload);
         showToast('Reconciliation exception resolved.', 'success');
       }
-      close();
-      await load();
+      setSelected(null);
+      setForm(emptyForm);
+      await load({ quiet: true });
     } catch (error) {
       const validation = error.response?.data?.errors;
       showToast(validation ? Object.values(validation).flat()[0] : error.response?.data?.message || 'Reconciliation action failed.', 'error');
@@ -256,12 +259,13 @@ const ManualGcashReconciliationPanel = ({ api, role, refreshKey, queue, onQueueC
       </div>
 
       {selected && (
-        <div className="gcash-reconciliation-modal" role="dialog" aria-modal="true" aria-labelledby="gcash-reconciliation-title" onMouseDown={(event) => event.target === event.currentTarget && close()}>
-          <div className="gcash-reconciliation-dialog">
-            <div className="gcash-reconciliation-dialog-header">
-              <div><span>Daily reconciliation</span><h2 id="gcash-reconciliation-title">{selected.booking_reference}</h2></div>
-              <button type="button" onClick={close} aria-label="Close reconciliation"><X size={18} /></button>
-            </div>
+        <PaymentOperationsDialog
+          title="Daily Reconciliation"
+          reference={selected.booking_reference}
+          saving={saving}
+          onClose={close}
+          actions={(!isOpenException || canResolve) && <button type="button" className={action === 'exception' ? 'pm-danger' : 'pm-primary'} onClick={submit} disabled={saving}>{saving ? <><Loader className="spin" size={15} /> Saving...</> : action === 'exception' ? 'Send to Exception Queue' : action === 'resolve' ? 'Save Administrator Resolution' : 'Mark as Reconciled'}</button>}
+        >
             <div className="gcash-reconciliation-dialog-body">
               <div className="gcash-reconciliation-system-record">
                 <h3>System payment record</h3>
@@ -277,6 +281,7 @@ const ManualGcashReconciliationPanel = ({ api, role, refreshKey, queue, onQueueC
               </div>
 
               <div className="gcash-reconciliation-action">
+                <h3 className="pm-section-title"><CheckCircle2 size={15} /> Merchant statement verification</h3>
                 {!isOpenException && (
                   <div className="gcash-reconciliation-action-tabs">
                     {selectedStatus !== 'matched' && <button type="button" className={action === 'match' ? 'active' : ''} onClick={() => setAction('match')}><CheckCircle2 size={15} /> Exact Match</button>}
@@ -302,11 +307,9 @@ const ManualGcashReconciliationPanel = ({ api, role, refreshKey, queue, onQueueC
                   </div>
                 )}
 
-                {(!isOpenException || canResolve) && <button type="button" className={`gcash-reconciliation-submit ${action === 'exception' ? 'danger' : ''}`} onClick={submit} disabled={saving}>{saving ? <><Loader className="spin" size={15} /> Saving...</> : action === 'exception' ? 'Send to Exception Queue' : action === 'resolve' ? 'Save Administrator Resolution' : 'Mark as Reconciled'}</button>}
               </div>
             </div>
-          </div>
-        </div>
+        </PaymentOperationsDialog>
       )}
     </div>
   );

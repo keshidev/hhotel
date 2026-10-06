@@ -17,7 +17,6 @@ import {
   Search,
   ShieldCheck,
   UserRound,
-  X,
   XCircle,
 } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -29,6 +28,7 @@ import StatusBadge from '../../components/StatusBadge';
 import TableActionButton from '../../components/TableActionButton';
 import ManualGcashReconciliationPanel from './ManualGcashReconciliationPanel';
 import PaymentRecordsPanel from '../receptionist/Payment';
+import PaymentOperationsDialog from './PaymentOperationsDialog';
 import './ManualGcashReviews.css';
 
 const initialReview = {
@@ -51,16 +51,7 @@ const emptyOperationsSummary = {
 };
 
 const ManualGcashReviews = ({ role }) => {
-  const pageRef = useRef(null);
-  useEffect(() => {
-    const banner = document.querySelector('.test-mode-banner');
-    if (!banner) return;
-    const update = () => pageRef.current?.style.setProperty('--payment-banner-height', `${banner.getBoundingClientRect().height}px`);
-    const observer = new ResizeObserver(update);
-    observer.observe(banner);
-    update();
-    return () => observer.disconnect();
-  }, []);
+  const proofRequest = useRef(0);
   const api = role === 'admin' ? adminApi : receptionistApi;
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -101,8 +92,8 @@ const ManualGcashReviews = ({ role }) => {
   );
   const requiresAdminReview = selected?.status === 'escalated' && role !== 'admin';
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async ({ quiet = false } = {}) => {
+    if (!quiet) setLoading(true);
     try {
       const response = await api.get('/manual-gcash-reviews', {
         params: {
@@ -115,7 +106,7 @@ const ManualGcashReviews = ({ role }) => {
     } catch (error) {
       showToast(error.response?.data?.message || 'Unable to load manual GCash reviews.', 'error');
     } finally {
-      setLoading(false);
+      if (!quiet) setLoading(false);
     }
   }, [api, reviewHistoryStatus, reviewQueue, search]);
 
@@ -133,6 +124,8 @@ const ManualGcashReviews = ({ role }) => {
   useEffect(() => () => { if (proofUrl) URL.revokeObjectURL(proofUrl); }, [proofUrl]);
 
   const closeReview = () => {
+    if (saving) return;
+    proofRequest.current += 1;
     setSelected(null);
     if (proofUrl) URL.revokeObjectURL(proofUrl);
     setProofUrl('');
@@ -140,6 +133,7 @@ const ManualGcashReviews = ({ role }) => {
   };
 
   const open = async (row) => {
+    const request = ++proofRequest.current;
     setSelected(row);
     setAction('approve');
     setReview({
@@ -157,8 +151,10 @@ const ManualGcashReviews = ({ role }) => {
     }
     try {
       const response = await api.get(`/manual-gcash-reviews/${row.id}/proof`, { responseType: 'blob' });
+      if (request !== proofRequest.current) return;
       setProofUrl(URL.createObjectURL(response.data));
     } catch (error) {
+      if (request !== proofRequest.current) return;
       if (error.response?.status === 410) {
         setProofUnavailable('This proof was securely removed after the approved 180-day retention period.');
       } else {
@@ -168,6 +164,7 @@ const ManualGcashReviews = ({ role }) => {
   };
 
   const submitReview = async () => {
+    if (saving) return;
     if (requiresAdminReview) {
       showToast('This escalated proof requires an administrator.', 'error');
       return;
@@ -189,8 +186,11 @@ const ManualGcashReviews = ({ role }) => {
         const response = await api.post(`/manual-gcash-reviews/${selected.id}/reject`, { reason: review.reason });
         showToast(response.data?.message || 'Payment proof rejected.', 'success');
       }
-      closeReview();
-      await Promise.all([load(), loadOperationsSummary()]);
+      proofRequest.current += 1;
+      setSelected(null);
+      setProofUrl('');
+      setProofUnavailable('');
+      await Promise.all([load({ quiet: true }), loadOperationsSummary()]);
     } catch (error) {
       const validation = error.response?.data?.errors;
       showToast(validation ? Object.values(validation).flat()[0] : error.response?.data?.message || 'Review action failed.', 'error');
@@ -231,7 +231,7 @@ const ManualGcashReviews = ({ role }) => {
   }[reviewQueue];
 
   return (
-    <div className="manual-review-page" ref={pageRef}>
+    <div className="manual-review-page">
       <div className="manual-review-page-header">
         <div>
           <h1>Payment Operations</h1>
@@ -320,19 +320,15 @@ const ManualGcashReviews = ({ role }) => {
       </> : section === 'reconciliation' ? <ManualGcashReconciliationPanel api={api} role={role} refreshKey={refreshKey} queue={reconciliationQueue} onQueueChange={setReconciliationQueue} onSummaryChange={setOperationsSummary} /> : <PaymentRecordsPanel key={refreshKey} embedded role={role} onOpenProofReview={() => selectSection('reviews')} />}
 
       {selected && section === 'reviews' && (
-        <div
-          className="manual-review-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="manual-review-title"
-          onMouseDown={(event) => event.target === event.currentTarget && closeReview()}
+        <PaymentOperationsDialog
+          title={canReview ? 'Payment Verification' : 'Payment Proof Details'}
+          reference={`${selected.booking_reference}${selected.purpose === 'rebooking_adjustment' ? ' · Room change payment' : ''}`}
+          saving={saving}
+          onClose={closeReview}
+          actions={canReview && <button type="button" className={action === 'reject' ? 'pm-danger' : 'pm-primary'} onClick={submitReview} disabled={saving}>
+            {saving ? <><Loader className="spin" size={15} /> Saving...</> : action === 'approve' ? <><CheckCircle size={15} /> Confirm Approval</> : <><XCircle size={15} /> {selected.can_retry ? 'Reject Proof — Allow Correction' : selected.purpose === 'rebooking_adjustment' ? 'Reject Proof — Return to Rebooking' : 'Reject Proof — Close Booking'}</>}
+          </button>}
         >
-          <div className="manual-review-dialog">
-            <div className="manual-review-modal-header">
-              <div><span>{selected.purpose === 'rebooking_adjustment' ? 'Room change payment' : 'Payment verification'}</span><h2 id="manual-review-title">Review {selected.booking_reference}</h2></div>
-              <button type="button" className="manual-review-close" onClick={closeReview} aria-label="Close review"><X size={18} /></button>
-            </div>
-
             <div className="manual-review-grid">
               <section className="manual-review-submission">
                 <div className="manual-review-section-title"><FileText size={17} /><div><h3>Customer submission</h3><p>Details provided by the guest</p></div></div>
@@ -404,9 +400,6 @@ const ManualGcashReviews = ({ role }) => {
                       </div>
                     )}
 
-                    <button type="button" className={`manual-review-submit ${action === 'reject' ? 'reject' : ''}`} onClick={submitReview} disabled={saving}>
-                      {saving ? <><Loader className="spin" size={15} /> Saving...</> : action === 'approve' ? <><CheckCircle size={15} /> Confirm Approval</> : <><XCircle size={15} /> {selected.can_retry ? 'Reject Proof — Allow Correction' : selected.purpose === 'rebooking_adjustment' ? 'Reject Proof — Return to Rebooking' : 'Reject Proof — Close Booking'}</>}
-                    </button>
                   </>
                 ) : requiresAdminReview ? (
                   <div className="manual-review-complete">
@@ -421,8 +414,7 @@ const ManualGcashReviews = ({ role }) => {
                 )}
               </section>
             </div>
-          </div>
-        </div>
+        </PaymentOperationsDialog>
       )}
     </div>
   );

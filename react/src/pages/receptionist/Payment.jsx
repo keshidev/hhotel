@@ -2,7 +2,7 @@ import { useNotificationTarget } from '../../hooks/useNotificationTarget';
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   Search, Filter, ChevronDown, Eye, CheckCircle, XCircle,
-  X, CreditCard, Calendar, User, AlertCircle, ShieldCheck
+  CreditCard, User, AlertCircle, ShieldCheck
 } from 'lucide-react';
 import '../receptionist/Reservation.css';
 import './Payment.css';
@@ -14,22 +14,10 @@ import StatusBadge from '../../components/StatusBadge';
 import TableActionButton from '../../components/TableActionButton';
 import { usePagination } from '../../hooks/usePagination';
 import useAutoRefresh from '../../hooks/useAutoRefresh';
+import PaymentOperationsDialog from '../shared/PaymentOperationsDialog';
+import { showToast } from '../../utils/showToast';
 
 const STATUS_FILTERS = ['All', 'Pending', 'Completed', 'Failed'];
-
-const showToast = (message, type = 'success') => {
-  const toast = document.createElement('div');
-  toast.className = `simple-toast toast-${type}`;
-  toast.textContent = message;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.classList.add('show'), 10);
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => {
-      if (toast.parentNode) document.body.removeChild(toast);
-    }, 300);
-  }, 3000);
-};
 
 const PaymentPage = ({ embedded = false, role = 'receptionist', onOpenProofReview }) => {
   const api = role === 'admin' ? adminApi : receptionistApi;
@@ -43,32 +31,10 @@ const PaymentPage = ({ embedded = false, role = 'receptionist', onOpenProofRevie
   const [error, setError]                         = useState(null);
   const [rejectNote, setRejectNote]               = useState('');
   const [showRejectConfirm, setShowRejectConfirm] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const { shouldShowSkeleton, markPageAsLoaded } = usePageCache('payments');
   const [loading, setLoading] = useState(shouldShowSkeleton);
-
-  useEffect(() => {
-    const styleId = 'simple-toast-styles';
-    if (!document.getElementById(styleId)) {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = `
-        .simple-toast {
-          position: fixed; top: 20px; right: 20px;
-          padding: 16px 24px; border-radius: 8px; color: white;
-          font-size: 14px; font-weight: 500;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-          z-index: 9999; transform: translateX(400px); opacity: 0;
-          transition: all 0.3s ease;
-        }
-        .simple-toast.show { transform: translateX(0); opacity: 1; }
-        .toast-success { background: #10b981; }
-        .toast-error   { background: #ef4444; }
-        .toast-warning { background: #f59e0b; }
-      `;
-      document.head.appendChild(style);
-    }
-  }, []);
 
   useEffect(() => { fetchPayments(); }, [methodFilter, statusFilter]);
 
@@ -127,21 +93,27 @@ const PaymentPage = ({ embedded = false, role = 'receptionist', onOpenProofRevie
   useEffect(() => { resetPage(); }, [search]);
 
   const handleAccept = async (id) => {
+    if (saving) return;
+    setSaving(true);
     try {
       await receptionistApi.post(`/receptionist/payments/${id}/accept`);
-      await fetchPayments();
+      await fetchPayments({ showSkeleton: false });
       if (selected && selected.id === id) setSelected({ ...selected, status: 'Accepted' });
       showToast('Payment accepted successfully!', 'success');
     } catch (err) {
       console.error('Error accepting payment:', err);
       showToast('Failed to accept payment. Please try again.', 'error');
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleReject = async (id) => {
+    if (saving) return;
+    setSaving(true);
     try {
       const { data: response } = await receptionistApi.post(`/receptionist/payments/${id}/reject`, { reason: rejectNote });
-      await fetchPayments();
+      await fetchPayments({ showSkeleton: false });
       if (selected && selected.id === id) setSelected({ ...selected, status: 'Rejected' });
       setShowRejectConfirm(false);
       setRejectNote('');
@@ -155,10 +127,13 @@ const PaymentPage = ({ embedded = false, role = 'receptionist', onOpenProofRevie
     } catch (err) {
       console.error('Error rejecting payment:', err);
       showToast(err?.response?.data?.message || 'Failed to reject payment. Please try again.', 'error');
+    } finally {
+      setSaving(false);
     }
   };
 
   const closeModal = () => {
+    if (saving) return;
     setSelected(null);
     setShowRejectConfirm(false);
     setRejectNote('');
@@ -322,24 +297,30 @@ const PaymentPage = ({ embedded = false, role = 'receptionist', onOpenProofRevie
 
       {/* Modal */}
       {selected && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-box" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <div>
-                <h3>Payment Details</h3>
-                <span className="booking-id">{selected.id} · {selected.bookingId}</span>
-              </div>
-              <button className="modal-close" onClick={closeModal}><X size={20} /></button>
-            </div>
-
-            <div className="modal-body">
-              <div className="detail-grid">
-                <div className="detail-section">
-                  <div className="detail-section-title"><User size={15} /> Guest Info</div>
-                  <div className="detail-row"><span>Guest</span><strong>{selected.guest}</strong></div>
-                  <div className="detail-row">
+        <PaymentOperationsDialog
+          title="Payment Details"
+          reference={`${selected.id} · ${selected.bookingId}`}
+          saving={saving}
+          onClose={closeModal}
+          actions={<>
+            {isManualPending(selected) && !showRejectConfirm && <>
+              <button type="button" className="pm-danger" onClick={() => setShowRejectConfirm(true)} disabled={saving}><XCircle size={16} /> Reject Payment</button>
+              <button type="button" className="pm-primary" onClick={() => handleAccept(selected.id)} disabled={saving}><CheckCircle size={16} /> {saving ? 'Saving...' : 'Accept Payment'}</button>
+            </>}
+            {showRejectConfirm && isManualPending(selected) && <>
+              <button type="button" onClick={() => setShowRejectConfirm(false)} disabled={saving}>Cancel Rejection</button>
+              <button type="button" className="pm-danger" onClick={() => handleReject(selected.id)} disabled={saving}><XCircle size={16} /> {saving ? 'Saving...' : 'Confirm Reject Payment'}</button>
+            </>}
+            {!isManualPending(selected) && isGcashReviewOnly(selected) && onOpenProofReview && <button type="button" className="pm-primary" onClick={() => { closeModal(); onOpenProofReview(); }}><ShieldCheck size={16} /> Open Proof Review</button>}
+          </>}
+        >
+              <div className="pm-details">
+                <section>
+                  <div className="pm-section-title"><User size={15} /> Guest Info</div>
+                  <div className="pm-detail-row"><span>Guest</span><strong>{selected.guest}</strong></div>
+                  <div className="pm-detail-row">
                     <span>{selectedRooms.length > 1 ? `Rooms (${selectedRooms.length})` : 'Room'}</span>
-                    <strong className="payment-room-list">
+                    <strong className="pm-rooms">
                       {selectedRooms.length > 0 ? (
                         selectedRooms.map((room, index) => (
                           <span key={`${selected.id}-room-${index}`}>{room}</span>
@@ -349,43 +330,43 @@ const PaymentPage = ({ embedded = false, role = 'receptionist', onOpenProofRevie
                       )}
                     </strong>
                   </div>
-                  <div className="detail-row"><span>Nights</span><strong>{selected.nights}</strong></div>
-                </div>
-                <div className="detail-section">
-                  <div className="detail-section-title"><CreditCard size={15} /> Payment Info</div>
-                  <div className="detail-row"><span>Method</span><strong>{selected.method}</strong></div>
-                  <div className="detail-row"><span>Reference</span><strong>{selected.reference}</strong></div>
-                  <div className="detail-row"><span>Amount</span><strong className="amount-highlight">{formatAmount(selected)}</strong></div>
-                  <div className="detail-row"><span>Amount Received</span><strong>{`₱${Number(selected.amount_tendered_value ?? selected.amount_value ?? 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</strong></div>
-                  <div className="detail-row"><span>Change Due</span><strong style={{ color: Number(selected.change_due_value ?? 0) > 0 ? '#b45309' : '#111827' }}>{`₱${Number(selected.change_due_value ?? 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</strong></div>
-                  <div className="detail-row"><span>Date</span><strong>{selected.displayDate || selected.recordedAt}</strong></div>
+                  <div className="pm-detail-row"><span>Nights</span><strong>{selected.nights}</strong></div>
+                </section>
+                <section>
+                  <div className="pm-section-title"><CreditCard size={15} /> Payment Info</div>
+                  <div className="pm-detail-row"><span>Method</span><strong>{selected.method}</strong></div>
+                  <div className="pm-detail-row"><span>Reference</span><strong>{selected.reference}</strong></div>
+                  <div className="pm-detail-row"><span>Amount</span><strong className="pm-amount">{formatAmount(selected)}</strong></div>
+                  <div className="pm-detail-row"><span>Amount Received</span><strong>{`₱${Number(selected.amount_tendered_value ?? selected.amount_value ?? 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</strong></div>
+                  <div className="pm-detail-row"><span>Change Due</span><strong style={{ color: Number(selected.change_due_value ?? 0) > 0 ? '#b45309' : undefined }}>{`₱${Number(selected.change_due_value ?? 0).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}</strong></div>
+                  <div className="pm-detail-row"><span>Date</span><strong>{selected.displayDate || selected.recordedAt}</strong></div>
                   {selected.paid_at && (
-                    <div className="detail-row"><span>Paid At</span><strong>{selected.paid_at}</strong></div>
+                    <div className="pm-detail-row"><span>Paid At</span><strong>{selected.paid_at}</strong></div>
                   )}
-                </div>
+                </section>
               </div>
 
               {selected.proofUrl && (
-                <div className="proof-section">
-                  <div className="proof-img-label">Proof of Payment</div>
-                  <img src={selected.proofUrl} alt="Proof of payment" className="proof-img" />
+                <div className="pm-proof">
+                  <div className="pm-section-title">Proof of Payment</div>
+                  <img src={selected.proofUrl} alt="Proof of payment" />
                 </div>
               )}
 
-              <div className="detail-status-row" style={{ marginTop: '1rem' }}>
+              <div className="pm-status">
                 <span>Status</span>
                 <StatusBadge status={selected.status} />
               </div>
 
               {selected.notes && (
-                <div style={{ marginTop: '0.75rem', padding: '10px 14px', borderRadius: '6px', background: '#fef9ec', border: '1px solid #fde68a', fontSize: '13px', color: '#92400e' }}>
+                <div className="pm-note">
                   <strong>Note:</strong> {selected.notes}
                 </div>
               )}
 
               {showRejectConfirm && isManualPending(selected) && (
-                <div className="reject-box">
-                  <div className="reject-warning">
+                <div className="pm-reject">
+                  <div className="pm-reject-warning">
                     <AlertCircle size={18} style={{ color: '#f59e0b', flexShrink: 0 }} />
                     <div>
                       <strong>Warning: Booking cancellation is conditional</strong>
@@ -395,8 +376,9 @@ const PaymentPage = ({ embedded = false, role = 'receptionist', onOpenProofRevie
                       </p>
                     </div>
                   </div>
-                  <label>Rejection Reason (required)</label>
+                  <label htmlFor="payment-rejection-reason">Rejection Reason (required)</label>
                   <textarea
+                    id="payment-rejection-reason"
                     rows={3}
                     placeholder="e.g. Amount mismatch, unclear photo, invalid payment proof..."
                     value={rejectNote}
@@ -406,43 +388,11 @@ const PaymentPage = ({ embedded = false, role = 'receptionist', onOpenProofRevie
               )}
 
               {isGcashReviewOnly(selected) && (
-                <div style={{
-                  marginTop: '1rem', padding: '12px 16px', borderRadius: '8px',
-                  background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1e40af', fontSize: '13px'
-                }}>
+                <div className="pm-review-notice">
                   <strong>Manual GCash payment — awaiting proof review.</strong> Use Proof Review in Payment Operations to verify it against the official merchant record.
                 </div>
               )}
-            </div>
-
-            <div className="modal-footer">
-              {isManualPending(selected) && !showRejectConfirm && (
-                <>
-                  <button className="modal-btn btn-success" onClick={() => handleAccept(selected.id)}>
-                    <CheckCircle size={16} /> Accept Payment
-                  </button>
-                  <button className="modal-btn btn-danger" onClick={() => setShowRejectConfirm(true)}>
-                    <XCircle size={16} /> Reject Payment
-                  </button>
-                </>
-              )}
-              {showRejectConfirm && isManualPending(selected) && (
-                <>
-                  <button className="modal-btn btn-danger" onClick={() => handleReject(selected.id)}>
-                    <XCircle size={16} /> Confirm Reject Payment
-                  </button>
-                  <button className="modal-btn btn-ghost" onClick={() => setShowRejectConfirm(false)}>Cancel</button>
-                </>
-              )}
-              {!isManualPending(selected) && (
-                <>
-                  {isGcashReviewOnly(selected) && onOpenProofReview && <button className="modal-btn btn-success" onClick={() => { closeModal(); onOpenProofReview(); }}><ShieldCheck size={16} /> Open Proof Review</button>}
-                  <button className="modal-btn btn-ghost" onClick={closeModal}>Close</button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+        </PaymentOperationsDialog>
       )}
     </div>
   );

@@ -1,0 +1,188 @@
+/* Shared Payment Operations dialogs, isolated from generic booking modals. */
+.pm-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-family: 'Inter', sans-serif;
+}
+.pm-dialog::backdrop { background: transparent; }
+.pm-dialog .hhotel-toast { top: calc(var(--payment-dialog-banner-height, 0px) + 1rem); }
+.pm-backdrop {
+  position: fixed;
+  inset: var(--payment-dialog-banner-height, 0px) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(2px);
+}
+.pm-modal {
+  display: flex;
+  flex-direction: column;
+  width: min(700px, 100%);
+  max-height: min(90dvh, calc(100dvh - var(--payment-dialog-banner-height, 0px) - 2.5rem));
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+  font-size: 0.84rem;
+  line-height: 1.6;
+  text-align: left;
+}
+.pm-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-shrink: 0;
+  gap: 1rem;
+  padding: 1.25rem 1.4rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.pm-header > div { min-width: 0; }
+.pm-reference { display: block; color: var(--color-text-secondary); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; overflow-wrap: anywhere; }
+.pm-header h2 { margin: 0.3rem 0 0; color: var(--color-text-primary); font: 700 1.3rem/1.4 'Inter', sans-serif; overflow-wrap: anywhere; }
+.pm-modal button { font-family: inherit; }
+.pm-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+.pm-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 1.4rem; overflow-wrap: anywhere; }
+.pm-content { min-width: 0; margin: 0; padding: 0; border: 0; }
+.pm-details,
+.pm-modal .manual-review-grid,
+.pm-modal .gcash-reconciliation-dialog-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem;
+  max-height: none;
+  padding: 0;
+  overflow: visible;
+}
+.pm-details > section,
+.pm-modal .manual-review-grid > section,
+.pm-modal .gcash-reconciliation-dialog-body > div { min-width: 0; padding: 0; border: 0; border-radius: 0; }
+.pm-section-title,
+.pm-modal .manual-review-section-title,
+.pm-modal .gcash-reconciliation-system-record h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.5rem;
+  padding: 0 0 0.65rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-primary);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pm-modal .manual-review-section-title h3 { color: inherit; font-size: inherit; }
+.pm-modal .manual-review-section-title p { color: var(--color-text-secondary); font-size: 0.68rem; font-weight: 400; letter-spacing: normal; text-transform: none; }
+.pm-detail-row,
+.pm-modal .manual-review-detail-list > div,
+.pm-modal .gcash-reconciliation-system-record dl div { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; padding: 0.5rem 0; border: 0; font-size: 0.8rem; }
+.pm-detail-row > span { flex: 0 0 40%; color: var(--color-text-secondary); }
+.pm-detail-row > strong { min-width: 0; color: var(--color-text-primary); text-align: right; overflow-wrap: anywhere; }
+.pm-modal .manual-review-detail-list span,
+.pm-modal .gcash-reconciliation-system-record dt { flex: 0 0 40%; color: var(--color-text-secondary); font-size: 0.78rem; }
+.pm-modal .manual-review-detail-list strong,
+.pm-modal .gcash-reconciliation-system-record dd { min-width: 0; font-size: 0.8rem; }
+.pm-modal .pm-amount { color: var(--color-primary); }
+.pm-rooms { display: flex; flex-direction: column; gap: 0.15rem; }
+.pm-status { display: flex; align-items: center; gap: 0.75rem; margin-top: 1.1rem; padding: 0.8rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-background); }
+.pm-note, .pm-review-notice { margin-top: 0.75rem; padding: 0.8rem 1rem; border: 1px solid #fde68a; border-radius: var(--radius-md); background: #fef9ec; color: #92400e; font-size: 0.78rem; }
+.pm-review-notice { border-color: #bfdbfe; background: #eff6ff; color: #1e40af; }
+.pm-proof { margin-top: 1.1rem; }
+.pm-proof img { display: block; width: 100%; max-height: 260px; object-fit: contain; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-background); }
+.pm-modal .manual-review-proof { height: 260px; }
+.pm-modal .manual-review-proof-heading { flex-wrap: wrap; gap: 0.25rem; }
+.pm-modal .manual-review-tabs,
+.pm-modal .gcash-reconciliation-action-tabs { margin: 0 0 0.85rem; }
+.pm-reject { margin-top: 1.1rem; display: grid; gap: 0.5rem; }
+.pm-reject-warning { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.85rem; border: 1px solid #fde68a; border-radius: var(--radius-md); background: #fef3c7; color: #92400e; font-size: 0.78rem; }
+.pm-reject-warning svg { flex-shrink: 0; }
+.pm-reject-warning p { margin: 0.3rem 0 0; }
+.pm-reject > label,
+.pm-modal .manual-review-form label > span,
+.pm-modal .gcash-reconciliation-form label > span { font-size: 0.78rem; font-weight: 600; }
+.pm-reject textarea,
+.pm-modal .manual-review-form input:not([type="checkbox"]),
+.pm-modal .manual-review-form textarea,
+.pm-modal .gcash-reconciliation-form input:not([type="checkbox"]),
+.pm-modal .gcash-reconciliation-form select,
+.pm-modal .gcash-reconciliation-form textarea {
+  width: 100%;
+  min-height: 40px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font: 400 0.8rem/1.5 'Inter', sans-serif;
+}
+.pm-reject textarea,
+.pm-modal .manual-review-form textarea,
+.pm-modal .gcash-reconciliation-form textarea { min-height: 90px; resize: vertical; }
+.pm-modal .gcash-reconciliation-form-row { grid-template-columns: 1fr; }
+.pm-modal button:focus-visible,
+.pm-modal input:focus-visible,
+.pm-modal select:focus-visible,
+.pm-modal textarea:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.pm-modal button:disabled,
+.pm-modal input:disabled,
+.pm-modal select:disabled,
+.pm-modal textarea:disabled { cursor: not-allowed; opacity: 0.55; }
+.pm-footer { display: flex; flex-shrink: 0; justify-content: flex-end; flex-wrap: wrap; gap: 0.55rem; padding: 1rem 1.4rem; border-top: 1px solid var(--color-border); }
+.pm-footer button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex: 0 1 auto;
+  width: auto;
+  min-height: 38px;
+  margin: 0;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pm-footer .pm-primary { border-color: var(--color-primary); background: var(--color-primary); color: #fff; }
+.pm-footer .pm-danger { border-color: #fecaca; background: #fff; color: #b91c1c; }
+@media (max-width: 700px) {
+  .pm-details,
+  .pm-modal .manual-review-grid,
+  .pm-modal .gcash-reconciliation-dialog-body { grid-template-columns: 1fr; }
+  .pm-modal .manual-review-detail-list > div { flex-direction: row; }
+  .pm-modal .manual-review-detail-list strong { text-align: right; }
+}
+@media (max-width: 480px) {
+  .pm-backdrop { align-items: flex-end; padding: 0; }
+  .pm-modal { max-height: min(92dvh, calc(100dvh - var(--payment-dialog-banner-height, 0px))); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .pm-header, .pm-body, .pm-footer { padding: 1rem; }
+  .pm-footer button { flex: 1 1 100%; }
+}

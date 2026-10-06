@@ -44,12 +44,12 @@ export const showToast = (message, type = 'success') => {
   toast.setAttribute('role', toastType === 'error' ? 'alert' : 'status');
   toast.setAttribute('aria-live', toastType === 'error' ? 'assertive' : 'polite');
   toast.textContent = message;
-  document.body.appendChild(toast);
+  (document.querySelector('.pm-dialog[open] [data-toast-host]') || document.body).appendChild(toast);
   setTimeout(() => toast.classList.add('show'), 10);
   setTimeout(() => {
     toast.classList.remove('show');
     setTimeout(() => {
-      if (toast.parentNode) document.body.removeChild(toast);
+      toast.remove();
     }, 300);
   }, 3000);
 };
