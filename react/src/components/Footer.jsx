@@ -24,10 +24,10 @@ const Footer = () => {
             H+ Hotel QC offers clean, cozy, and comfortable rooms with Netflix, perfect for a relaxing stay. A budget-friendly option conveniently located near SM North Edsa, Trinoma, & Solaire Resort North, it's the ideal spot for affordable comfort and convenience.
             </p>
             <div className="footer-social">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-link">
+              <a href="https://www.facebook.com/share/1DKb5EuqBT/" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Facebook">
                 <Facebook size={18} />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-link">
+              <a href="https://www.instagram.com/hhotelph/" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Instagram">
                 <Instagram size={18} />
               </a>
             </div>

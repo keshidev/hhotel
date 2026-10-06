@@ -7,7 +7,6 @@ import {
   MapPin,
   Phone,
   Send,
-  Twitter,
 } from 'lucide-react';
 import { useCms } from '../context/CmsContext';
 import api from '../services/api';
@@ -223,14 +222,11 @@ export default function ContactPage() {
               </address>
 
               <div className="contact-socials" aria-label="Hotel social links">
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <a href="https://www.instagram.com/hhotelph/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                   <Instagram size={16} />
                 </a>
-                <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+                <a href="https://www.facebook.com/share/1DKb5EuqBT/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                   <Facebook size={16} />
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Twitter">
-                  <Twitter size={16} />
                 </a>
               </div>
             </aside>
